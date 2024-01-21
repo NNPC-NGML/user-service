@@ -19,3 +19,4 @@ use App\Http\Controllers\DepartmentController;
 //     return $request->user();
 // });
 
+Route::post('save_deparment',[DepartmentController::class, 'store'])->name('save_department');

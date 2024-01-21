@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\department;
+use App\Service\UserService\DepartmentHelper;
 use Illuminate\Http\Request;
 use App\Traits\Services\UserService\DepartmentTrait;
 use App\Http\Requests\StoredepartmentRequest;
@@ -10,7 +11,7 @@ use App\Http\Requests\UpdatedepartmentRequest;
 
 class DepartmentController extends Controller
 {
-    use DepartmentTrait; //Trait
+   
     /**
      * Display a listing of the resource.
      */
@@ -32,7 +33,8 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->save($request);
+        $departmentHelper = new DepartmentHelper();
+        return $departmentHelper->save($request);
     }
 
     /**
