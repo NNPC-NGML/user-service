@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +20,7 @@ use App\Http\Controllers\DepartmentController;
 //     return $request->user();
 // });
 
-Route::post('save_deparment',[DepartmentController::class, 'store'])->name('save_department');
+Route::group(['prefix' => 'v1'], function () {
+    Route::post('save_deparment',[DepartmentController::class, 'store'])->name('save_department');
+    Route::post('create_user',[UserController::class, 'store'])->name('create_user');
+});

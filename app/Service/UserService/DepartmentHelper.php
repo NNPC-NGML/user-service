@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Service\UserService;
 
 use Illuminate\Support\Facades\Storage;
@@ -12,13 +12,13 @@ class DepartmentHelper{
         $request->validate([
             'name' => 'required||max:20',
             'description' => 'required',
-            
+
         ]);
         $department = new department($request->all());
         if($department->save()){
             return true;
         }
-        
+
 
     }
 
