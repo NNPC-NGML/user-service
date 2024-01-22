@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\department;
-use App\Service\UserService\DepartmentHelper;
+use App\Service\DepartmentService;
 use Illuminate\Http\Request;
-use App\Traits\Services\UserService\DepartmentTrait;
 use App\Http\Requests\StoredepartmentRequest;
 use App\Http\Requests\UpdatedepartmentRequest;
 
@@ -33,8 +32,7 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        $departmentHelper = new DepartmentHelper();
-        return $departmentHelper->save($request);
+        //
     }
 
     /**
