@@ -17,7 +17,7 @@ class UserServiceTest extends TestCase
     {
         $userService = new UserService();
         $data_array = [
-            'email' => 'test@example.com',
+            'email' => 'test1@example.com',
             'name' => 'John Doe',
             'password' => 'password123',
         ];
@@ -31,7 +31,7 @@ class UserServiceTest extends TestCase
     {
         $userService = new UserService();
         $data_array = [
-            'email' => 'test@example.com',
+            'email' => 'test1@example.com',
             'name' => 'John Doe',
             'password' => 'password',
         ];

@@ -4,7 +4,7 @@ namespace App\Service;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class UserService
@@ -36,11 +36,15 @@ class UserService
     public function create(Request $request): bool
     {
 
-        $request->validate([
-            'email' => 'required|email|unique:users',
-            'name' => 'required|string|max:255',
-            'password' => 'required|string|min:8',
-        ]);
+        try {
+            $request->validate([
+                'email' => 'required|email|unique:users',
+                'name' => 'required|string|max:255',
+                'password' => 'required|string|min:8',
+            ]);
+        } catch (ValidationException $e) {
+            return false;
+        }
 
         $user = new User($request->all());
 
