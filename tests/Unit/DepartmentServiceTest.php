@@ -2,12 +2,14 @@
 
 namespace Tests\Unit;
 
-use Illuminate\Http\Request;
 use Tests\TestCase;
+use Illuminate\Http\Request;
 use App\Service\DepartmentService;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class DepartmentServiceTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * A basic unit test example.
      */
@@ -17,6 +19,11 @@ class DepartmentServiceTest extends TestCase
         $data_array = ['name'=>'department_name','description'=>'description'];
         $data = new Request($data_array);
         $this->assertTrue($departmentService->create($data));
+        $this->assertDatabaseHas('departments', [
+            "name" => "department_name",
+            "description" => "description",
+        ]);
+        
     }
 
     public function test_if_department_is_not_created(): void
