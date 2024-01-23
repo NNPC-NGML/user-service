@@ -1,10 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Service\UserService\UserHandler;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -29,29 +26,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-             $request->validate([
-                'email' => 'required|email|unique:users',
-                'name' => 'required|string|max:255',
-                'password' => 'required|string|min:8',
-            ]);
-        } catch (ValidationException $e) {
-            return response()->json(['errors' => $e->errors()], 422);
-        }
-
-        $userService = new UserHandler();
-
-        $res = $userService->create(
-            $request->input('email'),
-            $request->input('name'),
-            $request->input('password')
-        );
-
-        if($res){
-            return response()->json(['message' => 'User created successfully']);
-        }else{
-            return response()->json(['message' => 'User with this email already exists'], 422);
-        }
+        //
     }
 
     /**
