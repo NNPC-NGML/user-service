@@ -22,5 +22,4 @@ use App\Http\Controllers\UserController;
 
 Route::group(['prefix' => 'v1'], function () {
     Route::post('save_deparment',[DepartmentController::class, 'store'])->name('save_department');
-    Route::post('create_user',[UserController::class, 'store'])->name('create_user');
 });
