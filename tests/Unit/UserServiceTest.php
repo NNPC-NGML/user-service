@@ -22,7 +22,8 @@ class UserServiceTest extends TestCase
             'password' => 'password123',
         ];
 
-        $userCreatedUser = $userService->create(...array_values($data_array));
+        $data = new Request($data_array);
+        $userCreatedUser = $userService->create($data);
         $this->assertTrue($userCreatedUser);
     }
 
@@ -35,7 +36,8 @@ class UserServiceTest extends TestCase
             'password' => 'password',
         ];
 
-        $userCreatedUser = $userService->create(...array_values($data_array));
+        $data = new Request($data_array);
+        $userCreatedUser = $userService->create($data);
         $this->assertTrue(!$userCreatedUser);
     }
 
