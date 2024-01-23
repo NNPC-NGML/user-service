@@ -1,9 +1,10 @@
 <?php 
 namespace App\Service;
 
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\Request;
 use App\Models\department;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class DepartmentService{
 
@@ -21,11 +22,20 @@ class DepartmentService{
    */
     public function create(Request $request): bool {
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required||max:20',
             'description' => 'required',
-            
         ]);
+
+        if ($validator->fails()) {
+            return false;
+        }
+        
+        // $request->validate([
+        //     'name' => 'required||max:20',
+        //     'description' => 'required',
+        // ]);
+
         $department = new department($request->all());
         if($department->save()){
             return true;
