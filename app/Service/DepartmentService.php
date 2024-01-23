@@ -5,6 +5,7 @@ use App\Models\department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Response;
 
 class DepartmentService{
 
@@ -20,7 +21,7 @@ class DepartmentService{
    * @return bool a boolean value. If the department is successfully saved, it will return true.
    * Otherwise, it will return false.
    */
-    public function create(Request $request): bool {
+    public function create(Request $request): department | string {
 
         $validator = Validator::make($request->all(), [
             'name' => 'required||max:20',
@@ -28,20 +29,15 @@ class DepartmentService{
         ]);
 
         if ($validator->fails()) {
-            return false;
+            return $validator->errors();
         }
         
-        // $request->validate([
-        //     'name' => 'required||max:20',
-        //     'description' => 'required',
-        // ]);
-
         $department = new department($request->all());
         if($department->save()){
-            return true;
+            return $department;
         }
         
-        return false;
+        
     }
 
 }

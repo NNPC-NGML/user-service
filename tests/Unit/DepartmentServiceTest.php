@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\department;
 use Tests\TestCase;
 use Illuminate\Http\Request;
 use App\Service\DepartmentService;
@@ -18,7 +19,8 @@ class DepartmentServiceTest extends TestCase
         $departmentService = new DepartmentService();
         $data_array = ['name'=>'department_name','description'=>'description'];
         $data = new Request($data_array);
-        $this->assertTrue($departmentService->create($data));
+        $result = $departmentService->create($data);
+        $this->assertInstanceOf(department::class, $result);
         $this->assertDatabaseHas('departments', [
             "name" => "department_name",
             "description" => "description",
