@@ -18,8 +18,8 @@ class DepartmentService{
    * request headers. In this code snippet, the `` object is used to validate and save a new
    * department record.
    * 
-   * @return bool a boolean value. If the department is successfully saved, it will return true.
-   * Otherwise, it will return false.
+   * @return object or a string  value. If the department is successfully saved, it will return department object.
+   * Otherwise, it will return string error.
    */
     public function create(Request $request): department | string {
 
