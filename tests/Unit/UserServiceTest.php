@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use App\Service\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class UserServiceTest extends TestCase
 {
@@ -15,18 +16,18 @@ class UserServiceTest extends TestCase
     {
         $userService = new UserService();
         $dataArray = [
-            'email' => 'test122@example.com',
+            'email' => 'test1222@example.com',
             'name' => 'John Doe',
             'password' => 'password123',
         ];
 
         $data = new Request($dataArray);
         $userCreatedUser = $userService->create($data);
-        $this->assertTrue($userCreatedUser);
+        $this->assertInstanceOf(\App\Models\User::class, $userCreatedUser);
 
         // Check if the user record exists in the database
         $this->assertDatabaseHas('users', [
-            'email' => 'test122@example.com',
+            'email' => 'test1222@example.com',
             'name' => 'John Doe',
         ]);
     }
@@ -35,7 +36,7 @@ class UserServiceTest extends TestCase
     {
         $userService = new UserService();
         $data_array = [
-            'email' => 'test011@example.com',
+            'email' => 'test0111@example.com',
             'name' => 'John Doe',
             'password' => 'pass',
         ];
@@ -47,7 +48,7 @@ class UserServiceTest extends TestCase
 
         // Assert the user record does not exist in the database
         $this->assertDatabaseMissing('users', [
-            'email' => 'test011@example.com',
+            'email' => 'test0111@example.com',
             'name' => 'John Doe',
         ]);
     }

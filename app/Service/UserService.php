@@ -31,9 +31,9 @@ class UserService
      *
      * @throws \Illuminate\Validation\ValidationException Thrown if validation fails.
      *
-     * @return bool Returns true if the user is successfully created, otherwise false.
+     * @return \App\Models\User|\Illuminate\Http\JsonResponse Returns the created user object if successful, otherwise a JSON response with error details.
      */
-    public function create(Request $request): bool
+    public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:users',
@@ -42,7 +42,7 @@ class UserService
         ]);
 
         if ($validator->fails()) {
-            return false;
+            return response()->json(['error' => $validator->errors()], 422);
         }
 
         $user = new User($request->all());
@@ -55,10 +55,10 @@ class UserService
 
             DB::commit();
 
-            return true;
+            return $user;
         } catch (\Exception $e) {
             DB::rollBack();
-            return false;
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 }
