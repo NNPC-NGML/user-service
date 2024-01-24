@@ -21,19 +21,27 @@ class DepartmentServiceTest extends TestCase
         $data = new Request($data_array);
         $result = $departmentService->create($data);
         $this->assertInstanceOf(department::class, $result);
+        $this->assertNotNull($result->id);
         $this->assertDatabaseHas('departments', [
             "name" => "department_name",
             "description" => "description",
         ]);
+        //$this->assertSame('this should be a route', $result->step_route);
         
     }
 
     public function test_if_department_is_not_created(): void
     {
         $departmentService = new DepartmentService();
-        $data_array = ['name'=>'department_name2','description'=>'description'];
+        $data_array = ['name'=>'department_name2'];
+        //$data_array = ['name'=>'department_name','description'=>'description'];
         $data = new Request($data_array);
         $createDepartment = $departmentService->create($data);
-        $this->assertFalse(!$createDepartment);
+        $resultArray = $createDepartment->toArray();
+        $this->assertNotEmpty($createDepartment);
+        $this->assertIsArray($resultArray);
+        //$this->assertArrayHasKey('name', $resultArray);
+        $this->assertArrayHasKey('description', $resultArray);
+        dd($resultArray);
     }
 }
