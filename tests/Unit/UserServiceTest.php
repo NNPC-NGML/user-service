@@ -8,8 +8,6 @@ use Illuminate\Http\Request;
 
 class UserServiceTest extends TestCase
 {
-    private $createdUserId;
-
     /**
      * A basic unit test example.
      */
@@ -17,7 +15,7 @@ class UserServiceTest extends TestCase
     {
         $userService = new UserService();
         $dataArray = [
-            'email' => 'test1@example.com',
+            'email' => 'test122@example.com',
             'name' => 'John Doe',
             'password' => 'password123',
         ];
@@ -28,7 +26,7 @@ class UserServiceTest extends TestCase
 
         // Check if the user record exists in the database
         $this->assertDatabaseHas('users', [
-            'email' => 'test1@example.com',
+            'email' => 'test122@example.com',
             'name' => 'John Doe',
         ]);
     }
@@ -37,19 +35,19 @@ class UserServiceTest extends TestCase
     {
         $userService = new UserService();
         $data_array = [
-            'email' => 'test02@example.com',
+            'email' => 'test011@example.com',
             'name' => 'John Doe',
-            'password' => 'password',
+            'password' => 'pass',
         ];
 
         $data = new Request($data_array);
-        $userCreatedUser = $userService->create($data);
+        $userNotCreated = $userService->create($data);
 
         $this->assertFalse($userNotCreated);
 
         // Assert the user record does not exist in the database
         $this->assertDatabaseMissing('users', [
-            'email' => 'test02@example.com',
+            'email' => 'test011@example.com',
             'name' => 'John Doe',
         ]);
     }

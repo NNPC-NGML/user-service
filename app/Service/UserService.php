@@ -4,9 +4,8 @@ namespace App\Service;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\DB;
 /**
  * Class UserService
  *
@@ -41,17 +40,25 @@ class UserService
             'name' => 'required|string|max:255',
             'password' => 'required|string|min:8',
         ]);
-        
+
         if ($validator->fails()) {
             return false;
         }
 
         $user = new User($request->all());
 
-        if ($user->save()) {
+        try {
+            DB::beginTransaction();
+
+            $user = new User($request->all());
+            $user->save();
+
+            DB::commit();
+
             return true;
-        } else {
+        } catch (\Exception $e) {
+            DB::rollBack();
             return false;
-        };
+        }
     }
 }
