@@ -45,8 +45,6 @@ class UserService
             return $validator->errors()->toArray();
         }
 
-        $user = new User($request->all());
-
         try {
             DB::beginTransaction();
 
