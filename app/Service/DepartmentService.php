@@ -21,7 +21,7 @@ class DepartmentService{
    * @return object or a string  value. If the department is successfully saved, it will return department object.
    * Otherwise, it will return string error.
    */
-    public function create(Request $request): department | string {
+    public function create(Request $request): object {
 
         $validator = Validator::make($request->all(), [
             'name' => 'required||max:20',
