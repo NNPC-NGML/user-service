@@ -6,8 +6,6 @@ services:
       dockerfile: Dockerfile
     command: "php artisan serve --host=0.0.0.0"
     volumes:
-      # Re-use local composer cache via host-volume
-      - ~/.composer-docker/cache:/root/.composer/cache:delegated
       - .:/app
     ports:
       - 8001:8000
@@ -36,7 +34,7 @@ services:
     ports:
       - 33061:3306
     networks:
-      - processflow_network
+      - mysql-phpmyadmin
   # phpmyadmin
   phpmyadmin:
     depends_on:
@@ -48,10 +46,10 @@ services:
       PMA_HOST: mysql_host
       MYSQL_ROOT_PASSWORD: root
     networks:
-      - processflow_network
+      - mysql-phpmyadmin
     restart: unless-stopped
     volumes:
-      - ./:/app
+      - .:/app
 
 networks:
-  processflow_network:
+  mysql-phpmyadmin:
