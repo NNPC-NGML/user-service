@@ -13,43 +13,44 @@ class UserServiceTest extends TestCase
     /**
      * A basic unit test example.
      */
-    public function test_if_user_is_created(): void
+    public function testIfUserIsCreated(): void
     {
         $userService = new UserService();
-        $data_array = [
+        $dataArray = [
             'email' => 'test1@example.com',
             'name' => 'John Doe',
             'password' => 'password123',
         ];
 
-        $data = new Request($data_array);
+        $data = new Request($dataArray);
         $userCreatedUser = $userService->create($data);
         $this->assertTrue($userCreatedUser);
+
+        // Check if the user record exists in the database
+        $this->assertDatabaseHas('users', [
+            'email' => 'test1@example.com',
+            'name' => 'John Doe',
+        ]);
     }
 
-    public function test_if_user_is_not_created(): void
+    public function testIfUserIsNotCreated(): void
     {
         $userService = new UserService();
         $data_array = [
-            'email' => 'test1@example.com',
+            'email' => 'test02@example.com',
             'name' => 'John Doe',
             'password' => 'password',
         ];
 
         $data = new Request($data_array);
         $userCreatedUser = $userService->create($data);
-        $this->assertTrue(!$userCreatedUser);
-    }
 
-    /**
-     * Clean up after the test.
-     */
-    protected function tearDown(): void
-    {
-        if ($this->createdUserId) {
-           //TODO: DELETE CREATED USER;
-        }
+        $this->assertFalse($userNotCreated);
 
-        parent::tearDown();
+        // Assert the user record does not exist in the database
+        $this->assertDatabaseMissing('users', [
+            'email' => 'test02@example.com',
+            'name' => 'John Doe',
+        ]);
     }
 }
