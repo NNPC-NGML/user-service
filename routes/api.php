@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DepartmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +15,3 @@ use App\Http\Controllers\DepartmentController;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-
-Route::group(['prefix' => 'v1'], function () {
-    Route::post('save_deparment',[DepartmentController::class, 'store'])->name('save_department');
-});

@@ -5,7 +5,7 @@ namespace App\Service;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
+
 /**
  * Class UserService
  *
@@ -45,18 +45,9 @@ class UserService
             return $validator->errors()->toArray();
         }
 
-        try {
-            DB::beginTransaction();
+        $user = new User($request->all());
+        $user->save();
 
-            $user = new User($request->all());
-            $user->save();
-
-            DB::commit();
-
-            return $user;
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return $e->getMessage();
-        }
+        return $user;
     }
 }
