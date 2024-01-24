@@ -44,12 +44,23 @@ class UserServiceTest extends TestCase
         $data = new Request($data_array);
         $userNotCreated = $userService->create($data);
 
-        $this->assertFalse($userNotCreated);
+        $this->assertResponseHasValidationError($userNotCreated);
 
         // Assert the user record does not exist in the database
         $this->assertDatabaseMissing('users', [
             'email' => 'test0111@example.com',
             'name' => 'John Doe',
         ]);
+    }
+    /**
+     * Custom assertion to check if a response has validation errors.
+     *
+     * @param mixed $response
+     */
+    private function assertResponseHasValidationError($response): void
+    {
+        $this->assertIsArray($response);
+        $this->assertArrayHasKey('error', $response);
+        $this->assertIsArray($response['error']);
     }
 }
