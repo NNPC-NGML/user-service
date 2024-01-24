@@ -31,7 +31,7 @@ class UserService
      *
      * @throws \Illuminate\Validation\ValidationException Thrown if validation fails.
      *
-     * @return \App\Models\User|\Illuminate\Http\JsonResponse Returns the created user object if successful, otherwise a JSON response with error details.
+     * @return \App\Models\User|string Returns the created user object if successful, otherwise a string with the error message.
      */
     public function create(Request $request)
     {
@@ -42,7 +42,7 @@ class UserService
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 422);
+            return $validator->errors()->toArray();
         }
 
         $user = new User($request->all());
@@ -58,7 +58,7 @@ class UserService
             return $user;
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['error' => $e->getMessage()], 500);
+            return $e->getMessage();
         }
     }
 }

@@ -5,7 +5,6 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use App\Service\UserService;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
 class UserServiceTest extends TestCase
 {
@@ -16,7 +15,7 @@ class UserServiceTest extends TestCase
     {
         $userService = new UserService();
         $dataArray = [
-            'email' => 'test1222@example.com',
+            'email' => 'test12222@example.com',
             'name' => 'John Doe',
             'password' => 'password123',
         ];
@@ -27,7 +26,7 @@ class UserServiceTest extends TestCase
 
         // Check if the user record exists in the database
         $this->assertDatabaseHas('users', [
-            'email' => 'test1222@example.com',
+            'email' => 'test12222@example.com',
             'name' => 'John Doe',
         ]);
     }
@@ -36,7 +35,7 @@ class UserServiceTest extends TestCase
     {
         $userService = new UserService();
         $data_array = [
-            'email' => 'test0111@example.com',
+            'email' => 'test01111@example.com',
             'name' => 'John Doe',
             'password' => 'pass',
         ];
@@ -44,23 +43,14 @@ class UserServiceTest extends TestCase
         $data = new Request($data_array);
         $userNotCreated = $userService->create($data);
 
-        $this->assertResponseHasValidationError($userNotCreated);
+        $this->assertIsArray($userNotCreated);
+        $this->assertArrayHasKey('password', $userNotCreated);
+        $this->assertEquals(['The password field must be at least 8 characters.'], $userNotCreated['password']);
 
         // Assert the user record does not exist in the database
         $this->assertDatabaseMissing('users', [
-            'email' => 'test0111@example.com',
+            'email' => 'test01111@example.com',
             'name' => 'John Doe',
         ]);
-    }
-    /**
-     * Custom assertion to check if a response has validation errors.
-     *
-     * @param mixed $response
-     */
-    private function assertResponseHasValidationError($response): void
-    {
-        $this->assertIsArray($response);
-        $this->assertArrayHasKey('error', $response);
-        $this->assertIsArray($response['error']);
     }
 }
