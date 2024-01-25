@@ -5,31 +5,33 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use App\Service\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UserServiceTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * A basic unit test example.
      */
-    // public function testIfUserIsCreated(): void
-    // {
-    //     $userService = new UserService();
-    //     $dataArray = [
-    //         'email' => 'test12222@example.com',
-    //         'name' => 'John Doe',
-    //         'password' => 'password123',
-    //     ];
+    public function testIfUserIsCreated(): void
+    {
+        $userService = new UserService();
+        $dataArray = [
+            'email' => 'test12222@example.com',
+            'name' => 'John Doe',
+            'password' => 'password123',
+        ];
 
-    //     $data = new Request($dataArray);
-    //     $userCreatedUser = $userService->create($data);
-    //     $this->assertInstanceOf(\App\Models\User::class, $userCreatedUser);
+        $data = new Request($dataArray);
+        $userCreatedUser = $userService->create($data);
+        $this->assertInstanceOf(\App\Models\User::class, $userCreatedUser);
 
-    //     // Check if the user record exists in the database
-    //     $this->assertDatabaseHas('users', [
-    //         'email' => 'test12222@example.com',
-    //         'name' => 'John Doe',
-    //     ]);
-    // }
+        // Check if the user record exists in the database
+        $this->assertDatabaseHas('users', [
+            'email' => 'test12222@example.com',
+            'name' => 'John Doe',
+        ]);
+    }
 
     public function testIfUserIsNotCreated(): void
     {
