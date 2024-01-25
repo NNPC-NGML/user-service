@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\User;
 use Tests\TestCase;
 use App\Service\UserService;
 use Illuminate\Http\Request;
@@ -53,4 +54,22 @@ class UserServiceTest extends TestCase
             'name' => 'John Doe',
         ]);
     }
+
+    /**
+     * Test if the getUserWithAllRelationships method returns a user.
+     * NB: No relationship on the model currently to test with
+     */
+    public function testGetUserWithAllRelationships(): void
+    {
+        // Create a user for testing
+        $user = User::factory()->create();
+
+        $userService = new UserService();
+        $retrievedUser = $userService->getUserWithAllRelationships($user->id);
+
+        $this->assertInstanceOf(User::class, $retrievedUser);
+        $this->assertEquals($user->id, $retrievedUser->id);
+
+    }
+
 }
