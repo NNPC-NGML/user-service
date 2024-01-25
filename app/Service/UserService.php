@@ -69,7 +69,7 @@ class UserService
     /**
      * Get all relationships for a given model.
      *
-     * @param string $modelClass The fully qualified class name of the model.
+     * @param string $modelClass The class name of the model.
      *
      * @return array An array containing all relationships for the model.
      */
