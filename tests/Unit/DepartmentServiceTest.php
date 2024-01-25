@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Models\department;
 use Tests\TestCase;
+use App\Models\department;
 use Illuminate\Http\Request;
 use App\Service\DepartmentService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -43,5 +43,29 @@ class DepartmentServiceTest extends TestCase
         //$this->assertArrayHasKey('name', $resultArray);
         $this->assertArrayHasKey('description', $resultArray);
         //dd($resultArray);
+    }
+
+    
+    public function test_to_see_if_a_department_can_be_fetched(): void
+    {
+
+        $data = new Request([
+            "name" => "department name",
+            "description" => "description goes here",
+        ]);
+
+        $department = new DepartmentService();
+        $result = $department->create($data);
+        $fetchService = $department->getDepartment($result->id);
+        $this->assertEquals($fetchService->id, $result->id);
+        $this->assertInstanceOf(department::class, $fetchService);
+
+    }
+
+    public function test_to_see_if_department_returns_a_content(): void
+    {
+        $departmentService = new DepartmentService();
+        $fetchService = $departmentService->getDepartment(2);
+        $this->assertNull($fetchService);
     }
 }

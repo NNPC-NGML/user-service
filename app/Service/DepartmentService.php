@@ -37,7 +37,19 @@ class DepartmentService{
             return $department;
         }
         
-        
+    }
+
+    
+    /**
+     * Retrieve a department by its ID.
+     *
+     * @param int $id The ID of the department to be retrieve.
+     *
+     * @return \App\Models\department|null The retrieved department, or null if not found.
+     */
+
+    public function getDepartment(int $id):department | null {
+        return department::find($id);
     }
 
 }
