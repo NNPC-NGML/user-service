@@ -62,10 +62,11 @@ class DepartmentServiceTest extends TestCase
 
     }
 
-    public function test_to_see_if_department_returns_a_content(): void
+    public function test_to_see_if_department_returns_null_when_there_is_no_data(): void
     {
         $departmentService = new DepartmentService();
         $fetchService = $departmentService->getDepartment(2);
         $this->assertNull($fetchService);
+        //dd($fetchService);
     }
 }
