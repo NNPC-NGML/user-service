@@ -23,7 +23,7 @@ services:
   #     - mysql_host
 
   mysql_host:
-    image: mysql:5.7.22
+    image: mariadb:10.5.8
     environment:
       MYSQL_DATABASE: ngml
       MYSQL_USER: root

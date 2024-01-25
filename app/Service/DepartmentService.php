@@ -1,9 +1,11 @@
 <?php 
 namespace App\Service;
 
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\Request;
 use App\Models\department;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Response;
 
 class DepartmentService{
 
@@ -16,22 +18,26 @@ class DepartmentService{
    * request headers. In this code snippet, the `` object is used to validate and save a new
    * department record.
    * 
-   * @return bool a boolean value. If the department is successfully saved, it will return true.
-   * Otherwise, it will return false.
+   * @return object or a string  value. If the department is successfully saved, it will return department object.
+   * Otherwise, it will return string error.
    */
-    public function create(Request $request): bool {
+    public function create(Request $request): object {
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required||max:20',
             'description' => 'required',
-            
         ]);
-        $department = new department($request->all());
-        if($department->save()){
-            return true;
+
+        if ($validator->fails()) {
+            return $validator->errors();
         }
         
-        return false;
+        $department = new department($request->all());
+        if($department->save()){
+            return $department;
+        }
+        
+        
     }
 
 }
