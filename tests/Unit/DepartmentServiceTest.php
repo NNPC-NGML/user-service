@@ -42,6 +42,6 @@ class DepartmentServiceTest extends TestCase
         $this->assertIsArray($resultArray);
         //$this->assertArrayHasKey('name', $resultArray);
         $this->assertArrayHasKey('description', $resultArray);
-        dd($resultArray);
+        //dd($resultArray);
     }
 }
