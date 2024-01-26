@@ -56,16 +56,16 @@ class UserServiceTest extends TestCase
     }
 
     /**
-     * Test if the getUserWithAllRelationships method returns a user.
+     * Test if the getUser method returns a user.
      * NB: No relationship on the model currently to test with
      */
-    public function testGetUserWithAllRelationships(): void
+    public function testGetUser(): void
     {
         // Create a user for testing
         $user = User::factory()->create();
 
         $userService = new UserService();
-        $retrievedUser = $userService->getUserWithAllRelationships($user->id);
+        $retrievedUser = $userService->getUser($user->id);
 
         $this->assertInstanceOf(User::class, $retrievedUser);
         $this->assertEquals($user->id, $retrievedUser->id);

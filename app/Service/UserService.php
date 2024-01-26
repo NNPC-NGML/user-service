@@ -58,26 +58,11 @@ class UserService
      *
      * @return \App\Models\User|null Returns the user with all relationships or null if the user is not found.
      */
-    public function getUserWithAllRelationships(int $userId)
+    public function getUser(int $userId)
     {
         // Load the user with all relationships
         $user = User::with($this->getAllRelationships(User::class))->find($userId);
 
         return $user;
-    }
-
-    /**
-     * Get all relationships for a given model.
-     *
-     * @param string $modelClass The class name of the model.
-     *
-     * @return array An array containing all relationships for the model.
-     */
-    protected function getAllRelationships(string $modelClass)
-    {
-        $modelInstance = new $modelClass;
-        $relationships = $modelInstance->getRelations();
-
-        return $relationships;
     }
 }
