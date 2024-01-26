@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\User;
 use Tests\TestCase;
 use App\Service\UserService;
 use Illuminate\Http\Request;
@@ -52,5 +53,33 @@ class UserServiceTest extends TestCase
             'email' => 'test01111@example.com',
             'name' => 'John Doe',
         ]);
+    }
+
+    /**
+     * Test if the getUser method returns a user.
+     */
+    public function testGetUser(): void
+    {
+        // Create a user for testing
+        $user = User::factory()->create();
+
+        $userService = new UserService();
+        $retrievedUser = $userService->getUser($user->id);
+
+        $this->assertInstanceOf(User::class, $retrievedUser);
+        $this->assertEquals($user->id, $retrievedUser->id);
+    }
+
+    /**
+     * Test when user does not exist.
+     */
+    public function testGetUserWhenIdNotFound(): void
+    {
+        $userId = mt_rand(1000000000, 9999999999);
+
+        $userService = new UserService();
+        $retrievedUser = $userService->getUser($userId);
+
+        $this->assertNull($retrievedUser);
     }
 }
