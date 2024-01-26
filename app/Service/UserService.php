@@ -52,17 +52,14 @@ class UserService
     }
 
     /**
-     * Get all data of a particular user with all relationships.
+     * Get all data of a particular user.
      *
      * @param int $userId The ID of the user.
      *
-     * @return \App\Models\User|null Returns the user with all relationships or null if the user is not found.
+     * @return \App\Models\User|null Returns the user or null if the user is not found.
      */
     public function getUser(int $userId)
     {
-        // Load the user with all relationships
-        $user = User::with($this->getAllRelationships(User::class))->find($userId);
-
-        return $user;
+        return User::find($userId);
     }
 }

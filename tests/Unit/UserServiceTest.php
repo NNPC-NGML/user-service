@@ -57,7 +57,6 @@ class UserServiceTest extends TestCase
 
     /**
      * Test if the getUser method returns a user.
-     * NB: No relationship on the model currently to test with
      */
     public function testGetUser(): void
     {
@@ -69,7 +68,18 @@ class UserServiceTest extends TestCase
 
         $this->assertInstanceOf(User::class, $retrievedUser);
         $this->assertEquals($user->id, $retrievedUser->id);
-
     }
 
+    /**
+     * Test when user does not exist.
+     */
+    public function testGetUserWhenIdNotFound(): void
+    {
+        $userId = mt_rand(1000000000, 9999999999);
+
+        $userService = new UserService();
+        $retrievedUser = $userService->getUser($userId);
+
+        $this->assertNull($retrievedUser);
+    }
 }
