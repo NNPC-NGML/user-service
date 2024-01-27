@@ -53,4 +53,68 @@ class UserServiceTest extends TestCase
             'name' => 'John Doe',
         ]);
     }
+    /**
+     * Test updating user credentials successfully.
+     */
+    public function testUpdateUserCredentialsSuccess(): void
+    {
+        // Create a user for testing
+        $user = User::factory()->create();
+
+        $newUserData = [
+            'email' => 'newemail@example.com',
+            'name' => 'New Name',
+            'password' => 'newpassword123',
+        ];
+
+        $userService = new UserService();
+        $updateSuccessful = $userService->updateUserCredentials($user->id, $newUserData);
+
+        $this->assertTrue($updateSuccessful);
+
+        // Check if the user record is updated in the database
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'email' => 'newemail@example.com',
+            'name' => 'New Name',
+        ]);
+    }
+
+    /**
+     * Test updating user credentials unsuccessfully.
+     */
+    public function testUpdateUserCredentialsFailure(): void
+    {
+        // Attempt to update a non-existent user 
+        $userId = mt_rand(1000000000, 9999999999);
+        $nonExistentUserData = [
+            'email' => 'newemail@example.com',
+            'name' => 'New Name',
+            'password' => 'newpassword123',
+        ];
+
+        $userService = new UserService();
+        $updateFailed = $userService->updateUserCredentials($userId, $nonExistentUserData);
+
+        $this->assertFalse($updateFailed);
+
+        // Attempt to update user with invalid data (e.g., invalid email)
+        $user = User::factory()->create();
+        $invalidUserData = [
+            'email' => 'invalidemail',
+            'name' => 'New Name',
+            'password' => 'newpassword123',
+        ];
+
+        $updateFailed = $userService->updateUserCredentials($user->id, $invalidUserData);
+
+        $this->assertFalse($updateFailed);
+
+        // Check if the user record is not updated in the database
+        $this->assertDatabaseMissing('users', [
+            'id' => $user->id,
+            'email' => 'invalidemail',
+            'name' => 'New Name',
+        ]);
+    }
 }

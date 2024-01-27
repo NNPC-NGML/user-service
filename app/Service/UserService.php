@@ -50,4 +50,49 @@ class UserService
 
         return $user;
     }
+    public function testUpdateUserCredentialsSuccess(): void
+    {
+        // Create a user for testing
+        $user = User::factory()->create();
+
+        $userData = [
+            'name' => 'New Name',
+            'password' => 'newpassword123',
+        ];
+
+        $userService = new UserService();
+        $result = $userService->updateUserCredentials($user->id, $userData);
+
+        $this->assertInstanceOf(User::class, $result);
+        $this->assertEquals($userData['name'], $result->name);
+        $this->assertTrue(password_verify($userData['password'], $result->password));
+    }
+
+    public function testUpdateUserCredentialsFailure(): void
+    {
+        // Attempt to update a non-existent user
+        $userId = mt_rand(1000000000, 9999999999);
+        $userData = [
+            'name' => 'New Name',
+            'password' => 'newpassword123',
+        ];
+
+        $userService = new UserService();
+        $result = $userService->updateUserCredentials($userId, $userData);
+
+        $this->assertFalse($result);
+
+        
+        // Attempt to update with invalid data (e.g., short password)
+        $user = User::factory()->create();
+        $invalidData = [
+            'password' => 'short',
+        ];
+
+        $result = $userService->updateUserCredentials($user->id, $invalidData);
+
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey('password', $result);
+        $this->assertEquals(['The password must be at least 8 characters.'], $result['password']);
+    }
 }
