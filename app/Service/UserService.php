@@ -67,7 +67,7 @@ class UserService
      * @return bool|array Returns true if the update is successful. If validation fails, it returns an array of validation errors.
      *                   If the specified user ID is not found or if the new email already exists for another user, it returns false.
      */
-    public function updateUserCredentials(int $userId, array $userData)
+    public function updateUserCredentials(int $userId, array $userData) : bool|array
     {
         // Validate the provided user data
         $validator = Validator::make($userData, [
