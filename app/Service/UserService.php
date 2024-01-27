@@ -64,10 +64,12 @@ class UserService
      *   - 'name' (string, optional): The new name for the user. Should be a string with a maximum length of 255 characters.
      *   - 'password' (string, optional): The new password for the user. Should be at least 8 characters long.
      *
-     * @return bool|array Returns true if the update is successful. If validation fails, it returns an array of validation errors.
+     * @return bool|array|\App\Models\User Returns true if the update is successful. 
+     *                   If validation fails, it returns an array of validation errors.
      *                   If the specified user ID is not found or if the new email already exists for another user, it returns false.
+     *                   If the update is successful, it returns the updated user object.
      */
-    public function updateUserCredentials(int $userId, array $userData) : bool|array
+    public function updateUserCredentials(int $userId, array $userData): bool|array|User
     {
         // Validate the provided user data
         $validator = Validator::make($userData, [
