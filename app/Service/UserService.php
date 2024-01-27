@@ -50,49 +50,33 @@ class UserService
 
         return $user;
     }
-    public function testUpdateUserCredentialsSuccess(): void
+    public function updateUserCredentials(int $userId, array $userData): bool
     {
-        // Create a user for testing
-        $user = User::factory()->create();
+        // Validate the provided user data
+        $validator = Validator::make($userData, [
+            'email' => 'sometimes|email|unique:users',
+            'name' => 'sometimes|string|max:255',
+            'password' => 'sometimes|string|min:8',
+        ]);
 
-        $userData = [
-            'name' => 'New Name',
-            'password' => 'newpassword123',
-        ];
+        if ($validator->fails()) {
+            return $validator->errors()->toArray();
+        }
 
-        $userService = new UserService();
-        $result = $userService->updateUserCredentials($user->id, $userData);
+        $user = User::find($userId);
 
-        $this->assertInstanceOf(User::class, $result);
-        $this->assertEquals($userData['name'], $result->name);
-        $this->assertTrue(password_verify($userData['password'], $result->password));
+        if (!$user) {
+            return false;
+        }
+
+        // Check if the new email is different and exists in the database
+        if (array_key_exists('email', $userData) && $userData['email'] !== $user->email && User::where('email', $userData['email'])->exists()) {
+            return false;
+        }
+
+        $user->update($userData);
+
+        return $user;
     }
 
-    public function testUpdateUserCredentialsFailure(): void
-    {
-        // Attempt to update a non-existent user
-        $userId = mt_rand(1000000000, 9999999999);
-        $userData = [
-            'name' => 'New Name',
-            'password' => 'newpassword123',
-        ];
-
-        $userService = new UserService();
-        $result = $userService->updateUserCredentials($userId, $userData);
-
-        $this->assertFalse($result);
-
-        
-        // Attempt to update with invalid data (e.g., short password)
-        $user = User::factory()->create();
-        $invalidData = [
-            'password' => 'short',
-        ];
-
-        $result = $userService->updateUserCredentials($user->id, $invalidData);
-
-        $this->assertIsArray($result);
-        $this->assertArrayHasKey('password', $result);
-        $this->assertEquals(['The password must be at least 8 characters.'], $result['password']);
-    }
 }

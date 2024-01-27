@@ -53,7 +53,7 @@ class UserServiceTest extends TestCase
             'name' => 'John Doe',
         ]);
     }
-    
+
     /**
      * Test updating user credentials successfully.
      */
@@ -109,9 +109,12 @@ class UserServiceTest extends TestCase
             'password' => 'newpassword123',
         ];
 
+        $userService = new UserService();
         $updateFailed = $userService->updateUserCredentials($user->id, $invalidUserData);
 
-        $this->assertFalse($updateFailed);
+        $this->assertIsArray($updateFailed);
+        $this->assertArrayHasKey('email', $updateFailed);
+        $this->assertEquals(['The email must be a valid email address.'], $updateFailed['email']);
 
         // Check if the user record is not updated in the database
         $this->assertDatabaseMissing('users', [
@@ -119,5 +122,18 @@ class UserServiceTest extends TestCase
             'email' => 'invalidemail',
             'name' => 'New Name',
         ]);
+
+
+        // Attempt to update with invalid data (e.g., short password)
+        $testUser = User::factory()->create();
+        $invalidData = [
+            'password' => 'short',
+        ];
+
+        $result = $userService->updateUserCredentials($testUser->id, $invalidData);
+
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey('password', $result);
+        $this->assertEquals(['The password must be at least 8 characters.'], $result['password']);
     }
 }
