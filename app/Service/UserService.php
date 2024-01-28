@@ -88,11 +88,6 @@ class UserService
             return false;
         }
 
-        // Check if the new email is different and exists in the database
-        if (array_key_exists('email', $userData) && $userData['email'] !== $user->email && User::where('email', $userData['email'])->exists()) {
-            return false;
-        }
-
         $user->update($userData);
 
         return $user;

@@ -87,7 +87,7 @@ class UserServiceTest extends TestCase
     public function testUpdateUserCredentialsFailure(): void
     {
         // Attempt to update a non-existent user 
-        $userId = mt_rand(1000000000, 9999999999);
+        $nonExistentUserId = mt_rand(1000000000, 9999999999);
         $nonExistentUserData = [
             'email' => 'newemail@example.com',
             'name' => 'New Name',
@@ -95,10 +95,9 @@ class UserServiceTest extends TestCase
         ];
 
         $userService = new UserService();
-        $updateFailed = $userService->updateUserCredentials($userId, $nonExistentUserData);
+        $updateFailed = $userService->updateUserCredentials($nonExistentUserId, $nonExistentUserData);
 
         $this->assertFalse($updateFailed);
-
 
 
         // Attempt to update user with invalid data (e.g., invalid email)
