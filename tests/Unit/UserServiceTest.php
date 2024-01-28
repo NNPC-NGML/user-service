@@ -88,14 +88,14 @@ class UserServiceTest extends TestCase
     {
         // Attempt to update a non-existent user 
         $nonExistentUserId = mt_rand(1000000000, 9999999999);
-        $nonExistentUserData = [
+        $data = [
             'email' => 'newemail@example.com',
             'name' => 'New Name',
             'password' => 'newpassword123',
         ];
 
         $userService = new UserService();
-        $updateFailed = $userService->updateUserCredentials($nonExistentUserId, $nonExistentUserData);
+        $updateFailed = $userService->updateUserCredentials($nonExistentUserId, $data);
 
         $this->assertFalse($updateFailed);
 
