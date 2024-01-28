@@ -58,6 +58,8 @@ class DepartmentServiceTest extends TestCase
         $result = $department->create($data);
         $fetchService = $department->getDepartment($result->id);
         $this->assertEquals($fetchService->id, $result->id);
+        $this->assertSame('department name', $fetchService->name);
+        $this->assertSame('description goes here', $fetchService->description);
         $this->assertInstanceOf(department::class, $fetchService);
 
     }
