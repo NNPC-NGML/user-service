@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
+use App\Models\User;
 use App\Service\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -73,7 +74,8 @@ class UserServiceTest extends TestCase
         $userService = new UserService();
         $updateSuccessful = $userService->updateUserCredentials($user->id, $newUserData);
 
-        $this->assertTrue($updateSuccessful);
+        $this->assertInstanceOf(user::class, $updateSuccessful);
+        //$this->assertTrue($updateSuccessful);
 
         // Check if the user record is updated in the database
         $this->assertDatabaseHas('users', [
@@ -115,7 +117,7 @@ class UserServiceTest extends TestCase
 
         $this->assertIsArray($updateFailed);
         $this->assertArrayHasKey('email', $updateFailed);
-        $this->assertEquals(['The email must be a valid email address.'], $updateFailed['email']);
+        $this->assertEquals(['The email field must be a valid email address.'], $updateFailed['email']);
 
         // Check if the user record is not updated in the database
         $this->assertDatabaseMissing('users', [
@@ -135,6 +137,6 @@ class UserServiceTest extends TestCase
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('password', $result);
-        $this->assertEquals(['The password must be at least 8 characters.'], $result['password']);
+        $this->assertEquals(['The password field must be at least 8 characters.'], $result['password']);
     }
 }

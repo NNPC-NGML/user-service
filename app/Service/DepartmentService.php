@@ -52,4 +52,9 @@ class DepartmentService{
         return department::find($id);
     }
 
+    public function viewAllDepartment(){
+        return department::all();
+    }
+
+    
 }
