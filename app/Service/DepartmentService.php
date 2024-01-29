@@ -100,4 +100,25 @@ class DepartmentService{
         throw new \Exception('Something went wrong.');
 
     }
+
+
+    /**
+     * Delete a department using its id.
+     *
+     * @param int $id The ID of the department to be deleted.
+     *
+     * @return bool Return true if its deleted and false if not deleted
+     */
+    public function deleteDepartment(int $id): bool
+    {
+        $fetchService = $this->getDepartment($id);
+        if ($fetchService) {
+            if ($fetchService->delete()) {
+                return true;
+            }
+
+        }
+        return false;
+
+    }
 }

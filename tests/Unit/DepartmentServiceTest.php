@@ -116,6 +116,33 @@ class DepartmentServiceTest extends TestCase
 
         $newDepartmentService->updateDepartment(1, $data);
         $this->expectExceptionMessage('Something went wrong.');
+    }
+
+
+    public function test_to_see_if_a_department_is_deleted()
+    {
+        $data = new Request([
+            "name" => "department name",
+            "description" => "description",
+            
+        ]);
+
+        $departmentService = new DepartmentService();
+        $data = $departmentService->create($data);
+        $this->assertDatabaseCount("departments", 1);
+        $delete = $departmentService->deleteDepartment($data->id);
+        $this->assertDatabaseMissing("departments", ["name" => "department name"]);
+        $this->assertTrue($delete);
 
     }
+
+
+    public function test_to_see_if_there_is_no_record_with_the_provided_department_id()
+    {
+        $departmentService = new DepartmentService();
+        $delete = $departmentService->deleteDepartment(5);
+        $this->assertFalse($delete);
+
+    }
+
 }
