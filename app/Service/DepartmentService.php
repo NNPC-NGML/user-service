@@ -80,7 +80,7 @@ class DepartmentService{
      */
     public function updateDepartment(int $id, Request $request): bool|array|department
     {
-        $model = department::find($id);
+       
         // validation
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|nullable|string',
@@ -89,10 +89,11 @@ class DepartmentService{
         if ($validator->fails()) {
             throw new \Exception($validator->errors());
         }
-
-        if ($model) {
-            if ($model->update($request->all())) {
-                return $model;
+        
+        $fetchService = $this->getDepartment($id);
+        if ($fetchService) {
+            if ($fetchService->update($request->all())) {
+                return $fetchService;
             }
             throw new \Exception('Something went wrong.');
 
