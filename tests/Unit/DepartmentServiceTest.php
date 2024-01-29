@@ -89,4 +89,33 @@ class DepartmentServiceTest extends TestCase
         ); 
 
     }
+
+
+    public function test_to_see_if_an_existing_department_can_be_updated(): void
+    {
+        department::factory(5)->create();
+        $newDepartmentservice = new DepartmentService();
+        $fetchService = $newDepartmentservice->getDepartment(1);
+        $this->assertDatabaseCount("departments", 5);
+        $data = new Request([
+            "name" => "New Department Updated",
+            "description" => "Description goes here",
+        ]);
+        $newDepartmentservice->updateDepartment($fetchService->id, $data);
+        $this->assertDatabaseHas('departments', $data->all());
+    }
+
+    public function test_to_see_if_exception_would_be_thrown_if_there_is_an_error(): void
+    {
+        $this->expectException(\Exception::class);
+        $newDepartmentService = new DepartmentService();
+        $data = new Request([
+            "name" => "Update Department",
+            "description" => "Updated description",
+        ]);
+
+        $newDepartmentService->updateDepartment(1, $data);
+        $this->expectExceptionMessage('Something went wrong.');
+
+    }
 }
