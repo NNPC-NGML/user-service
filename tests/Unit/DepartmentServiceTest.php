@@ -74,7 +74,20 @@ class DepartmentServiceTest extends TestCase
     public function test_to_view_all_department(): void
     {
         $departmentService = new DepartmentService();
+        $data = new Request([
+            "name" => "department name",
+            "description" => "description goes here",
+        ]);
+
+        //$department = new DepartmentService();
+        $departmentService->create($data);
+
         $fetchAllDepartment = $departmentService->viewAllDepartment();
-        $this->assertNull($fetchAllDepartment);
+        $this->assertCount( 
+            1, 
+            $fetchAllDepartment->toArray(), "FetchAllDepartment Array doesn't return the correct data count"
+        ); 
+
+        //dd($fetchAllDepartment->toArray());
     }
 }
