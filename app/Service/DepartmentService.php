@@ -55,4 +55,6 @@ class DepartmentService{
     public function viewAllDepartment(){
         return department::all();
     }
+
+    
 }

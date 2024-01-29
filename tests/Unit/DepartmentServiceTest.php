@@ -79,7 +79,7 @@ class DepartmentServiceTest extends TestCase
             "description" => "description goes here",
         ]);
 
-        //$department = new DepartmentService();
+        
         $departmentService->create($data);
 
         $fetchAllDepartment = $departmentService->viewAllDepartment();
@@ -88,6 +88,5 @@ class DepartmentServiceTest extends TestCase
             $fetchAllDepartment->toArray(), "FetchAllDepartment Array doesn't return the correct data count"
         ); 
 
-        //dd($fetchAllDepartment->toArray());
     }
 }
