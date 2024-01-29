@@ -45,7 +45,6 @@ class DepartmentServiceTest extends TestCase
         //dd($resultArray);
     }
 
-    
     public function test_to_see_if_a_department_can_be_fetched(): void
     {
 
@@ -70,5 +69,12 @@ class DepartmentServiceTest extends TestCase
         $fetchService = $departmentService->getDepartment(2);
         $this->assertNull($fetchService);
         //dd($fetchService);
+    }
+
+    public function test_to_view_all_department(): void
+    {
+        $departmentService = new DepartmentService();
+        $fetchAllDepartment = $departmentService->viewAllDepartment();
+        $this->assertNull($fetchAllDepartment);
     }
 }
