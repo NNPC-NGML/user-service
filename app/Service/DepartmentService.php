@@ -80,7 +80,6 @@ class DepartmentService{
      */
     public function updateDepartment(int $id, Request $request): bool|array|department
     {
-       
         // validation
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|nullable|string',
