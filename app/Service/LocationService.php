@@ -75,4 +75,9 @@ class LocationService{
         throw new \Exception('Something went wrong.');
 
     }
+
+    public function viewAllLocations():object | null{
+        $returnArray = Location::all();
+        return $returnArray;
+    }
 }
