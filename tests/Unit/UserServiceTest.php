@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Service\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserServiceTest extends TestCase
 {
@@ -90,7 +91,7 @@ class UserServiceTest extends TestCase
      */
     public function testUpdateUserCredentialsFailure(): void
     {
-        // Attempt to update a non-existent user 
+        // Attempt to update a non-existent user
         $nonExistentUserId = mt_rand(1000000000, 9999999999);
         $data = [
             'email' => 'newemail@example.com',
@@ -146,7 +147,7 @@ class UserServiceTest extends TestCase
         User::factory(15)->create();
 
         $userService = new UserService();
-        $page = 2; 
+        $page = 2;
         $perPage = 10;
 
         $users = $userService->getUsersForPage($page, $perPage);
