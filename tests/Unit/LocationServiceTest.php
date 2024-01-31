@@ -95,4 +95,16 @@ class LocationServiceTest extends TestCase
         $this->expectExceptionMessage('Something went wrong.');
     }
 
+    public function test_to_see_if_location_returns_all_records(): void
+    {
+        Location::factory(15)->create();
+        $locationService = new LocationService();
+        $fetchAllLocations = $locationService->viewAllLocations();
+        $this->assertCount( 
+            15, 
+            $fetchAllLocations->toArray(), "FetchAllLocation Array doesn't return the correct data count"
+        ); 
+
+    }
+
 }
