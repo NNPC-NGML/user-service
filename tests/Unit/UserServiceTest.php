@@ -90,7 +90,7 @@ class UserServiceTest extends TestCase
      */
     public function testUpdateUserCredentialsFailure(): void
     {
-        // Attempt to update a non-existent user 
+        // Attempt to update a non-existent user
         $nonExistentUserId = mt_rand(1000000000, 9999999999);
         $data = [
             'email' => 'newemail@example.com',
@@ -138,5 +138,29 @@ class UserServiceTest extends TestCase
         $this->assertIsArray($result);
         $this->assertArrayHasKey('password', $result);
         $this->assertEquals(['The password field must be at least 8 characters.'], $result['password']);
+    }
+
+    public function testDeleteUserSuccessfully(): void
+    {
+        // Create a user for testing
+        $user = User::factory()->create();
+
+        $userService = new UserService();
+        $deleted = $userService->deleteUser($user->id);
+
+        $this->assertTrue($deleted);
+        $this->assertDatabaseMissing('users', ['id' => $user->id]);
+    }
+
+    public function testDeleteNonexistentUser(): void
+    {
+        $nonExistentUserId = mt_rand(1000000000, 9999999999);
+
+        $userService = new UserService();
+        $deleted = $userService->deleteUser($nonExistentUserId);
+
+        $this->assertFalse($deleted);
+
+        $this->assertDatabaseMissing('users', ['id' => $nonExistentUserId]);
     }
 }
