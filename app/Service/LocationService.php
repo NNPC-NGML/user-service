@@ -41,4 +41,16 @@ class LocationService{
         
     }
 
+    /**
+     * The function "getLocation" returns a Location object or null based on the provided ID.
+     * 
+     * @param int id The parameter "id" is an integer that represents the unique identifier of a
+     * location.
+     * 
+     * @return Location | null an instance of the Location class or null.
+     */
+    public function getLocation(int $id):Location | null {
+        return Location::find($id);
+    }
+
 }
