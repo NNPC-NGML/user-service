@@ -53,4 +53,26 @@ class LocationService{
         return Location::find($id);
     }
 
+    public function updateLocation(int $id, Request $request): bool|array|Location
+    {
+        // validation
+        $validator = Validator::make($request->all(), [
+            'name' => 'sometimes|nullable|string',
+            "description" => "sometimes|nullable|string",
+        ]);
+        if ($validator->fails()) {
+            throw new \Exception($validator->errors());
+        }
+        
+        $fetchService = $this->getLocation($id);
+        if ($fetchService) {
+            if ($fetchService->update($request->all())) {
+                return $fetchService;
+            }
+            throw new \Exception('Something went wrong.');
+
+        }
+        throw new \Exception('Something went wrong.');
+
+    }
 }

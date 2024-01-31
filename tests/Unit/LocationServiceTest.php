@@ -67,4 +67,32 @@ class LocationServiceTest extends TestCase
         //dd($fetchService);
     }
 
+    public function test_to_see_if_an_existing_location_can_be_updated(): void
+    {
+        Location::factory(5)->create();
+        $locationService = new LocationService();
+        $fetchService = $locationService->getLocation(1);
+        $this->assertDatabaseCount("locations", 5);
+        $data = new Request([
+            "location" => "Location1",
+            "zone" => "Zone1",
+            "state" => "State1",
+        ]);
+        $locationService->updateLocation($fetchService->id, $data);
+        $this->assertDatabaseHas('locations', $data->all());
+    }
+
+    public function test_to_see_if_exception_would_be_thrown_if_there_is_an_error(): void
+    {
+        $this->expectException(\Exception::class);
+        $locationService = new LocationService();
+        $data = new Request([
+            "location" => "Update Location",
+            "state" => "Updated state",
+        ]);
+
+        $locationService->updateLocation(1, $data);
+        $this->expectExceptionMessage('Something went wrong.');
+    }
+
 }
