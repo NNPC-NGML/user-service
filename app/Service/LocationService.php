@@ -80,4 +80,27 @@ class LocationService{
         $returnArray = Location::all();
         return $returnArray;
     }
+
+    /**
+     * The function `deleteLocation` attempts to delete a location record with the given ID and returns
+     * true if successful, false otherwise.
+     * 
+     * @param int id The parameter "id" is an integer that represents the unique identifier of the
+     * location that needs to be deleted.
+     * 
+     * @return bool a boolean value. It returns true if the location with the given ID is successfully
+     * deleted, and false otherwise.
+     */
+    public function deleteLocation(int $id): bool
+    {
+        $fetchService = $this->getLocation($id);
+        if ($fetchService) {
+            if ($fetchService->delete()) {
+                return true;
+            }
+
+        }
+        return false;
+
+    }
 }
