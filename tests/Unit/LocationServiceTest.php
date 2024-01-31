@@ -107,4 +107,31 @@ class LocationServiceTest extends TestCase
 
     }
 
+
+    public function test_to_see_if_a_location_is_deleted()
+    {
+        $data = new Request([
+            "location" => "Location1",
+            "state" => "State1",
+            'zone'=>'zone1'
+        ]);
+        $locationService = new LocationService();
+        $data = $locationService->create($data);
+        $this->assertDatabaseCount("locations", 1);
+        $delete = $locationService->deleteLocation($data->id);
+        $this->assertDatabaseMissing("locations", ["location" => "Location1"]);
+        $this->assertTrue($delete);
+
+    }
+
+
+    public function test_to_see_if_there_is_no_record_with_the_provided_department_id()
+    {
+        $locationService = new LocationService();
+        $delete = $locationService->deleteLocation(5);
+        $this->assertFalse($delete);
+
+    }
+
+
 }
