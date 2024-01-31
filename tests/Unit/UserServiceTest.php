@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Service\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserServiceTest extends TestCase
 {
@@ -90,7 +91,7 @@ class UserServiceTest extends TestCase
      */
     public function testUpdateUserCredentialsFailure(): void
     {
-        // Attempt to update a non-existent user 
+        // Attempt to update a non-existent user
         $nonExistentUserId = mt_rand(1000000000, 9999999999);
         $data = [
             'email' => 'newemail@example.com',
@@ -138,5 +139,42 @@ class UserServiceTest extends TestCase
         $this->assertIsArray($result);
         $this->assertArrayHasKey('password', $result);
         $this->assertEquals(['The password field must be at least 8 characters.'], $result['password']);
+    }
+
+    public function testGetUsersForPageWithData(): void
+    {
+        // Seed the database with 15 users
+        User::factory(15)->create();
+
+        $userService = new UserService();
+        $page = 2;
+        $perPage = 10;
+
+        $users = $userService->getUsersForPage($page, $perPage);
+
+        // Assert that the returned value is a LengthAwarePaginator
+        $this->assertInstanceOf(LengthAwarePaginator::class, $users);
+
+        // Assert that the paginator contains the expected number of items
+        $this->assertCount(5, $users->items());
+
+        // Assert that the current page and per page values are as expected
+        $this->assertEquals(2, $users->currentPage());
+        $this->assertEquals(10, $users->perPage());
+    }
+
+    public function testGetUsersForPageWithoutData(): void
+    {
+        $userService = new UserService();
+        $page = 1;
+        $perPage = 10;
+
+        $users = $userService->getUsersForPage($page, $perPage);
+
+        // Assert that the returned value is a LengthAwarePaginator
+        $this->assertInstanceOf(LengthAwarePaginator::class, $users);
+
+        // Assert that the paginator contains no items
+        $this->assertCount(0, $users->items());
     }
 }

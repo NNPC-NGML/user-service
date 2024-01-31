@@ -5,6 +5,7 @@ namespace App\Service;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
  * Class UserService
@@ -91,5 +92,18 @@ class UserService
         $user->update($userData);
 
         return $user;
+    }
+
+    /**
+     * Get a paginated list of users for a specific page.
+     *
+     * @param int $page The page number.
+     * @param int $perPage The number of users to display per page.
+     *
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function getUsersForPage(int $page = 1, int $perPage = 10): LengthAwarePaginator
+    {
+        return User::paginate($perPage, ['*'], 'page', $page);
     }
 }
