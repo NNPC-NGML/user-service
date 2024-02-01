@@ -141,6 +141,29 @@ class UserServiceTest extends TestCase
         $this->assertEquals(['The password field must be at least 8 characters.'], $result['password']);
     }
 
+    public function testDeleteUserSuccessfully(): void
+    {
+        // Create a user for testing
+        $user = User::factory()->create();
+
+        $userService = new UserService();
+        $deleted = $userService->deleteUser($user->id);
+
+        $this->assertTrue($deleted);
+        $this->assertDatabaseMissing('users', ['id' => $user->id]);
+    }
+
+    public function testDeleteNonexistentUser(): void
+    {
+        $nonExistentUserId = mt_rand(1000000000, 9999999999);
+
+        $userService = new UserService();
+        $deleted = $userService->deleteUser($nonExistentUserId);
+
+        $this->assertFalse($deleted);
+
+        $this->assertDatabaseMissing('users', ['id' => $nonExistentUserId]);
+    }
     public function testGetUsersForPageWithData(): void
     {
         // Seed the database with 15 users
