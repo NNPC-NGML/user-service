@@ -76,4 +76,40 @@ class UnitServiceTest extends TestCase
             'description' => 'Invalid unit description.',
         ]);
     }
+    public function testGetExistingUnit(): void
+    {
+
+        // Create a department for testing
+        $department = department::factory()->create();
+
+        $unitData = [
+            'name' => 'Test Unit',
+            'description' => 'Description of the test unit.',
+            'departmentId' => $department->id,
+        ];
+
+        $request = new Request($unitData);
+        $unitService = new UnitService();
+        $createdUnit = $unitService->create($request);
+
+        $retrievedUnit = $unitService->getUnit($createdUnit->id);
+
+        // Assert that the retrieved unit is an instance of Unit
+        $this->assertInstanceOf(Unit::class, $retrievedUnit);
+
+        // Assert that the retrieved unit has the correct ID
+        $this->assertEquals($createdUnit->id, $retrievedUnit->id);
+    }
+
+    public function testGetNonExistentUnit(): void
+    {
+        // Generate a random unit ID that doesn't exist
+        $nonExistentUnitId = mt_rand(1000000000, 9999999999);
+
+        $unitService = new UnitService();
+        $retrievedUnit = $unitService->getUnit($nonExistentUnitId);
+
+        // Assert that the retrieved unit is null for a non-existent unit
+        $this->assertNull($retrievedUnit);
+    }
 }

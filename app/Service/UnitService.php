@@ -47,4 +47,16 @@ class UnitService
 
         return false;
     }
+
+    /**
+     * Get a unit by ID.
+     *
+     * @param int $unitId The ID of the unit.
+     *
+     * @return \App\Models\Unit|null Returns the unit or null if not found.
+     */
+    public function getUnit(int $unitId)
+    {
+        return Unit::find($unitId);
+    }
 }
