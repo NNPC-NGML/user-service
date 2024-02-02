@@ -124,4 +124,36 @@ class UserService
     {
         return User::paginate($perPage, ['*'], 'page', $page);
     }
+
+    /**
+     * Assign a user to a particular department.
+     *
+     * @param int $userId       The ID of the user.
+     * @param int $departmentId The ID of the department.
+     *
+     * @return bool Returns true on success, false on failure.
+     */
+    public function assignUserToDepartment(int $userId, int $departmentId): bool
+    {
+        // Validate user and department IDs
+        $validator = Validator::make([
+            'user_id' => $userId,
+            'department_id' => $departmentId,
+        ], [
+            'user_id' => 'required|exists:users,id',
+            'department_id' => 'required|exists:departments,id',
+        ]);
+
+        if ($validator->fails()) {
+            return false;
+        }
+
+        $user = User::find($userId);
+
+        $user->department()->associate($departmentId);
+
+        $user->save();
+
+        return true;
+    }
 }
