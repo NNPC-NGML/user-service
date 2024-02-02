@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\department;
 use App\Service\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -176,5 +177,82 @@ class UserServiceTest extends TestCase
 
         // Assert that the paginator contains no items
         $this->assertCount(0, $users->items());
+    }
+
+    /**
+     * Test assigning a user to a department for the first time.
+     */
+    public function testAssignUserToDepartmentFirstTime(): void
+    {
+        // Create a user and department for testing
+        $user = User::factory()->create();
+        $department = Department::factory()->create();
+
+        $userService = new UserService();
+        $assignmentSuccess = $userService->assignUserToDepartment($user->id, $department->id);
+
+        $this->assertTrue($assignmentSuccess);
+
+        // Check if the user is assigned to the correct department
+        $this->assertEquals($department->id, $user->fresh()->department->id);
+    }
+
+    /**
+     * Test assigning a user to an existing department.
+     */
+    public function testAssignUserToExistingDepartment(): void
+    {
+        // Create a user and two departments for testing
+        $user = User::factory()->create();
+        $department1 = Department::factory()->create();
+        $department2 = Department::factory()->create();
+
+        $user->department()->associate($department1->id)->save();
+
+
+        $userService = new UserService();
+        $assignmentSuccess = $userService->assignUserToDepartment($user->id, $department2->id);
+
+        $this->assertTrue($assignmentSuccess);
+
+        $this->assertEquals($department2->id, $user->fresh()->department->id);
+    }
+
+    /**
+     * Test assigning a user to a department with invalid user ID.
+     */
+    public function testAssignUserToDepartmentWithInvalidUserId(): void
+    {
+        // Create a department for testing
+        $department = Department::factory()->create();
+
+        $nonExistentUserId = mt_rand(1000000000, 9999999999);
+        $userService = new UserService();
+        $assignmentFailed = $userService->assignUserToDepartment($nonExistentUserId, $department->id);
+
+        $this->assertFalse($assignmentFailed);
+
+        // Ensure that the user and department are not associated in the database
+        $user = User::find($nonExistentUserId);
+        $this->assertNull($user);
+    }
+
+    /**
+     * Test assigning a user to a department with invalid department ID.
+     */
+    public function testAssignUserToDepartmentWithInvalidDepartmentId(): void
+    {
+        // Create a user for testing
+        $user = User::factory()->create();
+
+        $userService = new UserService();
+
+        $nonExistentDepartmentId = mt_rand(1000000000, 9999999999);
+        $assignmentFailed = $userService->assignUserToDepartment($user->id, $nonExistentDepartmentId);
+
+        $this->assertFalse($assignmentFailed);
+
+        // Ensure that the user's department remains unchanged in the database
+        $this->assertNull(User::find($user->id)->department);
     }
 }

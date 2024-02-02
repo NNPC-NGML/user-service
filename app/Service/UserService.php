@@ -65,7 +65,7 @@ class UserService
      *   - 'name' (string, optional): The new name for the user. Should be a string with a maximum length of 255 characters.
      *   - 'password' (string, optional): The new password for the user. Should be at least 8 characters long.
      *
-     * @return bool|array|\App\Models\User Returns true if the update is successful. 
+     * @return bool|array|\App\Models\User Returns true if the update is successful.
      *                   If validation fails, it returns an array of validation errors.
      *                   If the specified user ID is not found or if the new email already exists for another user, it returns false.
      *                   If the update is successful, it returns the updated user object.
@@ -105,5 +105,37 @@ class UserService
     public function getUsersForPage(int $page = 1, int $perPage = 10): LengthAwarePaginator
     {
         return User::paginate($perPage, ['*'], 'page', $page);
+    }
+
+    /**
+     * Assign a user to a particular department.
+     *
+     * @param int $userId       The ID of the user.
+     * @param int $departmentId The ID of the department.
+     *
+     * @return bool Returns true on success, false on failure.
+     */
+    public function assignUserToDepartment(int $userId, int $departmentId): bool
+    {
+        // Validate user and department IDs
+        $validator = Validator::make([
+            'user_id' => $userId,
+            'department_id' => $departmentId,
+        ], [
+            'user_id' => 'required|exists:users,id',
+            'department_id' => 'required|exists:departments,id',
+        ]);
+
+        if ($validator->fails()) {
+            return false;
+        }
+
+        $user = User::find($userId);
+
+        $user->department()->associate($departmentId);
+
+        $user->save();
+
+        return true;
     }
 }
