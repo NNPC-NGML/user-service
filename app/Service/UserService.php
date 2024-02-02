@@ -95,7 +95,25 @@ class UserService
     }
 
     /**
-     * Get a paginated list of users for a specific page.
+     *      * Delete a user using its id.
+     *
+     * @param int $userId The id of the user to be deleted.
+     *
+     * @return bool Return true if user is deleted and false if not deleted
+     */
+
+    public function deleteUser(int $userId): bool
+    {
+        $fetchUser = User::find($userId);
+        if (!$fetchUser) {
+            return false;
+        }
+
+        $fetchUser->delete();
+        return true;
+    }
+
+    /**     * Get a paginated list of users for a specific page.
      *
      * @param int $page The page number.
      * @param int $perPage The number of users to display per page.
