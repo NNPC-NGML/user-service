@@ -76,4 +76,71 @@ class UnitServiceTest extends TestCase
             'description' => 'Invalid unit description.',
         ]);
     }
+    public function testUpdateUnitSuccessfully(): void
+    {
+
+        $department = department::factory()->create();
+
+        $unit = Unit::create([
+            'name' => 'Test Unit',
+            'description' => 'Test Description',
+            'department_id' => $department->id,
+        ]);
+
+        $updatedData = [
+            'name' => 'Updated Unit Name',
+            'description' => 'Updated Unit Description',
+            'department_id' => $department->id,
+        ];
+
+        $unitService = new UnitService();
+        $updatedUnit = $unitService->updateUnit($unit->id, $updatedData);
+
+        $this->assertInstanceOf(Unit::class, $updatedUnit);
+        $this->assertEquals($unit->id, $updatedUnit->id);
+        $this->assertEquals($updatedData['name'], $updatedUnit->name);
+        $this->assertEquals($updatedData['description'], $updatedUnit->description);
+        $this->assertEquals($updatedData['department_id'], $updatedUnit->department_id);
+    }
+    public function testUpdateUnitWithValidationErrors(): void
+    {
+        $department = department::factory()->create();
+        $nonExistentDepartmentId = mt_rand(1000000000, 9999999999);
+
+        $unit = Unit::create([
+            'name' => 'Test Unit',
+            'description' => 'Test Description',
+            'department_id' => $department->id,
+        ]);
+
+        $invalidData = [
+            'description' => 'Updated Description',
+            'department_id' => $nonExistentDepartmentId,
+        ];
+
+        $unitService = new UnitService();
+        $updateFailed = $unitService->updateUnit($unit->id, $invalidData);
+
+        $this->assertIsArray($updateFailed);
+        $this->assertArrayHasKey('department_id', $updateFailed);
+        $this->assertEquals(['The selected department id is invalid.'], $updateFailed['department_id']);
+
+        $this->assertDatabaseMissing('units', [
+            'id' => $unit->id,
+            'name' => 'Updated Unit'
+        ]);
+    }
+    public function testUpdateNonExistentUnit(): void
+    {
+        $nonExistentUnitId = mt_rand(1000000000, 9999999999);
+        $request = [
+            'name' => 'Updated Unit Name',
+            'description' => 'Updated Unit Description',
+        ];
+
+        $unitService = new UnitService();
+        $updateFailed = $unitService->updateUnit($nonExistentUnitId, $request);
+
+        $this->assertFalse($updateFailed);
+    }
 }
