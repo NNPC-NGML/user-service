@@ -76,4 +76,38 @@ class UnitServiceTest extends TestCase
             'description' => 'Invalid unit description.',
         ]);
     }
+    /**
+     * Test deleting an existing unit.
+     */
+    public function testDeleteExistingUnit(): void
+    {
+        $department = department::factory()->create();
+
+        $unit = Unit::create([
+            'name' => 'Test Unit',
+            'description' => 'Test Description',
+            'department_id' => $department->id,
+        ]);
+
+        $unitService = new UnitService();
+        $deletionResult = $unitService->deleteUnit($unit->id);
+
+        $this->assertTrue($deletionResult);
+
+        $this->assertDatabaseMissing('units', [
+            'id' => $unit->id,
+        ]);
+    }
+
+    /**
+     * Test deleting a non-existent unit.
+     */
+    public function testDeleteNonExistentUnit(): void
+    {
+        $nonExistentUnitId = mt_rand(1000000000, 9999999999);
+        $unitService = new UnitService();
+        $deletionResult = $unitService->deleteUnit($nonExistentUnitId);
+
+        $this->assertFalse($deletionResult);
+    }
 }

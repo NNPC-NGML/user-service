@@ -47,4 +47,22 @@ class UnitService
 
         return false;
     }
+
+    /**
+     * Delete a unit.
+     *
+     * @param int $unitId The ID of the unit to delete.
+     *
+     * @return bool Returns true if the unit is deleted successfully, otherwise false.
+     */
+    public function deleteUnit(int $unitId): bool
+    {
+        $unit = Unit::find($unitId);
+
+        if (!$unit) {
+            return false;
+        }
+
+        return $unit->delete();
+    }
 }
