@@ -47,4 +47,16 @@ class UnitService
 
         return false;
     }
+
+    /**
+     * Get all units in a department.
+     *
+     * @param int $departmentId The ID of the department.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection Returns a collection of units in the department.
+     */
+    public function getUnitsInDepartment(int $departmentId)
+    {
+        return Unit::where('department_id', $departmentId)->get();
+    }
 }
