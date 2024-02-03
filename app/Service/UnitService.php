@@ -47,4 +47,15 @@ class UnitService
 
         return false;
     }
+    /**
+     * View a particular unit.
+     *
+     * @param int $unitId The ID of the unit to view.
+     *
+     * @return \App\Models\Unit|null Returns the unit if found, otherwise null.
+     */
+    public function viewUnit(int $unitId)
+    {
+        return Unit::find($unitId);
+    }
 }
