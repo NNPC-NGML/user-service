@@ -81,11 +81,13 @@ class UnitServiceTest extends TestCase
      */
     public function testViewExistingUnit(): void
     {
-        // Create a unit for testing
+
+        $department = department::factory()->create();
+
         $unit = Unit::create([
             'name' => 'Test Unit',
             'description' => 'Test Description',
-            'department_id' => 1, // Assuming a valid department ID
+            'department_id' => $department->id,
         ]);
 
         $unitService = new UnitService();
