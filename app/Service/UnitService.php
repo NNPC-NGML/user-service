@@ -75,7 +75,7 @@ class UnitService
      *
      * @return \App\Models\Unit|array|bool Returns the updated unit object if successful, otherwise an array of validation errors or false on failure.
      */
-    public function updateUnit(int $unitId, array $unitData)
+    public function updateUnit(int $unitId, array $unitData): Unit|array|bool
     {
         // Validate the provided unit data
         $validator = Validator::make($unitData, [
