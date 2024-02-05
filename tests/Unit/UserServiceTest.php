@@ -279,6 +279,7 @@ class UserServiceTest extends TestCase
         // Ensure that the user's department remains unchanged in the database
         $this->assertNull(User::find($user->id)->department);
     }
+    
     /**
      * Test assigning a user to a unit.
      */

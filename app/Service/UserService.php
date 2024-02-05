@@ -181,12 +181,10 @@ class UserService
             return false;
         }
 
-
         // Check if the unit belongs to the same department as the user
         if ($user->department_id !== $unit->department_id) {
             return false;
         }
-
 
         $user->units()->attach($unit);
 
