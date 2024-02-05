@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\department;
+use App\Models\Unit;
 use App\Service\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -277,5 +278,57 @@ class UserServiceTest extends TestCase
 
         // Ensure that the user's department remains unchanged in the database
         $this->assertNull(User::find($user->id)->department);
+    }
+    /**
+     * Test assigning a user to a unit.
+     */
+    public function testAssignUserToUnit(): void
+    {
+        $department = Department::create([
+            'name' => 'Test Department',
+            'description' => 'Test Description',
+        ]);
+
+        $unit = Unit::create([
+            'name' => 'Test Unit',
+            'description' => 'Unit Description',
+            'department_id' => $department->id,
+        ]);
+
+        $user = User::create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $user->department()->associate($department->id);
+
+        $user->save();
+
+        $userService = new UserService();
+        $assigned = $userService->assignUserToUnit($user->id, $unit->id);
+
+        $this->assertTrue($assigned);
+
+        // Assert that the user now belongs to the unit
+        $this->assertTrue($user->units->contains($unit));
+    }
+
+    /**
+     * Test assigning a user to a non-existent unit.
+     */
+    public function testAssignUserToNonExistentUnit(): void
+    {
+        $user = User::create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $nonExistentUnitId = mt_rand(1000000000, 9999999999);
+        $userService = new UserService();
+        $assigned = $userService->assignUserToUnit($user->id, $nonExistentUnitId);
+
+        $this->assertFalse($assigned);
     }
 }
