@@ -76,38 +76,5 @@ class UnitServiceTest extends TestCase
             'description' => 'Invalid unit description.',
         ]);
     }
-    /**
-     * Test viewing an existing unit.
-     */
-    public function testViewExistingUnit(): void
-    {
-
-        $department = department::factory()->create();
-
-        $unit = Unit::create([
-            'name' => 'Test Unit',
-            'description' => 'Test Description',
-            'department_id' => $department->id,
-        ]);
-
-        $unitService = new UnitService();
-        $retrievedUnit = $unitService->viewUnit($unit->id);
-
-        // Assert that the unit is retrieved successfully
-        $this->assertInstanceOf(Unit::class, $retrievedUnit);
-        $this->assertEquals($unit->id, $retrievedUnit->id);
-    }
-
-    /**
-     * Test viewing a non-existent unit.
-     */
-    public function testViewNonExistentUnit(): void
-    {
-        $nonExistentUnitId = mt_rand(1000000000, 9999999999);
-        $unitService = new UnitService();
-        $retrievedUnit = $unitService->viewUnit($nonExistentUnitId);
-
-        // Assert that the unit is not found
-        $this->assertNull($retrievedUnit);
-    }
+ 
 }

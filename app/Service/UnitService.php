@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Models\Unit;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -48,14 +49,12 @@ class UnitService
         return false;
     }
     /**
-     * View a particular unit.
+     * View all units.
      *
-     * @param int $unitId The ID of the unit to view.
-     *
-     * @return \App\Models\Unit|null Returns the unit if found, otherwise null.
+     * @return \Illuminate\Support\Collection Returns a collection of all units.
      */
-    public function viewUnit(int $unitId)
+    public function viewAllUnits(): Collection
     {
-        return Unit::find($unitId);
+        return Unit::all();
     }
 }
