@@ -112,4 +112,44 @@ class UnitServiceTest extends TestCase
         // Assert that the retrieved unit is null for a non-existent unit
         $this->assertNull($retrievedUnit);
     }
+    /**
+     * Test getting all units in a department.
+     */
+    public function testGetUnitsInDepartment(): void
+    {
+        $department = department::factory()->create();
+
+        // Create units in the department
+        $unit1 = Unit::create([
+            'name' => 'Unit 1',
+            'description' => 'Description 1',
+            'department_id' => $department->id,
+        ]);
+
+        $unit2 = Unit::create([
+            'name' => 'Unit 2',
+            'description' => 'Description 2',
+            'department_id' => $department->id,
+        ]);
+
+        $unitService = new UnitService();
+        $unitsInDepartment = $unitService->getUnitsInDepartment($department->id);
+
+        // Assert that the correct units are retrieved
+        $this->assertCount(2, $unitsInDepartment);
+        $this->assertTrue($unitsInDepartment->contains($unit1));
+        $this->assertTrue($unitsInDepartment->contains($unit2));
+    }
+
+    /**
+     * Test getting units in a non-existent department.
+     */
+    public function testGetUnitsInNonExistentDepartment(): void
+    {
+        $nonExistentDepartmentId = mt_rand(1000000000, 9999999999);
+        $unitService = new UnitService();
+        $unitsInNonExistentDepartment = $unitService->getUnitsInDepartment($nonExistentDepartmentId);
+
+        $this->assertCount(0, $unitsInNonExistentDepartment);
+    }
 }

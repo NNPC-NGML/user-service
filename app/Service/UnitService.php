@@ -55,8 +55,20 @@ class UnitService
      *
      * @return \App\Models\Unit|null Returns the unit or null if not found.
      */
-    public function getUnit(int $unitId)
+    public function getUnit(int $unitId): Unit | null
     {
         return Unit::find($unitId);
+    }
+
+    /* *
+     * Get all units in a department.
+     *
+     * @param int $departmentId The ID of the department.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection Returns a collection of units in the department.
+     */
+    public function getUnitsInDepartment(int $departmentId): \Illuminate\Database\Eloquent\Collection
+    {
+        return Unit::where('department_id', $departmentId)->get();
     }
 }
