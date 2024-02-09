@@ -7,6 +7,7 @@ use Tests\TestCase;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 use App\Service\UnitService;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\MessageBag;
 
@@ -262,6 +263,8 @@ class UnitServiceTest extends TestCase
         $allUnits = $unitService->viewAllUnits();
 
         $this->assertCount(5, $allUnits);
+
+        $this->assertInstanceOf(Collection::class, $allUnits);
 
         foreach ($allUnits as $unit) {
             $this->assertInstanceOf(Unit::class, $unit);
