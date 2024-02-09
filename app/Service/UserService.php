@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Models\Unit;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
@@ -153,6 +154,39 @@ class UserService
         $user->department()->associate($departmentId);
 
         $user->save();
+
+        return true;
+    }
+
+    /**
+     * Assign a user to a unit.
+     *
+     * @param int $userId The ID of the user.
+     * @param int $unitId The ID of the unit.
+     *
+     * @return bool Returns true on success, false on failure.
+     */
+    public function assignUserToUnit(int $userId, int $unitId): bool
+    {
+        $user = User::find($userId);
+        $unit = Unit::find($unitId);
+
+        if (!$user || !$unit) {
+            return false;
+        }
+
+
+        // Check if the user already belongs to the unit
+        if ($user->units->contains($unit)) {
+            return false;
+        }
+
+        // Check if the unit belongs to the same department as the user
+        if ($user->department_id !== $unit->department_id) {
+            return false;
+        }
+
+        $user->units()->attach($unit);
 
         return true;
     }
