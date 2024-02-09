@@ -19,6 +19,7 @@ class UnitFactory extends Factory
         return [
             'name' => fake()->name(),
             'description' => fake()->sentence(),
+            'department_id' => \App\Models\Department::factory()->create()->id,
         ];
     }
 }

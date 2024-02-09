@@ -7,6 +7,7 @@ use Tests\TestCase;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 use App\Service\UnitService;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\MessageBag;
 
@@ -252,5 +253,33 @@ class UnitServiceTest extends TestCase
         $deletionResult = $unitService->deleteUnit($nonExistentUnitId);
 
         $this->assertFalse($deletionResult);
+    }
+    public function testViewAllUnitsWhenUnitsExist(): void
+    {
+
+        $units = Unit::factory(5)->create();
+
+        $unitService = new UnitService();
+        $allUnits = $unitService->viewAllUnits();
+
+        $this->assertCount(5, $allUnits);
+
+        $this->assertInstanceOf(Collection::class, $allUnits);
+
+        foreach ($allUnits as $unit) {
+            $this->assertInstanceOf(Unit::class, $unit);
+        }
+
+        $this->assertTrue($allUnits->contains($units[1]));
+        $this->assertTrue($allUnits->contains($units[2]));
+    }
+
+    public function testViewAllUnitsWhenNoUnitsExist(): void
+    {
+        $unitService = new UnitService();
+        $allUnits = $unitService->viewAllUnits();
+
+        $this->assertCount(0, $allUnits);
+        $this->assertInstanceOf(Collection::class, $allUnits);
     }
 }

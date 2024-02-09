@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Models\Unit;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -122,7 +123,7 @@ class UnitService
         return Unit::where('department_id', $departmentId)->get();
     }
 
-     /**
+    /**
      * Delete a unit.
      *
      * @param int $unitId The ID of the unit to delete.
@@ -138,5 +139,14 @@ class UnitService
         }
 
         return $unit->delete();
+    }
+    /**
+     * View all units.
+     *
+     * @return \Illuminate\Support\Collection Returns a collection of all units.
+     */
+    public function viewAllUnits(): Collection
+    {
+        return Unit::all();
     }
 }
