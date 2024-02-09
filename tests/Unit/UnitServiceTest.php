@@ -280,5 +280,6 @@ class UnitServiceTest extends TestCase
         $allUnits = $unitService->viewAllUnits();
 
         $this->assertCount(0, $allUnits);
+        $this->assertInstanceOf(Collection::class, $allUnits);
     }
 }
