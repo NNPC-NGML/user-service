@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Service\UserService;
 use Illuminate\Http\Request;
@@ -27,7 +28,7 @@ class UserController extends Controller
         $result = $this->userService->create($request);
 
         if ($result instanceof User) {
-            return response()->json(['success' => true, 'data' => $result], 201);
+            return response()->json(['success' => true, 'data' => new UserResource($result)], 201);
         } else {
             return response()->json(['success' => false, 'error' => $result], 422);
         }
