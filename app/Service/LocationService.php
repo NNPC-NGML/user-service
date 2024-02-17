@@ -41,6 +41,66 @@ class LocationService{
         
     }
 
-    
+    /**
+     * The function "getLocation" returns a Location object or null based on the provided ID.
+     * 
+     * @param int id The parameter "id" is an integer that represents the unique identifier of a
+     * location.
+     * 
+     * @return Location | null an instance of the Location class or null.
+     */
+    public function getLocation(int $id):Location | null {
+        return Location::find($id);
+    }
 
+    public function updateLocation(int $id, Request $request): bool|array|Location
+    {
+        // validation
+        $validator = Validator::make($request->all(), [
+            'name' => 'sometimes|nullable|string',
+            "description" => "sometimes|nullable|string",
+        ]);
+        if ($validator->fails()) {
+            throw new \Exception($validator->errors());
+        }
+        
+        $fetchService = $this->getLocation($id);
+        if ($fetchService) {
+            if ($fetchService->update($request->all())) {
+                return $fetchService;
+            }
+            throw new \Exception('Something went wrong.');
+
+        }
+        throw new \Exception('Something went wrong.');
+
+    }
+
+    public function viewAllLocations():object | null{
+        $returnArray = Location::all();
+        return $returnArray;
+    }
+
+    /**
+     * The function `deleteLocation` attempts to delete a location record with the given ID and returns
+     * true if successful, false otherwise.
+     * 
+     * @param int id The parameter "id" is an integer that represents the unique identifier of the
+     * location that needs to be deleted.
+     * 
+     * @return bool a boolean value. It returns true if the location with the given ID is successfully
+     * deleted, and false otherwise.
+     */
+    public function deleteLocation(int $id): bool
+    {
+        $fetchService = $this->getLocation($id);
+        if ($fetchService) {
+            if ($fetchService->delete()) {
+                return true;
+            }
+
+        }
+        return false;
+
+    }
 }
