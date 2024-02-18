@@ -21,6 +21,10 @@ use App\Http\Controllers\DepartmentController;
 
 Route::group(['prefix' => 'v1'], function () {
     Route::post('/create_user',[UserController::class, 'create'])->name('create_user');
+    /////// Create Department
     Route::post('/create_department',[DepartmentController::class, 'create'])->name('create_department');
+    //////// Update a Department
     Route::put('/update_department/{id}',[DepartmentController::class, 'update'])->name('update_department');
+    ////////View All Department
+    Route::get('/department',[DepartmentController::class, 'index'])->name('view_all_department');
 });

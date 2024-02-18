@@ -16,12 +16,24 @@ class DepartmentController extends Controller
         $this->departmentService = $departmentService;
     }
    
+   
     /**
-     * Display a listing of the resource.
+     * The index function retrieves all departments and returns a JSON response based on the result.
+     * 
+     * @return If the `` variable is an instance of the `Department` class, a JSON response with
+     * a success status of true and the data in the form of a `DepartmentResource` will be returned
+     * with a status code of 201 (Created). If `` is not an instance of the `Department` class,
+     * a JSON response with a success status of false and an error message will be
      */
     public function index()
     {
-        //
+        $result = $this->departmentService->viewAllDepartment();
+
+        if ($result instanceof department) {
+            return response()->json(['success' => true, 'data' => new DepartmentResource($result)], 201);
+        } else {
+            return response()->json(['success' => false, 'error' => $result], 422);
+        }
     }
 
     
