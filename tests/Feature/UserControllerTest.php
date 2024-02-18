@@ -48,7 +48,7 @@ class UserControllerTest extends TestCase
                 ]
             ]);
     }
-     /** @test */
+    /** @test */
     public function it_validates_email_format_for_user_creation()
     {
         $data = [
@@ -67,7 +67,7 @@ class UserControllerTest extends TestCase
                 ]
             ]);
     }
-     /** @test */
+    /** @test */
     public function it_validates_unique_email_for_user_creation()
     {
         // Create a user with the same email first
@@ -89,7 +89,7 @@ class UserControllerTest extends TestCase
                 ]
             ]);
     }
-     /** @test */
+    /** @test */
     public function it_validates_password_length_for_user_creation()
     {
         $data = [
@@ -107,5 +107,66 @@ class UserControllerTest extends TestCase
                     'password' => ['The password field must be at least 8 characters.'],
                 ]
             ]);
+    }
+
+    /** @test */
+    public function it_updates_user_credentials()
+    {
+        $user = User::factory()->create();
+
+        $newUserData = [
+            'email' => 'newemail@example.com',
+            'name' => 'New Name',
+            'password' => 'newpassword123',
+        ];
+
+        $response = $this->putJson(route('users.update', ['userId' => $user->id]), $newUserData);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'data' => [
+                    'email' => $newUserData['email'],
+                    'name' => $newUserData['name'],
+                ]
+            ]);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'email' => $newUserData['email'],
+            'name' => $newUserData['name'],
+        ]);
+    }
+
+    /** @test */
+    public function it_returns_not_found_error_if_user_does_not_exist()
+    {
+        
+        $nonExistentUserId = mt_rand(1000000000, 9999999999);
+
+        $response = $this->putJson(route('users.update', ['userId' => $nonExistentUserId]), []);
+
+        $response->assertStatus(404)
+            ->assertJson([
+                'success' => false,
+                'message' => 'User not found'
+            ]);
+    }
+
+    /** @test */
+    public function it_validates_request_data()
+    {
+        $user = User::factory()->create();
+
+        $invalidUserData = [
+            'email' => 'invalidemail',
+            'name' => '',
+            'password' => 'short',
+        ];
+
+        $response = $this->putJson(route('users.update', ['userId' => $user->id]), $invalidUserData);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['email', 'name', 'password']);
     }
 }

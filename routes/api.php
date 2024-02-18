@@ -20,4 +20,5 @@ use App\Http\Controllers\UserController;
 
 Route::group(['prefix' => 'v1'], function () {
     Route::post('/create_user',[UserController::class, 'create'])->name('create_user');
+    Route::put('/users/{userId}', [UserController::class, 'update'])->name('users.update');
 });
