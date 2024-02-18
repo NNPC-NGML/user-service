@@ -48,7 +48,7 @@ class UserControllerTest extends TestCase
                 ]
             ]);
     }
-     /** @test */
+    /** @test */
     public function it_validates_email_format_for_user_creation()
     {
         $data = [
@@ -67,7 +67,7 @@ class UserControllerTest extends TestCase
                 ]
             ]);
     }
-     /** @test */
+    /** @test */
     public function it_validates_unique_email_for_user_creation()
     {
         // Create a user with the same email first
@@ -89,7 +89,7 @@ class UserControllerTest extends TestCase
                 ]
             ]);
     }
-     /** @test */
+    /** @test */
     public function it_validates_password_length_for_user_creation()
     {
         $data = [
@@ -107,5 +107,124 @@ class UserControllerTest extends TestCase
                     'password' => ['The password field must be at least 8 characters.'],
                 ]
             ]);
+    }
+
+    /** @test */
+    public function it_returns_users_paginated()
+    {
+
+        $users = User::factory()->count(10)->create();
+
+        $response = $this->getJson(route('users.index', ['page' => 1, 'perPage' => 10]));
+
+        $response->assertOk();
+
+        // Assert the pagination structure
+        $response->assertJsonStructure([
+            'success',
+            'data' => [
+                'current_page',
+                'data' => [
+                    '*' => ['id', 'name', 'email', 'email_verified_at', 'created_at', 'updated_at', 'department_id']
+                ],
+                'first_page_url',
+                'from',
+                'last_page',
+                'last_page_url',
+                'links',
+                'next_page_url',
+                'path',
+                'per_page',
+                'prev_page_url',
+                'to',
+                'total',
+            ]
+        ]);
+
+
+        $response->assertJsonCount(count($users), 'data.data');
+
+        $response->assertJsonPath('data.current_page', 1);
+
+        $response->assertJsonPath('data.data.0.id', $users[0]->id);
+        $response->assertJsonPath('data.data.0.name', $users[0]->name);
+    }
+
+    /** @test */
+    public function it_returns_no_user()
+    {
+
+        $response = $this->getJson(route('users.index', ['page' => 1, 'perPage' => 10]));
+
+        $response->assertOk();
+
+        // Assert the pagination structure
+        $response->assertJsonStructure([
+            'success',
+            'data' => [
+                'current_page',
+                'data' => [
+                    '*' => ['id', 'name', 'email', 'email_verified_at', 'created_at', 'updated_at', 'department_id']
+                ],
+                'first_page_url',
+                'from',
+                'last_page',
+                'last_page_url',
+                'links',
+                'next_page_url',
+                'path',
+                'per_page',
+                'prev_page_url',
+                'to',
+                'total',
+            ]
+        ]);
+
+        $response->assertJsonCount(0, 'data.data');
+    }
+
+    /** @test */
+    public function it_returns_users_for_next_page_data()
+    {
+
+        $totalLength = 15;
+
+        $page = 2;
+        $perPage = 10;
+        User::factory()->count($totalLength)->create();
+
+        $response = $this->getJson(route('users.index', ['page' => $page, 'perPage' => $perPage]));
+
+        $response->assertOk();
+
+        // Assert the pagination structure
+        $response->assertJsonStructure([
+            'success',
+            'data' => [
+                'current_page',
+                'data' => [
+                    '*' => ['id', 'name', 'email', 'email_verified_at', 'created_at', 'updated_at', 'department_id']
+                ],
+                'first_page_url',
+                'from',
+                'last_page',
+                'last_page_url',
+                'links',
+                'next_page_url',
+                'path',
+                'per_page',
+                'prev_page_url',
+                'to',
+                'total',
+            ]
+        ]);
+
+        $response->assertJsonCount($totalLength - $perPage, 'data.data');
+
+        $response->assertJsonPath('data.current_page', $page);
+        $response->assertJsonPath('data.per_page', $perPage);
+
+        $response->assertJsonPath('data.from', $perPage * ($page - 1) + 1);
+        $response->assertJsonPath('data.total', $totalLength);
     }
 }
