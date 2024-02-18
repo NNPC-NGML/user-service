@@ -20,4 +20,5 @@ use App\Http\Controllers\UserController;
 
 Route::group(['prefix' => 'v1'], function () {
     Route::post('/create_user',[UserController::class, 'create'])->name('create_user');
+    Route::delete('/delete_user',[UserController::class, 'delete'])->name('delete_user')->middleware('auth');
 });
