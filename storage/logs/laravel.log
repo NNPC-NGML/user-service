@@ -3186,3 +3186,67 @@ Did you mean one of these?
 #10 /Applications/MAMP/htdocs/project-boilerplate/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #11 {main}
 "} 
+[2024-02-18 07:29:40] local.ERROR: Command "storage:clear" is not defined.
+
+Did you mean one of these?
+    auth:clear-resets
+    cache:clear
+    config:clear
+    event:clear
+    optimize:clear
+    queue:clear
+    route:clear
+    schedule:clear-cache
+    storage:link
+    view:clear {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"storage:clear\" is not defined.
+
+Did you mean one of these?
+    auth:clear-resets
+    cache:clear
+    config:clear
+    event:clear
+    optimize:clear
+    queue:clear
+    route:clear
+    schedule:clear-cache
+    storage:link
+    view:clear at /Users/admin/Documents/SkillzSystem/ngml/user-service/vendor/symfony/console/Application.php:737)
+[stacktrace]
+#0 /Users/admin/Documents/SkillzSystem/ngml/user-service/vendor/symfony/console/Application.php(266): Symfony\\Component\\Console\\Application->find('storage:clear')
+#1 /Users/admin/Documents/SkillzSystem/ngml/user-service/vendor/symfony/console/Application.php(175): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#2 /Users/admin/Documents/SkillzSystem/ngml/user-service/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(201): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 /Users/admin/Documents/SkillzSystem/ngml/user-service/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 {main}
+"} 
+[2024-02-18 07:29:43] local.ERROR: Command "storage:clear" is not defined.
+
+Did you mean one of these?
+    auth:clear-resets
+    cache:clear
+    config:clear
+    event:clear
+    optimize:clear
+    queue:clear
+    route:clear
+    schedule:clear-cache
+    storage:link
+    view:clear {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"storage:clear\" is not defined.
+
+Did you mean one of these?
+    auth:clear-resets
+    cache:clear
+    config:clear
+    event:clear
+    optimize:clear
+    queue:clear
+    route:clear
+    schedule:clear-cache
+    storage:link
+    view:clear at /Users/admin/Documents/SkillzSystem/ngml/user-service/vendor/symfony/console/Application.php:737)
+[stacktrace]
+#0 /Users/admin/Documents/SkillzSystem/ngml/user-service/vendor/symfony/console/Application.php(266): Symfony\\Component\\Console\\Application->find('storage:clear')
+#1 /Users/admin/Documents/SkillzSystem/ngml/user-service/vendor/symfony/console/Application.php(175): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#2 /Users/admin/Documents/SkillzSystem/ngml/user-service/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(201): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 /Users/admin/Documents/SkillzSystem/ngml/user-service/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 {main}
+"} 
