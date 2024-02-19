@@ -108,6 +108,7 @@ class UserControllerTest extends TestCase
                 ]
             ]);
     }
+    /** @test */
     public function test_show_user_exists()
     {
         $user = User::factory()->create();
@@ -125,7 +126,7 @@ class UserControllerTest extends TestCase
             ]
         ]);
     }
-
+    /** @test */
     public function test_show_user_not_found()
     {
         $nonUserId = mt_rand(1000000000, 9999999999);
