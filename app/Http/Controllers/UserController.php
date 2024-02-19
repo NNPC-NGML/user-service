@@ -66,4 +66,16 @@ class UserController extends Controller
             return response()->json(['success' => false, 'error' => $result], 422);
         }
     }
+
+    public function show($userId)
+    {
+
+        $user = $this->userService->getUser($userId);
+
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        return response()->json(['success' => true, 'data' => new UserResource($user)], 200);
+    }
 }

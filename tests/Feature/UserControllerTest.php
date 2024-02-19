@@ -48,7 +48,7 @@ class UserControllerTest extends TestCase
                 ]
             ]);
     }
-     /** @test */
+    /** @test */
     public function it_validates_email_format_for_user_creation()
     {
         $data = [
@@ -67,7 +67,7 @@ class UserControllerTest extends TestCase
                 ]
             ]);
     }
-     /** @test */
+    /** @test */
     public function it_validates_unique_email_for_user_creation()
     {
         // Create a user with the same email first
@@ -89,7 +89,7 @@ class UserControllerTest extends TestCase
                 ]
             ]);
     }
-     /** @test */
+    /** @test */
     public function it_validates_password_length_for_user_creation()
     {
         $data = [
@@ -107,5 +107,36 @@ class UserControllerTest extends TestCase
                     'password' => ['The password field must be at least 8 characters.'],
                 ]
             ]);
+    }
+    public function test_show_user_exists()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->getJson(route('users.show', ['userId' => $user->id]));
+
+        $response->assertStatus(200);
+
+        $response->assertJson([
+            'success' => true,
+            'data' => [
+                'id' => $user->id,
+                'email' => $user->email,
+                'name' => $user->name
+            ]
+        ]);
+    }
+
+    public function test_show_user_not_found()
+    {
+        $nonUserId = mt_rand(1000000000, 9999999999);
+
+
+        $response = $this->getJson(route('users.show', ['userId' => $nonUserId]));
+
+        $response->assertStatus(404);
+
+        $response->assertJson([
+            'error' => 'User not found'
+        ]);
     }
 }
