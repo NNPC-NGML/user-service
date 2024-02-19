@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\department>
  */
-class DepartmentFactory extends Factory
+class UnitFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,6 +19,7 @@ class DepartmentFactory extends Factory
         return [
             'name' => fake()->name(),
             'description' => fake()->sentence(),
+            'department_id' => \App\Models\Department::factory()->create()->id,
         ];
     }
 }
