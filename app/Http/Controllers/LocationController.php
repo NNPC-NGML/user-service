@@ -59,4 +59,15 @@ class LocationController extends Controller
             return response()->json(['success' => false, 'message' => 'Location not found'], 404);
         }
     }
+    public function show($locationId)
+    {
+
+        $location = $this->locationService->getLocation($locationId);
+
+        if (!$location) {
+            return response()->json(['error' => 'Location not found'], 404);
+        }
+
+        return response()->json(['success' => true, 'data' => $location], 200);
+    }
 }
