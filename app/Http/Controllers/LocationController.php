@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Location;
 use App\Service\LocationService;
 use Illuminate\Http\Request;
 
@@ -57,6 +58,67 @@ class LocationController extends Controller
             return response()->json(['success' => true, 'message' => 'Location deleted successfully'], 200);
         } else {
             return response()->json(['success' => false, 'message' => 'Location not found'], 404);
+        }
+    }
+
+    /**
+     * @OA\Patch(
+     *     path="/locations/{id}",
+     *     summary="Update an existing location",
+     *     tags={"Locations"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="The ID of the location to update",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         description="Location data to update",
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name", "description"}, // Adjust based on the fields that can be updated
+     *             @OA\Property(property="name", type="string", example="Central Park"),
+     *             @OA\Property(property="description", type="string", example="A large public park in New York City")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Location updated successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 ref="#/components/schemas/Location" // Adjust with actual reference to your Location schema
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error or update failure",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(
+     *                 property="error",
+     *                 type="object",
+     *                 additionalProperties={
+     *                     @OA\Property(type="array", @OA\Items(type="string"))
+     *                 }
+     *             )
+     *         )
+     *     ),
+     *     security={{"apiAuth":{}}}
+     * )
+     */
+    public function updateLocation(Request $request, int $id,)
+    {
+        $result = $this->locationService->updateLocation($id, $request);
+
+        if ($result instanceof Location) {
+            return response()->json(['success' => true, 'data' => $result], 201);
+        } else {
+            return response()->json(['success' => false, 'error' => $result], 422);
         }
     }
 }
