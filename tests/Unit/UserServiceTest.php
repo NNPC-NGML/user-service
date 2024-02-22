@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use App\Models\User;
+use Tests\TestCase;
 use App\Models\department;
 use App\Models\Unit;
 use App\Service\UserService;
@@ -279,7 +279,7 @@ class UserServiceTest extends TestCase
         // Ensure that the user's department remains unchanged in the database
         $this->assertNull(User::find($user->id)->department);
     }
-    
+
     /**
      * Test assigning a user to a unit.
      */
@@ -331,5 +331,32 @@ class UserServiceTest extends TestCase
         $assigned = $userService->assignUserToUnit($user->id, $nonExistentUnitId);
 
         $this->assertFalse($assigned);
+    }
+    /**
+     * Test if the getUser method returns a user.
+     */
+    public function testGetUser(): void
+    {
+        // Create a user for testing
+        $user = User::factory()->create();
+
+        $userService = new UserService();
+        $retrievedUser = $userService->getUser($user->id);
+
+        $this->assertInstanceOf(User::class, $retrievedUser);
+        $this->assertEquals($user->id, $retrievedUser->id);
+    }
+
+    /**
+     * Test when user does not exist.
+     */
+    public function testGetUserWhenIdNotFound(): void
+    {
+        $userId = mt_rand(1000000000, 9999999999);
+
+        $userService = new UserService();
+        $retrievedUser = $userService->getUser($userId);
+
+        $this->assertNull($retrievedUser);
     }
 }
