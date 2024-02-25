@@ -2,14 +2,15 @@
 
 namespace Tests\Unit;
 
-use App\Models\User;
 use Tests\TestCase;
-use App\Models\department;
 use App\Models\Unit;
+use App\Models\User;
+use App\Models\Location;
+use App\Models\department;
 use App\Service\UserService;
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UserServiceTest extends TestCase
 {
@@ -332,6 +333,7 @@ class UserServiceTest extends TestCase
 
         $this->assertFalse($assigned);
     }
+
     /**
      * Test if the getUser method returns a user.
      */
@@ -359,4 +361,6 @@ class UserServiceTest extends TestCase
 
         $this->assertNull($retrievedUser);
     }
+
+
 }
