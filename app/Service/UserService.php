@@ -5,6 +5,8 @@ namespace App\Service;
 use App\Models\Unit;
 use App\Models\User;
 use App\Models\Location;
+use App\Models\User;
+use App\Models\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -225,5 +227,18 @@ class UserService
         $user->locations()->attach($location);
 
         return true;
+    }
+
+
+    /**
+     * Get all data of a particular user.
+     *
+     * @param int $userId The ID of the user.
+     *
+     * @return \App\Models\User|null Returns the user or null if the user is not found.
+     */
+    public function getUser(int $userId)
+    {
+        return User::find($userId);
     }
 }
