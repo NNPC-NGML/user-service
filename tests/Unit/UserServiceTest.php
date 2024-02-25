@@ -361,4 +361,6 @@ class UserServiceTest extends TestCase
 
         $this->assertNull($retrievedUser);
     }
+
+
 }

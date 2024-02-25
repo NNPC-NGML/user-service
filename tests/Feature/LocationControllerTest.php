@@ -1,10 +1,12 @@
 <?php
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\Location;
 
 class LocationControllerTest extends TestCase
 {
+    use RefreshDatabase;
     /** @test */
     public function it_deletes_location_if_exists()
     {
