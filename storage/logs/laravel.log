@@ -3810,3 +3810,387 @@ Did you mean one of these?
 #25 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #26 {main}
 "} 
+[2024-02-25 17:06:44] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:06:45] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:37] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:07:38] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 
+[2024-02-25 17:09:01] testing.ERROR: Cannot use App\Models\User as User because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use App\\Models\\User as User because the name is already in use at /app/app/Service/UserService.php:8)
+[stacktrace]
+#0 {main}
+"} 

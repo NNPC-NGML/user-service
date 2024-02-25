@@ -4,14 +4,11 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use App\Models\Unit;
-use App\Models\Unit;
 use App\Models\User;
-use App\Models\Location;
 use App\Models\Location;
 use App\Models\department;
 use App\Service\UserService;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -32,7 +29,7 @@ class UserServiceTest extends TestCase
 
         $data = new Request($dataArray);
         $userCreatedUser = $userService->create($data);
-        $this->assertInstanceOf(\App\Models\User::class, $userCreatedUser);
+        $this->assertInstanceOf(User::class, $userCreatedUser);
 
         // Check if the user record exists in the database
         $this->assertDatabaseHas('users', [
