@@ -280,7 +280,7 @@ class UserServiceTest extends TestCase
         // Ensure that the user's department remains unchanged in the database
         $this->assertNull(User::find($user->id)->department);
     }
-    
+
     /**
      * Test assigning a user to a unit.
      */
@@ -334,39 +334,31 @@ class UserServiceTest extends TestCase
         $this->assertFalse($assigned);
     }
 
-    public function testAssignUserToLocation(): void
+    /**
+     * Test if the getUser method returns a user.
+     */
+    public function testGetUser(): void
     {
-        
-        $location = Location::create(['location'=>'location1','state'=>'state1','zone'=>'zone1']);
-
-        $user = User::create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => bcrypt('password123'),
-        ]);
-
-        $user->save();
+        // Create a user for testing
+        $user = User::factory()->create();
 
         $userService = new UserService();
-        $assigned = $userService->assignUserToLocation($user->id, $location->id);
+        $retrievedUser = $userService->getUser($user->id);
 
-        $this->assertTrue($assigned);
-        // Assert that the user now belongs to the location
-        $this->assertTrue($user->locations->contains($location));
+        $this->assertInstanceOf(User::class, $retrievedUser);
+        $this->assertEquals($user->id, $retrievedUser->id);
     }
 
-    public function testAssignUserToNonExistentLocation(): void
+    /**
+     * Test when user does not exist.
+     */
+    public function testGetUserWhenIdNotFound(): void
     {
-        $user = User::create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => bcrypt('password123'),
-        ]);
+        $userId = mt_rand(1000000000, 9999999999);
 
-        $nonExistentLocationId = mt_rand(1000000000, 9999999999);
         $userService = new UserService();
-        $assigned = $userService->assignUserToLocation($user->id, $nonExistentLocationId);
+        $retrievedUser = $userService->getUser($userId);
 
-        $this->assertFalse($assigned);
+        $this->assertNull($retrievedUser);
     }
 }
