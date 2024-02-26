@@ -125,7 +125,7 @@ class LocationServiceTest extends TestCase
     }
 
 
-    public function test_to_see_if_there_is_no_record_with_the_provided_department_id()
+    public function test_to_see_if_there_is_no_record_with_the_provided_location_id()
     {
         $locationService = new LocationService();
         $delete = $locationService->deleteLocation(5);

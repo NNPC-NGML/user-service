@@ -29,7 +29,7 @@ class UserServiceTest extends TestCase
 
         $data = new Request($dataArray);
         $userCreatedUser = $userService->create($data);
-        $this->assertInstanceOf(\App\Models\User::class, $userCreatedUser);
+        $this->assertInstanceOf(User::class, $userCreatedUser);
 
         // Check if the user record exists in the database
         $this->assertDatabaseHas('users', [
@@ -330,6 +330,42 @@ class UserServiceTest extends TestCase
         $nonExistentUnitId = mt_rand(1000000000, 9999999999);
         $userService = new UserService();
         $assigned = $userService->assignUserToUnit($user->id, $nonExistentUnitId);
+
+        $this->assertFalse($assigned);
+    }
+
+    public function testAssignUserToLocation(): void
+    {
+        
+        $location = Location::create(['location'=>'location1','state'=>'state1','zone'=>'zone1']);
+
+        $user = User::create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $user->save();
+
+        $userService = new UserService();
+        $assigned = $userService->assignUserToLocation($user->id, $location->id);
+
+        $this->assertTrue($assigned);
+        // Assert that the user now belongs to the location
+        $this->assertTrue($user->locations->contains($location));
+    }
+
+    public function testAssignUserToNonExistentLocation(): void
+    {
+        $user = User::create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $nonExistentLocationId = mt_rand(1000000000, 9999999999);
+        $userService = new UserService();
+        $assigned = $userService->assignUserToLocation($user->id, $nonExistentLocationId);
 
         $this->assertFalse($assigned);
     }
