@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LocationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DepartmentController;
@@ -29,4 +30,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/department',[DepartmentController::class, 'index'])->name('view_all_department');
     ////////View a Department
     Route::get('/department/{id}',[DepartmentController::class, 'show'])->name('view_department');
+
+    //Location
+    Route::delete('/locations/{id}', [LocationController::class, 'delete'])->name('locations.delete');
 });
