@@ -226,4 +226,17 @@ class UserService
 
         return true;
     }
+
+
+    /**
+     * Get all data of a particular user.
+     *
+     * @param int $userId The ID of the user.
+     *
+     * @return \App\Models\User|null Returns the user or null if the user is not found.
+     */
+    public function getUser(int $userId)
+    {
+        return User::find($userId);
+    }
 }
