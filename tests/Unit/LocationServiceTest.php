@@ -130,7 +130,7 @@ class LocationServiceTest extends TestCase
         $locationService = new LocationService();
         $delete = $locationService->deleteLocation(5);
         $this->assertFalse($delete);
-
+        
     }
 
 
