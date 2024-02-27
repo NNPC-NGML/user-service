@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LocationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DepartmentController;
@@ -27,4 +28,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::put('/update_department/{id}',[DepartmentController::class, 'update'])->name('update_department');
     ////////View All Department
     Route::get('/department',[DepartmentController::class, 'index'])->name('view_all_department');
+
+    //Location
+    Route::delete('/locations/{id}', [LocationController::class, 'delete'])->name('locations.delete');
 });
