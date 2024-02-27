@@ -3,12 +3,14 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
+use App\Models\Unit;
 use App\Models\User;
+use App\Models\Location;
 use App\Models\department;
 use App\Service\UserService;
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UserServiceTest extends TestCase
 {
@@ -27,7 +29,7 @@ class UserServiceTest extends TestCase
 
         $data = new Request($dataArray);
         $userCreatedUser = $userService->create($data);
-        $this->assertInstanceOf(\App\Models\User::class, $userCreatedUser);
+        $this->assertInstanceOf(User::class, $userCreatedUser);
 
         // Check if the user record exists in the database
         $this->assertDatabaseHas('users', [
@@ -278,4 +280,123 @@ class UserServiceTest extends TestCase
         // Ensure that the user's department remains unchanged in the database
         $this->assertNull(User::find($user->id)->department);
     }
+
+    /**
+     * Test assigning a user to a unit.
+     */
+    public function testAssignUserToUnit(): void
+    {
+        $department = Department::create([
+            'name' => 'Test Department',
+            'description' => 'Test Description',
+        ]);
+
+        $unit = Unit::create([
+            'name' => 'Test Unit',
+            'description' => 'Unit Description',
+            'department_id' => $department->id,
+        ]);
+
+        $user = User::create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $user->department()->associate($department->id);
+
+        $user->save();
+
+        $userService = new UserService();
+        $assigned = $userService->assignUserToUnit($user->id, $unit->id);
+
+        $this->assertTrue($assigned);
+
+        // Assert that the user now belongs to the unit
+        $this->assertTrue($user->units->contains($unit));
+    }
+
+    /**
+     * Test assigning a user to a non-existent unit.
+     */
+    public function testAssignUserToNonExistentUnit(): void
+    {
+        $user = User::create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $nonExistentUnitId = mt_rand(1000000000, 9999999999);
+        $userService = new UserService();
+        $assigned = $userService->assignUserToUnit($user->id, $nonExistentUnitId);
+
+        $this->assertFalse($assigned);
+    }
+
+    public function testAssignUserToLocation(): void
+    {
+        
+        $location = Location::create(['location'=>'location1','state'=>'state1','zone'=>'zone1']);
+
+        $user = User::create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $user->save();
+
+        $userService = new UserService();
+        $assigned = $userService->assignUserToLocation($user->id, $location->id);
+
+        $this->assertTrue($assigned);
+        // Assert that the user now belongs to the location
+        $this->assertTrue($user->locations->contains($location));
+    }
+
+    public function testAssignUserToNonExistentLocation(): void
+    {
+        $user = User::create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $nonExistentLocationId = mt_rand(1000000000, 9999999999);
+        $userService = new UserService();
+        $assigned = $userService->assignUserToLocation($user->id, $nonExistentLocationId);
+
+        $this->assertFalse($assigned);
+    }
+
+    /**
+     * Test if the getUser method returns a user.
+     */
+    public function testGetUser(): void
+    {
+        // Create a user for testing
+        $user = User::factory()->create();
+
+        $userService = new UserService();
+        $retrievedUser = $userService->getUser($user->id);
+
+        $this->assertInstanceOf(User::class, $retrievedUser);
+        $this->assertEquals($user->id, $retrievedUser->id);
+    }
+
+    /**
+     * Test when user does not exist.
+     */
+    public function testGetUserWhenIdNotFound(): void
+    {
+        $userId = mt_rand(1000000000, 9999999999);
+
+        $userService = new UserService();
+        $retrievedUser = $userService->getUser($userId);
+
+        $this->assertNull($retrievedUser);
+    }
+
+
 }

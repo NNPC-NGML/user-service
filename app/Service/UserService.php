@@ -2,8 +2,10 @@
 
 namespace App\Service;
 
-use Illuminate\Http\Request;
+use App\Models\Unit;
 use App\Models\User;
+use App\Models\Location;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -155,5 +157,86 @@ class UserService
         $user->save();
 
         return true;
+    }
+
+    /**
+     * Assign a user to a unit.
+     *
+     * @param int $userId The ID of the user.
+     * @param int $unitId The ID of the unit.
+     *
+     * @return bool Returns true on success, false on failure.
+     */
+    public function assignUserToUnit(int $userId, int $unitId): bool
+    {
+        $user = User::find($userId);
+        $unit = Unit::find($unitId);
+
+        if (!$user || !$unit) {
+            return false;
+        }
+
+
+        // Check if the user already belongs to the unit
+        if ($user->units->contains($unit)) {
+            return false;
+        }
+
+        // Check if the unit belongs to the same department as the user
+        if ($user->department_id !== $unit->department_id) {
+            return false;
+        }
+
+        $user->units()->attach($unit);
+
+        return true;
+    }
+
+
+    /**
+     * The function assigns a user to a location if they are not already assigned.
+     * 
+     * @param int userId The `userId` parameter is an integer that represents the unique identifier of
+     * the user to be assigned to a location.
+     * @param int locationId The `locationId` parameter in the `assignUserToLocation` function
+     * represents the unique identifier of the location to which you want to assign a user. This
+     * parameter is used to retrieve the specific location from the database based on its ID so that
+     * the user can be assigned to that location.
+     * 
+     * @return bool The function `assignUserToLocation` returns a boolean value. It returns `true` if
+     * the user is successfully assigned to the location, and `false` in the following cases:
+     * 1. If the user or location is not found (if `` or `` is null).
+     * 2. If the user already belongs to the location (if the user's locations collection contains the
+     * specified location
+     */
+    public function assignUserToLocation(int $userId, int $locationId): bool
+    {
+        $user = User::find($userId);
+        $location = Location::find($locationId);
+
+        if (!$user || !$location) {
+            return false;
+        }
+
+        // Check if the user already belongs to the location
+        if ($user->locations->contains($location)) {
+            return false;
+        }
+        $user->locations()->attach($location);
+
+        return true;
+    }
+
+
+    /**
+     * Get all data of a particular user.
+     *
+     * @param int $userId The ID of the user.
+     *
+     * @return \App\Models\User|null Returns the user or null if the user is not found.
+     */
+    public function getUser(int $userId)
+    {
+        return User::find($userId);
     }
 }
