@@ -23,6 +23,7 @@ use App\Http\Controllers\DepartmentController;
 Route::group(['prefix' => 'v1'], function () {
     Route::post('/create_user',[UserController::class, 'create'])->name('create_user');
     Route::post('/create_department',[DepartmentController::class, 'create'])->name('create_department');
+    Route::put('/update_department/{id}',[DepartmentController::class, 'update'])->name('update_department');
 
     //Location
     Route::delete('/locations/{id}', [LocationController::class, 'delete'])->name('locations.delete');
