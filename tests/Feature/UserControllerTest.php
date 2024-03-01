@@ -108,6 +108,51 @@ class UserControllerTest extends TestCase
                 ]
             ]);
     }
+    /** @test */
+    public function it_can_delete_an_existing_user()
+    {
+
+        $user = User::factory()->create();
+        // Authenticate user
+        $this->actingAs($user);
+
+        $response = $this->deleteJson(route('delete_user'), ['id' => $user->id]);
+
+        $response->assertStatus(200)
+            ->assertJson(['success' => true, 'message' => 'User successfully deleted']);
+
+        $this->assertDatabaseMissing('users', ['id' => $user->id]);
+    }
+
+    /** @test */
+    public function it_returns_not_found_if_user_does_not_exist()
+    {
+        $user = User::factory()->create();
+        // Authenticate user
+        $this->actingAs($user);
+
+        $nonExistentUserId = mt_rand(1000000000, 9999999999);
+
+        // Send a delete request with a non-existent user ID
+        $response = $this->deleteJson(route('delete_user'), ['id' => $nonExistentUserId]);
+
+        $response->assertStatus(404)
+            ->assertJson(['success' => false, 'message' => 'User not found']);
+    }
+
+    /** @test */
+    public function it_requires_a_valid_user_id()
+    {
+        $user = User::factory()->create();
+        // Authenticate user
+        $this->actingAs($user);
+
+        // Send a delete request without providing a user ID
+        $response = $this->deleteJson(route('delete_user'));
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['id']);
+    }
 
     /** @test */
     public function it_updates_user_credentials()
@@ -141,7 +186,7 @@ class UserControllerTest extends TestCase
     /** @test */
     public function it_returns_not_found_error_if_user_does_not_exist()
     {
-        
+
         $nonExistentUserId = mt_rand(1000000000, 9999999999);
 
         $response = $this->putJson(route('users.update', ['userId' => $nonExistentUserId]), []);
