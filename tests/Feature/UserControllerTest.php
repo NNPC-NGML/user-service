@@ -214,4 +214,37 @@ class UserControllerTest extends TestCase
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['email', 'name', 'password']);
     }
+
+    /** @test */
+    public function test_show_user_exists()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->getJson(route('users.show', ['userId' => $user->id]));
+
+        $response->assertStatus(200);
+
+        $response->assertJson([
+            'success' => true,
+            'data' => [
+                'id' => $user->id,
+                'email' => $user->email,
+                'name' => $user->name
+            ]
+        ]);
+    }
+    /** @test */
+    public function test_show_user_not_found()
+    {
+        $nonUserId = mt_rand(1000000000, 9999999999);
+
+
+        $response = $this->getJson(route('users.show', ['userId' => $nonUserId]));
+
+        $response->assertStatus(404);
+
+        $response->assertJson([
+            'error' => 'User not found'
+        ]);
+    }
 }
