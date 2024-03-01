@@ -109,6 +109,113 @@ class UserControllerTest extends TestCase
             ]);
     }
     /** @test */
+    public function it_can_delete_an_existing_user()
+    {
+
+        $user = User::factory()->create();
+        // Authenticate user
+        $this->actingAs($user);
+
+        $response = $this->deleteJson(route('delete_user'), ['id' => $user->id]);
+
+        $response->assertStatus(200)
+            ->assertJson(['success' => true, 'message' => 'User successfully deleted']);
+
+        $this->assertDatabaseMissing('users', ['id' => $user->id]);
+    }
+
+    /** @test */
+    public function it_returns_not_found_if_user_does_not_exist()
+    {
+        $user = User::factory()->create();
+        // Authenticate user
+        $this->actingAs($user);
+
+        $nonExistentUserId = mt_rand(1000000000, 9999999999);
+
+        // Send a delete request with a non-existent user ID
+        $response = $this->deleteJson(route('delete_user'), ['id' => $nonExistentUserId]);
+
+        $response->assertStatus(404)
+            ->assertJson(['success' => false, 'message' => 'User not found']);
+    }
+
+    /** @test */
+    public function it_requires_a_valid_user_id()
+    {
+        $user = User::factory()->create();
+        // Authenticate user
+        $this->actingAs($user);
+
+        // Send a delete request without providing a user ID
+        $response = $this->deleteJson(route('delete_user'));
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['id']);
+    }
+
+    /** @test */
+    public function it_updates_user_credentials()
+    {
+        $user = User::factory()->create();
+
+        $newUserData = [
+            'email' => 'newemail@example.com',
+            'name' => 'New Name',
+            'password' => 'newpassword123',
+        ];
+
+        $response = $this->putJson(route('users.update', ['userId' => $user->id]), $newUserData);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'data' => [
+                    'email' => $newUserData['email'],
+                    'name' => $newUserData['name'],
+                ]
+            ]);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'email' => $newUserData['email'],
+            'name' => $newUserData['name'],
+        ]);
+    }
+
+    /** @test */
+    public function it_returns_not_found_error_if_user_does_not_exist()
+    {
+
+        $nonExistentUserId = mt_rand(1000000000, 9999999999);
+
+        $response = $this->putJson(route('users.update', ['userId' => $nonExistentUserId]), []);
+
+        $response->assertStatus(404)
+            ->assertJson([
+                'success' => false,
+                'message' => 'User not found'
+            ]);
+    }
+
+    /** @test */
+    public function it_validates_request_data()
+    {
+        $user = User::factory()->create();
+
+        $invalidUserData = [
+            'email' => 'invalidemail',
+            'name' => '',
+            'password' => 'short',
+        ];
+
+        $response = $this->putJson(route('users.update', ['userId' => $user->id]), $invalidUserData);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['email', 'name', 'password']);
+    }
+
+    /** @test */
     public function test_show_user_exists()
     {
         $user = User::factory()->create();

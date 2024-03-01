@@ -67,6 +67,132 @@ class UserController extends Controller
         }
     }
 
+
+    /**
+     * @OA\Delete(
+     *     path="/delete_user",
+     *     summary="Delete a user",
+     *     tags={"Users"},
+     *     security={{ "apiAuth": {} }},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"id"},
+     *             @OA\Property(property="id", type="integer", example="123")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User deleted successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="User successfully deleted")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="User not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="The given data was invalid."),
+     *             @OA\Property(property="errors", type="object", example={"id": {"The id field is required."}})
+     *         )
+     *     )
+     * )
+     */
+    public function delete(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer'
+        ]);
+
+        $result = $this->userService->deleteUser($request->id);
+
+        $response = $result
+            ? ['success' => true, 'message' => 'User successfully deleted']
+            : ['success' => false, 'message' => 'User not found'];
+
+        return response()->json($response, $result ? 200 : 404);
+    }
+
+    /**
+     * @OA\Put(
+     *     path="/users/{userId}",
+     *     summary="Update user credentials",
+     *     tags={"Users"},
+     *     @OA\Parameter(
+     *         name="userId",
+     *         in="path",
+     *         required=true,
+     *         description="The id of the user to update",
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=false,
+     *         description="User credentials to update",
+     *         @OA\JsonContent(
+     *             required={"email", "name", "password"},
+     *             @OA\Property(property="email", type="string", format="email", example="user@example.com"),
+     *             @OA\Property(property="name", type="string", example="John Doe"),
+     *             @OA\Property(property="password", type="string", format="password", example="password123")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User updated successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 ref="#/components/schemas/User"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User not found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="User not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="errors", type="object")
+     *         )
+     *     )
+     * )
+     */
+    public function update(Request $request, int $userId)
+    {
+
+        $result = $this->userService->updateUserCredentials($userId, $request->all());
+
+        if ($result === false) {
+            return response()->json(['success' => false, 'message' => 'User not found'], 404);
+        } elseif (is_array($result)) {
+            return response()->json(['success' => false, 'errors' => $result], 422);
+        } else {
+            return response()->json(['success' => true, 'data' => new UserResource($result)], 200);
+        }
+    }
+
     /**
      * @OA\Get(
      *     path="/users/{userId}",
