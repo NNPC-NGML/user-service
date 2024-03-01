@@ -2,14 +2,15 @@
 
 namespace Tests\Unit;
 
-use App\Models\User;
 use Tests\TestCase;
-use App\Models\department;
 use App\Models\Unit;
+use App\Models\User;
+use App\Models\Location;
+use App\Models\department;
 use App\Service\UserService;
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UserServiceTest extends TestCase
 {
@@ -28,7 +29,7 @@ class UserServiceTest extends TestCase
 
         $data = new Request($dataArray);
         $userCreatedUser = $userService->create($data);
-        $this->assertInstanceOf(\App\Models\User::class, $userCreatedUser);
+        $this->assertInstanceOf(User::class, $userCreatedUser);
 
         // Check if the user record exists in the database
         $this->assertDatabaseHas('users', [
@@ -332,6 +333,43 @@ class UserServiceTest extends TestCase
 
         $this->assertFalse($assigned);
     }
+
+    public function testAssignUserToLocation(): void
+    {
+        
+        $location = Location::create(['location'=>'location1','state'=>'state1','zone'=>'zone1']);
+
+        $user = User::create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $user->save();
+
+        $userService = new UserService();
+        $assigned = $userService->assignUserToLocation($user->id, $location->id);
+
+        $this->assertTrue($assigned);
+        // Assert that the user now belongs to the location
+        $this->assertTrue($user->locations->contains($location));
+    }
+
+    public function testAssignUserToNonExistentLocation(): void
+    {
+        $user = User::create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $nonExistentLocationId = mt_rand(1000000000, 9999999999);
+        $userService = new UserService();
+        $assigned = $userService->assignUserToLocation($user->id, $nonExistentLocationId);
+
+        $this->assertFalse($assigned);
+    }
+
     /**
      * Test if the getUser method returns a user.
      */
@@ -359,4 +397,6 @@ class UserServiceTest extends TestCase
 
         $this->assertNull($retrievedUser);
     }
+
+
 }
