@@ -3,6 +3,7 @@ namespace App\Service;
 
 use App\Models\department;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Response;
@@ -57,7 +58,7 @@ class DepartmentService{
      * 
      * @return all the departments.
      */
-    public function viewAllDepartment():object | null{
+    public function viewAllDepartment():Collection | null{
         $returnArray = department::all();
         return $returnArray;
     }
