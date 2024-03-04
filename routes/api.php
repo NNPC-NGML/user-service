@@ -30,6 +30,8 @@ Route::group(['prefix' => 'v1'], function () {
 
     //Location
     Route::delete('/locations/{id}', [LocationController::class, 'delete'])->name('locations.delete');
+    Route::patch('/locations/{id}', [LocationController::class, 'updateLocation'])->name('locations.update');
+
     Route::post('/create_location', [LocationController::class, 'create'])->name('locations.create');
     Route::get('/locations/{locationId}', [LocationController::class, 'show'])->name('locations.show');
     Route::get('/locations', [LocationController::class, 'index'])->name('locations.index');

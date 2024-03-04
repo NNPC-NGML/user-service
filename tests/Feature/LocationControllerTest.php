@@ -72,7 +72,7 @@ class LocationControllerTest extends TestCase
         ]);
     }
 
-     /** @test */
+    /** @test */
     public function test_show_location_exists()
     {
 
@@ -99,7 +99,7 @@ class LocationControllerTest extends TestCase
         ]);
     }
 
-     /** @test */
+    /** @test */
     public function test_show_location_not_found()
     {
         $nonExistingLocationId = mt_rand(1000000000, 9999999999);
@@ -114,42 +114,76 @@ class LocationControllerTest extends TestCase
         ]);
     }
 
-        /** @test */
-        public function testCreateLocation()
-        {
-            $data = [
-                'location' => 'Downtown',
-                'zone' => 'Commercial',
-                'state' => 1
-            ];
+    /** @test */
+    public function testCreateLocation()
+    {
+        $data = [
+            'location' => 'Downtown',
+            'zone' => 'Commercial',
+            'state' => 1
+        ];
 
-            $response = $this->postJson(route('locations.create', $data));
+        $response = $this->postJson(route('locations.create', $data));
 
-            $response->assertStatus(201);
+        $response->assertStatus(201);
 
-            $this->assertDatabaseHas('locations', $data);
-        }
-        /** @test */
-        public function testValidationErrors()
-        {
-            $data = [
-                'location' => '',
-                'zone' => '',
-                'state' => ''
-            ];
+        $this->assertDatabaseHas('locations', $data);
+    }
+    /** @test */
+    public function testValidationErrors()
+    {
+        $data = [
+            'location' => '',
+            'zone' => '',
+            'state' => ''
+        ];
 
-            $response = $this->postJson(route('locations.create', $data));
+        $response = $this->postJson(route('locations.create', $data));
 
-            $response->assertStatus(422);
+        $response->assertStatus(422);
 
-            $response->assertStatus(422)
-                ->assertJson([
-                    'success' => false,
-                    'error' => [
-                        'location' => ['The location field is required.'],
-                        'zone' => ['The zone field is required.'],
-                        'state' => ['The state field is required.'],
-                    ]
-                ]);
-        }
+        $response->assertStatus(422)
+            ->assertJson([
+                'success' => false,
+                'error' => [
+                    'location' => ['The location field is required.'],
+                    'zone' => ['The zone field is required.'],
+                    'state' => ['The state field is required.'],
+                ]
+            ]);
+    }
+    /** @test */
+    public function testUpdateLocationSuccessfully()
+    {
+        $data_array = ['location' => 'location1', 'state' => 1, 'zone' => 'zone1'];
+
+        $location = Location::create($data_array);
+
+        $response = $this->patchJson(route('locations.update', $location->id), [
+            'location' => 'location1',
+            'state' => 2,
+        ]);
+
+        $response->assertStatus(201);
+        $this->assertDatabaseHas('locations', [
+            'id' => $location->id,
+            'location' => 'location1',
+            'state' => 2,
+        ]);
+    }
+
+    /** @test */
+    public function testUpdateLocationValidationErrors()
+    {
+        $data_array = ['location' => 'location1', 'state' => 1, 'zone' => 'zone1'];
+
+        $location = Location::create($data_array);
+
+
+        $response = $this->patchJson(route('locations.update', $location->id), [
+            'location' => '',
+        ]);
+
+        $response->assertStatus(500);
+    }
 }
