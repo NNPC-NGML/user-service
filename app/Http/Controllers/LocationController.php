@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\LocationResource;
 use App\Service\LocationService;
 use Illuminate\Http\Request;
+use App\Models\Location;
 
 class LocationController extends Controller
 {
@@ -153,5 +154,70 @@ class LocationController extends Controller
         }
 
         return response()->json(['success' => true, 'data' => $location], 200);
+    }
+    /**
+     * @OA\Post(
+     *     path="/create_locations",
+     *     summary="Create a new location",
+     *     tags={"Locations"},
+     *     @OA\RequestBody(
+     *         description="Data for creating a new location",
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"location", "zone", "state"},
+     *             @OA\Property(property="location", type="string", example="Downtown"),
+     *             @OA\Property(property="zone", type="string", example="Commercial"),
+     *             @OA\Property(property="state", type="string", example="Active"),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Location created successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 ref="#/components/schemas/Location"
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(
+     *                 property="error",
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="location",
+     *                     type="array",
+     *                     @OA\Items(type="string", example="The location field is required.")
+     *                 ),
+     *                 @OA\Property(
+     *                     property="zone",
+     *                     type="array",
+     *                     @OA\Items(type="string", example="The zone field is required.")
+     *                 ),
+     *                 @OA\Property(
+     *                     property="state",
+     *                     type="array",
+     *                     @OA\Items(type="string", example="The state field is required.")
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     * )
+     */
+    public function create(Request $request)
+    {
+        $result = $this->locationService->create($request);
+
+        if ($result instanceof Location) {
+            return response()->json(['success' => true, 'data' => $result], 201);
+        } else {
+            return response()->json(['success' => false, 'error' => $result], 422);
+        }
     }
 }
