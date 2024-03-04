@@ -114,7 +114,47 @@ class LocationController extends Controller
             return response()->json(['success' => false, 'error' => $locations], 422);
         }
     }
+    /**
+     * @OA\Get(
+     *     path="/locations/{locationId}",
+     *     summary="Get a location by ID",
+     *     description="Retrieve information about a location by its ID.",
+     *     tags={"Locations"},
+     *     @OA\Parameter(
+     *         name="locationId",
+     *         in="path",
+     *         description="ID of the location to retrieve",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="data", type="object", ref="#/components/schemas/Location"),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Location not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Location not found"),
+     *         ),
+     *     ),
+     * )
+     */
+    public function show($locationId)
+    {
 
+        $location = $this->locationService->getLocation($locationId);
+
+        if (!$location) {
+            return response()->json(['error' => 'Location not found'], 404);
+        }
+
+        return response()->json(['success' => true, 'data' => $location], 200);
+    }
     /**
      * @OA\Post(
      *     path="/create_locations",
