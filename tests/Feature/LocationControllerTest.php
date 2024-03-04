@@ -1,10 +1,12 @@
 <?php
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\Location;
 
 class LocationControllerTest extends TestCase
 {
+    use RefreshDatabase;
     /** @test */
     public function it_deletes_location_if_exists()
     {
@@ -24,6 +26,52 @@ class LocationControllerTest extends TestCase
         $response->assertStatus(404)
             ->assertJson(['success' => false, 'message' => 'Location not found']);
     }
+
+    public function test_can_get_all_locations()
+    {
+        $data = [
+            'location' => 'location1',
+            'state' => 1,
+            'zone' => 'zone1',
+        ];
+
+        Location::create($data);
+
+        $response = $this->get(route('locations.index'));
+
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure([
+            'success',
+            'data' => [
+                '*' => [
+                    'id',
+                    'zone',
+                    'state'
+                ]
+            ]
+        ]);
+
+        $response->assertJsonCount(1, 'data');
+    }
+
+    public function test_get_all_locations_returns_no_data()
+    {
+        $response = $this->get(route('locations.index'));
+
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure([
+            'success',
+            'data'
+        ]);
+
+        $response->assertJson([
+            'success' => true,
+            'data' => []
+        ]);
+    }
+
     /** @test */
     public function testCreateLocation()
     {

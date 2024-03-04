@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Location;
+use App\Http\Resources\LocationResource;
 use App\Service\LocationService;
 use Illuminate\Http\Request;
+use App\Models\Location;
 
 class LocationController extends Controller
 {
@@ -58,6 +59,59 @@ class LocationController extends Controller
             return response()->json(['success' => true, 'message' => 'Location deleted successfully'], 200);
         } else {
             return response()->json(['success' => false, 'message' => 'Location not found'], 404);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *      path="/locations",
+     *      operationId="getAllLocations",
+     *      tags={"Locations"},
+     *      summary="Get all locations",
+     *      description="Returns all locations",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="success",
+     *                  type="boolean",
+     *                  example=true
+     *              ),
+     *              @OA\Property(
+     *                  property="data",
+     *                  type="object",
+     *                  description="Location resource",
+     *                  ref="#/components/schemas/LocationResource"
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Unprocessable Entity",
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="success",
+     *                  type="boolean",
+     *                  example=false
+     *              ),
+     *              @OA\Property(
+     *                  property="error",
+     *                  type="string",
+     *                  description="Error message"
+     *              )
+     *          )
+     *      )
+     * )
+     */
+    public function index()
+    {
+        $locations = $this->locationService->viewAllLocations();
+
+        if ($locations) {
+            return response()->json(['success' => true, 'data' => new LocationResource($locations)], 200);
+        } else {
+            return response()->json(['success' => false, 'error' => $locations], 422);
         }
     }
 
