@@ -17,15 +17,15 @@ class LocationServiceTest extends TestCase
      */
     public function test_if_location_is_created(): void
     {
-        $departmentService = new LocationService();
+        $locationService = new LocationService();
         $data_array = ['location'=>'location1','state'=>'state1','zone'=>'zone1'];
         $data = new Request($data_array);
-        $result = $departmentService->create($data);
+        $result = $locationService->create($data);
         $this->assertInstanceOf(Location::class, $result);
         $this->assertNotNull($result->id);
         $this->assertDatabaseHas('locations', [
             'location'=>'location1','state'=>'state1','zone'=>'zone1'
-        ]);        
+        ]);
     }
 
     public function test_if_location_is_not_created(): void
@@ -33,9 +33,9 @@ class LocationServiceTest extends TestCase
         $locationService = new LocationService();
         $data_array = ['location'=>'new location'];
         $data = new Request($data_array);
-        $createDepartment = $locationService->create($data);
-        $resultArray = $createDepartment->toArray();
-        $this->assertNotEmpty($createDepartment);
+        $createLocation = $locationService->create($data);
+        $resultArray = $createLocation->toArray();
+        $this->assertNotEmpty($createLocation);
         $this->assertIsArray($resultArray);
         $this->assertArrayHasKey('state', $resultArray);
     }
@@ -100,10 +100,10 @@ class LocationServiceTest extends TestCase
         Location::factory(15)->create();
         $locationService = new LocationService();
         $fetchAllLocations = $locationService->viewAllLocations();
-        $this->assertCount( 
-            15, 
+        $this->assertCount(
+            15,
             $fetchAllLocations->toArray(), "FetchAllLocation Array doesn't return the correct data count"
-        ); 
+        );
 
     }
 
@@ -125,7 +125,7 @@ class LocationServiceTest extends TestCase
     }
 
 
-    public function test_to_see_if_there_is_no_record_with_the_provided_department_id()
+    public function test_to_see_if_there_is_no_record_with_the_provided_location_id()
     {
         $locationService = new LocationService();
         $delete = $locationService->deleteLocation(5);
