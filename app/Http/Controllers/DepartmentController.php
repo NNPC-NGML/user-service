@@ -46,6 +46,7 @@ class DepartmentController extends Controller
         $result = $this->departmentService->viewAllDepartment();
         if ($result instanceof Collection) {
             return response()->json(['success' => true, 'data' => new DepartmentResource($result)], 201);
+        }
     }
 
     
