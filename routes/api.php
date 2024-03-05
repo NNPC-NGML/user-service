@@ -34,6 +34,8 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/department',[DepartmentController::class, 'index'])->name('view_all_department');
     ////////View a Department
     Route::get('/department/{id}',[DepartmentController::class, 'show'])->name('view_department');
+    ////////Delete a Department
+    Route::delete('/department/{id}',[DepartmentController::class, 'destroy'])->name('delete_department');
 
     //Location
     Route::delete('/locations/{id}', [LocationController::class, 'delete'])->name('locations.delete');
