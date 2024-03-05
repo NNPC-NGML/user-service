@@ -25,10 +25,18 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('/create_user',[UserController::class, 'create'])->name('create_user');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/{userId}', [UserController::class, 'show'])->name('users.show');
+    /////// Create Department
     Route::put('/users/{userId}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/delete_user',[UserController::class, 'delete'])->name('delete_user')->middleware('auth');
     Route::post('/create_department',[DepartmentController::class, 'create'])->name('create_department');
+    //////// Update a Department
     Route::put('/update_department/{id}',[DepartmentController::class, 'update'])->name('update_department');
+    ////////View All Department
+    Route::get('/department',[DepartmentController::class, 'index'])->name('view_all_department');
+    ////////View a Department
+    Route::get('/department/{id}',[DepartmentController::class, 'show'])->name('view_department');
+    ////////Delete a Department
+    Route::delete('/department/{id}',[DepartmentController::class, 'destroy'])->name('delete_department');
 
     //Location
     Route::delete('/locations/{id}', [LocationController::class, 'delete'])->name('locations.delete');

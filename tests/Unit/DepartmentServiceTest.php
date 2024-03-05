@@ -145,4 +145,16 @@ class DepartmentServiceTest extends TestCase
 
     }
 
+    public function test_route_to_view_all_departments(){
+        $response = $this->get('/api/v1/department')
+            ->assertStatus(201)
+            ->assertJsonStructure(
+                [
+                    'success',
+                    'data'=> [
+                    ]
+                ]
+            );
+    }
+
 }
