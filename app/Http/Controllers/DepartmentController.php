@@ -46,8 +46,6 @@ class DepartmentController extends Controller
         $result = $this->departmentService->viewAllDepartment();
         if ($result instanceof Collection) {
             return response()->json(['success' => true, 'data' => new DepartmentResource($result)], 201);
-        } else {
-            return response()->json(['success' => false, 'error' => $result], 422);
         }
     }
 
@@ -93,9 +91,16 @@ class DepartmentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(department $department)
+    /* The `show` function in the `DepartmentController` class is responsible for displaying a specific
+    department based on the provided department ID. Here's a breakdown of what it does: */
+    public function show($id)
     {
-        //
+        $result = $this->departmentService->getDepartment($id);
+        if ($result instanceof department) {
+            return response()->json(['success' => true, 'data' => new DepartmentResource($result)], 201);
+        } else {
+            return response()->json(['success' => false, 'error' => $result], 422);
+        }
     }
 
     /**
