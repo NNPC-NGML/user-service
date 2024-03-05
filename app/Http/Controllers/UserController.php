@@ -43,7 +43,7 @@ class UserController extends Controller
      *          description="User created successfully",
      *          @OA\JsonContent(
      *              @OA\Property(property="success", type="boolean", example=true),
-     *              @OA\Property(property="data", ref="#/components/schemas/User")
+     *              @OA\Property(property="data", ref="#/components/schemas/UserResource")
      *          )
      *      ),
      *      @OA\Response(
@@ -66,7 +66,6 @@ class UserController extends Controller
             return response()->json(['success' => false, 'error' => $result], 422);
         }
     }
-
 
     /**
      * @OA\Delete(
