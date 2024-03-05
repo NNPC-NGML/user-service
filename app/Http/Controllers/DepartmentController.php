@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Resources\DepartmentResource;
 use App\Models\department;
 use App\Service\DepartmentService;
+use ArrayObject;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoredepartmentRequest;
 use App\Http\Requests\UpdatedepartmentRequest;
+use Illuminate\Support\Collection;
 
 class DepartmentController extends Controller
 {
@@ -16,7 +18,7 @@ class DepartmentController extends Controller
         $this->departmentService = $departmentService;
     }
    
-   
+
     /**
      * The index function retrieves all departments and returns a JSON response based on the result.
      * 
@@ -25,10 +27,26 @@ class DepartmentController extends Controller
      * with a status code of 201 (Created). If `` is not an instance of the `Department` class,
      * a JSON response with a success status of false and an error message will be
      */
+
+    /**
+  * @OA\Get(
+  *     path="/departments",
+  *     tags={"departments"},
+  *     summary="Get list of departments",
+  *     @OA\Response(
+  *          response=200,
+  *          description="Successful",
+  *          @OA\JsonContent(ref="#/components/schemas/DepartmentResource")
+  *     )
+  * )
+  */
+
     public function index()
     {
         $result = $this->departmentService->viewAllDepartment();
+        if ($result instanceof Collection) {
             return response()->json(['success' => true, 'data' => new DepartmentResource($result)], 201);
+        }
     }
 
     
@@ -46,6 +64,7 @@ class DepartmentController extends Controller
      * (Created). If the `` is not an instance of `Department`, a JSON response with a success
      * status of false and the error message in the response is returned with a status code of
      */
+
     public function create(Request $request)
     {
         $result = $this->departmentService->create($request);
@@ -60,6 +79,10 @@ class DepartmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+
+    
+    
     public function store(Request $request)
     {
         //

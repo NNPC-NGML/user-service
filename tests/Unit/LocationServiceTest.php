@@ -25,7 +25,7 @@ class LocationServiceTest extends TestCase
         $this->assertNotNull($result->id);
         $this->assertDatabaseHas('locations', [
             'location'=>'location1','state'=>'state1','zone'=>'zone1'
-        ]);        
+        ]);
     }
 
     public function test_if_location_is_not_created(): void
@@ -100,10 +100,10 @@ class LocationServiceTest extends TestCase
         Location::factory(15)->create();
         $locationService = new LocationService();
         $fetchAllLocations = $locationService->viewAllLocations();
-        $this->assertCount( 
-            15, 
+        $this->assertCount(
+            15,
             $fetchAllLocations->toArray(), "FetchAllLocation Array doesn't return the correct data count"
-        ); 
+        );
 
     }
 
@@ -130,7 +130,7 @@ class LocationServiceTest extends TestCase
         $locationService = new LocationService();
         $delete = $locationService->deleteLocation(5);
         $this->assertFalse($delete);
-
+        
     }
 
 
