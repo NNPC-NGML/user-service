@@ -67,7 +67,6 @@ class UserController extends Controller
         }
     }
 
-
     /**
      * @OA\Delete(
      *     path="/delete_user",
