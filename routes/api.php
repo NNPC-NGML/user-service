@@ -4,6 +4,7 @@ use App\Http\Controllers\LocationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\UnitController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,4 +45,8 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('/create_location', [LocationController::class, 'create'])->name('locations.create');
     Route::get('/locations/{locationId}', [LocationController::class, 'show'])->name('locations.show');
     Route::get('/locations', [LocationController::class, 'index'])->name('locations.index');
+
+    //Unit
+    Route::post('/create_unit',[UnitController::class, 'create'])->name('create_unit');
+
 });
