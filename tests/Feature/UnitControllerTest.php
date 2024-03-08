@@ -3,10 +3,13 @@
 namespace Tests\Feature;
 
 use App\Models\department;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class UnitControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     public function it_can_create_a_unit(): void
     {
