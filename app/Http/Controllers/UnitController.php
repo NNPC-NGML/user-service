@@ -57,4 +57,51 @@ class UnitController extends Controller
             return response()->json(['success' => false, 'error' => $result], 422);
         }
     }
+
+    /**
+     * @OA\Get(
+     *     path="/units",
+     *     operationId="viewAllUnits",
+     *     tags={"Units"},
+     *     summary="Get list of all units",
+     *     description="Returns a list of all units.",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="name", type="string", example="Unit 1"),
+     *                     // Define other properties of a unit here
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Forbidden"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     ),
+     * )
+     */
+    public function index()
+    {
+
+        $units = $this->unitService->viewAllUnits();
+
+        return response()->json(['success' => true, 'data' => $units], 200);
+    }
 }
