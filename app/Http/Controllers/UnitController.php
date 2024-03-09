@@ -57,4 +57,49 @@ class UnitController extends Controller
             return response()->json(['success' => false, 'error' => $result], 422);
         }
     }
+
+    /**
+     * @OA\Delete(
+     *     path="/api/unit/{id}",
+     *     summary="Delete a unit by ID",
+     *     tags={"Units"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the unit to delete",
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success response",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Unit successfully deleted")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Unit not found")
+     *         )
+     *     )
+     * )
+     */
+    public function destroy($id)
+    {
+
+        $result = $this->unitService->deleteUnit($id);
+
+        $response = $result
+            ? ['success' => true, 'message' => 'Unit successfully deleted']
+            : ['success' => false, 'message' => 'Unit not found'];
+
+        return response()->json($response, $result ? 200 : 404);
+    }
 }
