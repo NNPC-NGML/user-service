@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UnitResource;
 use App\Models\Unit;
 use App\Service\UnitService;
 use Illuminate\Http\Request;
@@ -102,6 +103,6 @@ class UnitController extends Controller
 
         $units = $this->unitService->viewAllUnits();
 
-        return response()->json(['success' => true, 'data' => $units], 200);
+        return response()->json(['success' => true, 'data' => new UnitResource($units)], 200);
     }
 }
