@@ -48,5 +48,6 @@ Route::group(['prefix' => 'v1'], function () {
 
     //Unit
     Route::post('/create_unit',[UnitController::class, 'create'])->name('create_unit');
+    Route::get('/units/{departmentId}',[UnitController::class, 'getUnitsInDepartment'])->name('show_units_in_department');
 
 });
