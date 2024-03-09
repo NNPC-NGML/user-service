@@ -48,5 +48,5 @@ Route::group(['prefix' => 'v1'], function () {
 
     //Unit
     Route::post('/create_unit',[UnitController::class, 'create'])->name('create_unit');
-
+    Route::put('/update_unit/{id}',[UnitController::class, 'update'])->name('units.update');
 });
