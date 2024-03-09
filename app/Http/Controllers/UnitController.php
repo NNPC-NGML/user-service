@@ -57,4 +57,71 @@ class UnitController extends Controller
             return response()->json(['success' => false, 'error' => $result], 422);
         }
     }
+
+    /**
+     * Retrieve all units.
+     *
+     * @OA\Get(
+     *      path="/units",
+     *      operationId="getAllUnits",
+     *      tags={"Units"},
+     *      summary="Get all units",
+     *      description="Retrieves all units stored in the system.",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(
+     *                  property="success",
+     *                  type="boolean",
+     *                  example=true,
+     *                  description="Indicates whether the request was successful."
+     *              ),
+     *              @OA\Property(
+     *                  property="data",
+     *                  type="array",
+     *                  @OA\Items(ref="#/components/schemas/Unit"),
+     *                  description="Array of units"
+     *              ),
+     *              @OA\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  example="Unit successfully retrieved.",
+     *                  description="Success message"
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Unprocessable Entity",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(
+     *                  property="success",
+     *                  type="boolean",
+     *                  example=false,
+     *                  description="Indicates whether the request was successful."
+     *              ),
+     *              @OA\Property(
+     *                  property="error",
+     *                  type="mixed",
+     *                  description="Error message or data"
+     *              )
+     *          )
+     *      )
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index()
+    {
+        $result = $this->unitService->viewAllUnits();
+
+        if ($result) {
+            return response()->json(['success' => true, 'data' => $result, 'message' => 'Unit successfully retrieved.'], 200);
+        } else {
+            return response()->json(['success' => false, 'error' => $result], 422);
+        }
+    }
 }
