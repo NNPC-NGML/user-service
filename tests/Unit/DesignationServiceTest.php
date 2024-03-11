@@ -72,6 +72,26 @@ class DesignationServiceTest extends TestCase
         //dd($fetchService);
     }
     
+    public function test_to_view_all_designation(): void
+    {
+        $designationService = new DesignationService();
+        $data = new Request([
+            "role" => "role name",
+            "description" => "description goes here",
+            "level"=>"level 1"
+        ]);
+
+        
+        $designationService->create($data);
+
+        $fetchAllDesignations = $designationService->viewAllDesignations();
+        $this->assertCount( 
+            1, 
+            $fetchAllDesignations->toArray(), "FetchAllDepartment Array doesn't return the correct data count"
+        ); 
+
+    }
+
     public function test_to_see_if_an_existing_designation_can_be_updated(): void
     {
         Designation::factory(5)->create();

@@ -94,5 +94,10 @@ class DesignationService{
 
     }
 
+    public function viewAllDesignations():Collection | null{
+        $returnArray = Designation::all();
+        return $returnArray;
+    }
+
     
 }
