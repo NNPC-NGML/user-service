@@ -42,4 +42,33 @@ class DesignationServiceTest extends TestCase
         $this->assertArrayHasKey('description', $resultArray);
         //dd($resultArray);
     }
+
+
+
+    public function test_to_see_if_an_existing_designation_can_be_updated(): void
+    {
+        Designation::factory(5)->create();
+        $newDesignationService = new DesignationService();
+        $fetchService = $newDesignationService->getDesignation(1);
+        $this->assertDatabaseCount("designations", 5);
+        $data = new Request([
+            "role" => "New role Updated",
+            "description" => "Description goes here",
+        ]);
+        $newDesignationService->updateDesignation($fetchService->id, $data);
+        $this->assertDatabaseHas('designations', $data->all());
+    }
+
+    public function test_to_see_if_exception_would_be_thrown_if_there_is_an_error(): void
+    {
+        $this->expectException(\Exception::class);
+        $newDesignationService = new DesignationService();
+        $data = new Request([
+            "role" => "Update role",
+            "description" => "Updated description",
+        ]);
+
+        $newDesignationService->updateDesignation(1, $data);
+        $this->expectExceptionMessage('Something went wrong.');
+    }
 }
