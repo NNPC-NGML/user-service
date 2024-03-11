@@ -42,4 +42,32 @@ class DesignationServiceTest extends TestCase
         $this->assertArrayHasKey('description', $resultArray);
         //dd($resultArray);
     }
+
+    public function test_to_see_if_a_designation_can_be_fetched(): void
+    {
+
+        $data = new Request([
+            "role" => "role name",
+            "description" => "description goes here",
+            "level" => "level 10",
+        ]);
+
+        $designation = new DesignationService();
+        $result = $designation->create($data);
+        $fetchService = $designation->getDesignation($result->id);
+        $this->assertEquals($fetchService->id, $result->id);
+        $this->assertSame('role name', $fetchService->role);
+        $this->assertSame('description goes here', $fetchService->description);
+        $this->assertSame('level 10', $fetchService->level);
+        $this->assertInstanceOf(Designation::class, $fetchService);
+
+    }
+
+    public function test_to_see_if_designation_returns_null_when_there_is_no_data(): void
+    {
+        $designationService = new DesignationService();
+        $fetchService = $designationService->getDesignation(2);
+        $this->assertNull($fetchService);
+        //dd($fetchService);
+    }
 }
