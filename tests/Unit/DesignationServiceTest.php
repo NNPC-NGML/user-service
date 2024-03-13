@@ -125,7 +125,6 @@ class DesignationServiceTest extends TestCase
             "role" => "role name",
             "description" => "description",
             "level" => "level 2",
-            
         ]);
 
         $designationService = new DesignationService();
