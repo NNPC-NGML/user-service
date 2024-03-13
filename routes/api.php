@@ -52,5 +52,6 @@ Route::group(['prefix' => 'v1'], function () {
 
     // Designation
     Route::post('/create_designation', [DesignationController::class, 'create'])->name('designations.create');
+    Route::patch('/designations/{id}', [DesignationController::class, 'updateDesignation'])->name('designations.update');
 
 });
