@@ -96,7 +96,7 @@ class DesignationServiceTest extends TestCase
     {
         Designation::factory(5)->create();
         $newDesignationService = new DesignationService();
-        $fetchService = $newDesignationService->getDesignation(1);
+        $fetchService = $newDesignationService->getDesignation(5);
         $this->assertDatabaseCount("designations", 5);
         $data = new Request([
             "role" => "New role Updated",
@@ -131,7 +131,7 @@ class DesignationServiceTest extends TestCase
         $data = $designationService->create($data);
         $this->assertDatabaseCount("designations", 1);
         $delete = $designationService->deleteDesignation($data->id);
-        $this->assertDatabaseMissing("designations", ["rolw" => "role name"]);
+        $this->assertDatabaseMissing("designations", ["role" => "role name"]);
         $this->assertTrue($delete);
 
     }

@@ -50,7 +50,7 @@ class DepartmentService{
      */
 
     public function getDepartment(int $id):department | null {
-        return department::find($id);
+       return department::find($id);
     }
 
     /**
