@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\LocationController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\UnitController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\LocationController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\DesignationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,5 +49,8 @@ Route::group(['prefix' => 'v1'], function () {
 
     //Unit
     Route::post('/create_unit',[UnitController::class, 'create'])->name('create_unit');
+
+    // Designation
+    Route::post('/create_designation', [DesignationController::class, 'create'])->name('designations.create');
 
 });
