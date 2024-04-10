@@ -246,7 +246,7 @@ class UserController extends Controller
 
         return response()->json(['success' => true, 'data' => new UserResource($user)], 200);
     }
-       /**
+    /**
      * @OA\Get(
      *     path="/users",
      *     summary="Get a list of users",
@@ -315,5 +315,18 @@ class UserController extends Controller
         $users = $this->userService->getUsersForPage($page, $perPage);
 
         return response()->json(['success' => true, 'data' => $users], 200);
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        $result = $this->userService->authenticate($credentials);
+
+        if ($result) {
+            return response()->json(['success' => true, 'message' => 'Login successful'], 200);
+        } else {
+v            return response()->json(['success' => false, 'message' => 'Invalid credentials'], 401);
+        }
     }
 }

@@ -8,6 +8,7 @@ use App\Models\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * Class UserService
@@ -195,14 +196,14 @@ class UserService
 
     /**
      * The function assigns a user to a location if they are not already assigned.
-     * 
+     *
      * @param int userId The `userId` parameter is an integer that represents the unique identifier of
      * the user to be assigned to a location.
      * @param int locationId The `locationId` parameter in the `assignUserToLocation` function
      * represents the unique identifier of the location to which you want to assign a user. This
      * parameter is used to retrieve the specific location from the database based on its ID so that
      * the user can be assigned to that location.
-     * 
+     *
      * @return bool The function `assignUserToLocation` returns a boolean value. It returns `true` if
      * the user is successfully assigned to the location, and `false` in the following cases:
      * 1. If the user or location is not found (if `` or `` is null).
@@ -238,5 +239,19 @@ class UserService
     public function getUser(int $userId)
     {
         return User::find($userId);
+    }
+
+    public function authenticate($credentials)
+    {
+        $email = $credentials['email'];
+        $password = $credentials['password'];
+
+        $user = User::where('email', $email)->first();
+
+        if ($user && Hash::check($password, $user->password)) {
+            return true;
+        }
+
+        return false;
     }
 }
