@@ -49,5 +49,6 @@ Route::group(['prefix' => 'v1'], function () {
     //Unit
     Route::post('/create_unit',[UnitController::class, 'create'])->name('create_unit');
     Route::get('/units', [UnitController::class, 'index'])->name('units.index');
+    Route::delete('/unit/{id}',[UnitController::class, 'destroy'])->name('delete_unit');
 
 });

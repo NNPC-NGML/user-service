@@ -105,4 +105,39 @@ class UnitControllerTest extends TestCase
 
          $response->assertJsonCount(0, 'data');
      }
+      /** @test */
+    public function it_can_delete_an_existing_unit()
+    {
+
+        $department = department::factory()->create();
+
+        $unit = Unit::create([
+            'name' => 'Test Unit',
+            'description' => 'Test Description',
+            'department_id' => $department->id,
+        ]);
+
+        $response = $this->deleteJson(route('delete_unit', ['id' => $unit->id]));
+
+
+        $response->assertStatus(200)
+            ->assertJson(['success' => true, 'message' => 'Unit successfully deleted']);
+
+        $this->assertDatabaseMissing('users', ['id' => $unit->id]);
+    }
+
+    /** @test */
+    public function it_returns_false_if_unit_does_not_exist()
+    {
+
+        $nonExistentUnit = mt_rand(1000000000, 9999999999);
+
+        $response = $this->deleteJson(route('delete_unit', ['id' => $nonExistentUnit]));
+
+        $response->assertStatus(404)
+            ->assertJson([
+                'success' => false,
+                'message' => 'Unit not found'
+            ]);
+    }
 }
