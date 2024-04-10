@@ -4,10 +4,13 @@ namespace Tests\Feature;
 
 use App\Models\department;
 use App\Models\Unit;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class UnitControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     public function it_can_create_a_unit(): void
     {
@@ -50,7 +53,59 @@ class UnitControllerTest extends TestCase
                 ]
             ]);
     }
+
     /** @test */
+    public function it_returns_units()
+    {
+
+        $users = Unit::factory()->count(10)->create();
+
+        $response = $this->getJson(route('units.index'));
+
+        $response->assertOk();
+
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'name',
+                    'description',
+                    'department_id',
+                    'created_at',
+                    'updated_at'
+                ],
+            ],
+        ]);
+
+        $response->assertJsonCount(count($users), 'data');
+        $response->assertJsonPath('data.0.id', $users[0]->id);
+        $response->assertJsonPath('data.0.name', $users[0]->name);
+    }
+
+     /** @test */
+     public function it_returns_no_units()
+     {
+
+         $response = $this->getJson(route('units.index'));
+
+         $response->assertOk();
+
+         $response->assertJsonStructure([
+             'data' => [
+                 '*' => [
+                     'id',
+                     'name',
+                     'description',
+                     'department_id',
+                     'created_at',
+                     'updated_at'
+                 ],
+             ],
+         ]);
+
+         $response->assertJsonCount(0, 'data');
+     }
+      /** @test */
     public function it_can_delete_an_existing_unit()
     {
 
