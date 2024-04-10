@@ -182,31 +182,31 @@ class UnitControllerTest extends TestCase
         ]);
     }
     /** @test */
-    // public function it_can_get_units_in_department(): void
-    // {
-    //     $department = department::factory()->create();
+    public function it_can_get_units_in_department(): void
+    {
+        $department = department::factory()->create();
 
-    //     $unit = Unit::create([
-    //         'name' => 'Unit 1',
-    //         'description' => 'Description 1',
-    //         'department_id' => $department->id,
-    //     ]);
+        $unit = Unit::create([
+            'name' => 'Unit 1',
+            'description' => 'Description 1',
+            'department_id' => $department->id,
+        ]);
 
-    //     Unit::create([
-    //         'name' => 'Unit 2',
-    //         'description' => 'Description 2',
-    //         'department_id' => $department->id,
-    //     ]);
+        Unit::create([
+            'name' => 'Unit 2',
+            'description' => 'Description 2',
+            'department_id' => $department->id,
+        ]);
 
-    //     $response = $this->get(route('show_units_in_department', ['departmentId' => $department->id]));
+        $response = $this->get(route('show_units_in_department', ['departmentId' => $department->id]));
 
-    //     $response->assertStatus(200);
-    //     $this->assertDatabaseHas('units', [
-    //         'name' => $unit->name,
-    //         'description' => $unit->description,
-    //         'department_id' => $department->id,
-    //     ]);
-    // }
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('units', [
+            'name' => $unit->name,
+            'description' => $unit->description,
+            'department_id' => $department->id,
+        ]);
+    }
 
     /** @test */
     public function get_units_in_invalid_department_rtn_no_data(): void
