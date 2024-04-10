@@ -264,11 +264,12 @@ class UnitController extends Controller
      */
     public function getUnitsInDepartment($departmentId)
     {
-        $result = $this->unitService->getUnitsInDepartment($departmentId);
+        $units = $this->unitService->getUnitsInDepartment($departmentId);
 
-        if ($result)
-            return response()->json(['success' => true, 'data' => $result, 'message' => 'Units successfully retrieved.'], 200);
+        if ($units)
+            return response()->json(['success' => true, 'data' => new UnitResource($units), 'message' => 'Units successfully retrieved.'], 200);
 
-        return response()->json(['success' => false, 'error' => $result], 422);
+        return response()->json(['success' => false, 'error' => $units], 422);
+
     }
 }
