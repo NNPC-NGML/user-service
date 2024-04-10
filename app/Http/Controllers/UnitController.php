@@ -150,4 +150,52 @@ class UnitController extends Controller
 
         return response()->json($response, $result ? 200 : 404);
     }
+
+    /**
+     * @OA\Get(
+     *     path="/units/{id}",
+     *     operationId="getUnitById",
+     *     tags={"Units"},
+     *     summary="Get unit information",
+     *     description="Returns unit data",
+     *     @OA\Parameter(
+     *         name="id",
+     *         description="Unit id",
+     *         required=true,
+     *         in="path",
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="data", ref="#/components/schemas/Unit")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Unit not found"
+     *     ),
+     *     security={
+     *         {"api_key": {}}
+     *     }
+     * )
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show($id)
+    {
+
+        $unit = $this->unitService->getUnit($id);
+
+        if (!$unit) {
+            return response()->json(['success' => false, 'error' => 'Unit not found'], 404);
+        }
+
+        return response()->json(['success' => true, 'data' => new UnitResource($unit)], 200);
+    }
 }

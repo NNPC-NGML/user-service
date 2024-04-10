@@ -140,4 +140,46 @@ class UnitControllerTest extends TestCase
                 'message' => 'Unit not found'
             ]);
     }
+
+    /** @test */
+    public function test_show_unit_exists()
+    {
+
+        $department = department::factory()->create();
+
+        $unit = Unit::create([
+            'name' => 'Test Unit',
+            'description' => 'Test Description',
+            'department_id' => $department->id,
+        ]);
+
+        $response = $this->getJson(route('units.show', ['id' => $unit->id]));
+
+        $response->assertStatus(200);
+
+        $response->assertJson([
+            'success' => true,
+            'data' => [
+                'name' => $unit->name,
+                'description' => $unit->description,
+                'department_id' => $unit->department_id,
+            ]
+        ]);
+    }
+
+    /** @test */
+    public function test_show_unit_not_found()
+    {
+        $nonExistingUnitId = mt_rand(1000000000, 9999999999);
+
+
+        $response = $this->getJson(route('units.show', ['id' => $nonExistingUnitId]));
+
+        $response->assertStatus(404);
+
+        $response->assertJson([
+            'error' => 'Unit not found'
+        ]);
+    }
+
 }

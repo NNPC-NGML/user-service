@@ -138,4 +138,4 @@
         </div>
     </body>
 </html>
-<?php /**PATH /Users/admin/Documents/SkillzSystem/ngml/user-service/resources/views/welcome.blade.php ENDPATH**/ ?>
+<?php /**PATH /Users/admin/Documents/SKILLSYSTEM/user-service/resources/views/welcome.blade.php ENDPATH**/ ?>
