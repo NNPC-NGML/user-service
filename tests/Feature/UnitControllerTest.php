@@ -82,30 +82,30 @@ class UnitControllerTest extends TestCase
         $response->assertJsonPath('data.0.name', $users[0]->name);
     }
 
-     /** @test */
-     public function it_returns_no_units()
-     {
+    /** @test */
+    public function it_returns_no_units()
+    {
 
-         $response = $this->getJson(route('units.index'));
+        $response = $this->getJson(route('units.index'));
 
-         $response->assertOk();
+        $response->assertOk();
 
-         $response->assertJsonStructure([
-             'data' => [
-                 '*' => [
-                     'id',
-                     'name',
-                     'description',
-                     'department_id',
-                     'created_at',
-                     'updated_at'
-                 ],
-             ],
-         ]);
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'name',
+                    'description',
+                    'department_id',
+                    'created_at',
+                    'updated_at'
+                ],
+            ],
+        ]);
 
-         $response->assertJsonCount(0, 'data');
-     }
-      /** @test */
+        $response->assertJsonCount(0, 'data');
+    }
+    /** @test */
     public function it_can_delete_an_existing_unit()
     {
 
@@ -181,5 +181,50 @@ class UnitControllerTest extends TestCase
             'error' => 'Unit not found'
         ]);
     }
+    /** @test */
+    public function it_can_get_units_in_department(): void
+    {
+        $department = department::factory()->create();
 
+        $unit = Unit::create([
+            'name' => 'Unit 1',
+            'description' => 'Description 1',
+            'department_id' => $department->id,
+        ]);
+
+        Unit::create([
+            'name' => 'Unit 2',
+            'description' => 'Description 2',
+            'department_id' => $department->id,
+        ]);
+
+        $response = $this->get(route('show_units_in_department', ['departmentId' => $department->id]));
+
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('units', [
+            'name' => $unit->name,
+            'description' => $unit->description,
+            'department_id' => $department->id,
+        ]);
+    }
+
+    /** @test */
+    public function get_units_in_invalid_department_rtn_no_data(): void
+    {
+
+        $nonExistentDepartmentId = mt_rand(1000000000, 9999999999);
+
+        $response = $this->get(route('show_units_in_department', ['departmentId' => $nonExistentDepartmentId]));
+
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure(
+            [
+                'success',
+                'data' => [],
+            ]
+        );
+
+        $response->assertJsonCount(0, 'data');
+    }
 }
