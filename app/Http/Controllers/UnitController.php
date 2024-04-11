@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\UnitResource;
+use App\Jobs\Unit\UnitCreated;
+use App\Jobs\Unit\UnitDeleted;
+use App\Jobs\Unit\UnitUpdated;
 use App\Models\Unit;
 use App\Service\UnitService;
 use Illuminate\Http\Request;
@@ -53,6 +56,8 @@ class UnitController extends Controller
         $result = $this->unitService->create($request);
 
         if ($result instanceof Unit) {
+
+            UnitCreated::dispatch($result->toArray());
             return response()->json(['success' => true, 'message' => 'Unit created successfully'], 201);
         } else {
             return response()->json(['success' => false, 'error' => $result], 422);
@@ -144,9 +149,14 @@ class UnitController extends Controller
 
         $result = $this->unitService->deleteUnit($id);
 
+
+        if ($result) {
+            UnitDeleted::dispatch($id);
+        }
         $response = $result
             ? ['success' => true, 'message' => 'Unit successfully deleted']
             : ['success' => false, 'message' => 'Unit not found'];
+
 
         return response()->json($response, $result ? 200 : 404);
     }
@@ -371,6 +381,7 @@ class UnitController extends Controller
         $result = $this->unitService->updateUnit($id, $request->all());
 
         if ($result instanceof unit) {
+            UnitUpdated::dispatch($result->toArray());
             return response()->json(['success' => true, 'data' => $result, 'message' => 'Unit updated successfully'], 200);
         } else {
             return response()->json(['success' => false, 'error' => $result], 422);

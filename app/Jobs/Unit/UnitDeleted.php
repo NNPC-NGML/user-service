@@ -12,19 +12,18 @@ class UnitDeleted implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * Create a new job instance.
-     */
-    public function __construct()
+    private int $id;
+    public function __construct($id)
     {
-        //
+        $this->id = $id;
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
-        //
+
+    }
+    public function getId(): int
+    {
+        return $this->id;
     }
 }
