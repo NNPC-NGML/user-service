@@ -2,26 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\DepartmentResource;
-use App\Models\department;
-use App\Service\DepartmentService;
 use ArrayObject;
+use App\Models\department;
 use Illuminate\Http\Request;
+use App\Service\DepartmentService;
+use Illuminate\Support\Collection;
+use App\Http\Resources\DepartmentResource;
+use App\Jobs\Department\DepartmentCreated;
+use App\Jobs\Department\DepartmentDeleted;
+use App\Jobs\Department\DepartmentUpdated;
 use App\Http\Requests\StoredepartmentRequest;
 use App\Http\Requests\UpdatedepartmentRequest;
-use Illuminate\Support\Collection;
 
 class DepartmentController extends Controller
 {
     protected $departmentService;
-    function __construct(DepartmentService $departmentService){
+    function __construct(DepartmentService $departmentService)
+    {
         $this->departmentService = $departmentService;
     }
-   
+
 
     /**
      * The index function retrieves all departments and returns a JSON response based on the result.
-     * 
+     *
      * @return If the `` variable is an instance of the `Department` class, a JSON response with
      * a success status of true and the data in the form of a `DepartmentResource` will be returned
      * with a status code of 201 (Created). If `` is not an instance of the `Department` class,
@@ -29,17 +33,17 @@ class DepartmentController extends Controller
      */
 
     /**
-  * @OA\Get(
-  *     path="/departments",
-  *     tags={"departments"},
-  *     summary="Get list of departments",
-  *     @OA\Response(
-  *          response=200,
-  *          description="Successful",
-  *          @OA\JsonContent(ref="#/components/schemas/DepartmentResource")
-  *     )
-  * )
-  */
+     * @OA\Get(
+     *     path="/departments",
+     *     tags={"departments"},
+     *     summary="Get list of departments",
+     *     @OA\Response(
+     *          response=200,
+     *          description="Successful",
+     *          @OA\JsonContent(ref="#/components/schemas/DepartmentResource")
+     *     )
+     * )
+     */
 
     public function index()
     {
@@ -49,16 +53,16 @@ class DepartmentController extends Controller
         }
     }
 
-    
+
     /**
      * The `create` function processes a request to create a department and returns a JSON response
      * based on the result.
-     * 
+     *
      * @param Request request The `Request ` parameter in the `create` function represents the
      * incoming HTTP request containing data that is being sent to the server. This data typically
      * includes information needed to create a new department, such as the department name,
      * description, or any other relevant details.
-     * 
+     *
      * @return If the `` is an instance of `Department`, a JSON response with a success status
      * of true and the data in a `DepartmentResource` format is returned with a status code of 201
      * (Created). If the `` is not an instance of `Department`, a JSON response with a success
@@ -70,6 +74,8 @@ class DepartmentController extends Controller
         $result = $this->departmentService->create($request);
 
         if ($result instanceof department) {
+
+            DepartmentCreated::dispatch($result->toArray());
             return response()->json(['success' => true, 'data' => new DepartmentResource($result)], 201);
         } else {
             return response()->json(['success' => false, 'error' => $result], 422);
@@ -81,8 +87,8 @@ class DepartmentController extends Controller
      */
 
 
-    
-    
+
+
     public function store(Request $request)
     {
         //
@@ -111,11 +117,11 @@ class DepartmentController extends Controller
         //
     }
 
-    
+
     /**
      * The function updates a department based on the provided request data and returns a JSON response
      * indicating success or failure.
-     * 
+     *
      * @param Request request The `` parameter in the `update` function is an instance of the
      * `Illuminate\Http\Request` class in Laravel. It represents the HTTP request that is being made to
      * update a department. This request contains data such as form inputs, headers, files, etc., that
@@ -123,7 +129,7 @@ class DepartmentController extends Controller
      * @param id The `` parameter in the `update` function represents the unique identifier of the
      * department that you want to update. This identifier is typically used to locate the specific
      * department record in the database that needs to be updated.
-     * 
+     *
      * @return If the `` is an instance of `Department`, a JSON response with a success status
      * of true and the updated department data in the `data` field will be returned with a status code
      * of 201. If the `` is not an instance of `Department`, a JSON response with a success
@@ -131,20 +137,22 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $result = $this->departmentService->updateDepartment($id,$request);
+        $result = $this->departmentService->updateDepartment($id, $request);
 
         if ($result instanceof department) {
+
+            DepartmentUpdated::dispatch($result->toArray());
             return response()->json(['success' => true, 'data' => new DepartmentResource($result)], 201);
         } else {
             return response()->json(['success' => false, 'error' => $result], 422);
         }
     }
 
-    
+
     /**
      * The function `destroy` deletes a department based on the provided ID and returns a JSON response
      * indicating success or failure.
-     * 
+     *
      * @param Request request The `` parameter in the `destroy` function is an instance of the
      * `Illuminate\Http\Request` class. It represents the HTTP request that is being made to the
      * server. This parameter allows you to access data sent in the request, such as form inputs or
@@ -152,7 +160,7 @@ class DepartmentController extends Controller
      * @param id The `id` parameter in the `destroy` function represents the unique identifier of the
      * department that you want to delete. This identifier is typically used to locate and delete the
      * specific department record from the database.
-     * 
+     *
      * @return If the `` variable is true, the function will return a JSON response with
      * `['success' => true]` and a status code of 201. If the `` variable is false, the function
      * will return a JSON response with `['success' => false]` and a status code of 422.
@@ -161,6 +169,7 @@ class DepartmentController extends Controller
     {
         $result = $this->departmentService->deleteDepartment($id);
         if ($result) {
+            DepartmentDeleted::dispatch($id);
             return response()->json(['success' => true], 201);
         } else {
             return response()->json(['success' => false], 422);
