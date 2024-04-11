@@ -364,4 +364,71 @@ class UserControllerTest extends TestCase
         $response->assertJsonPath('data.from', $perPage * ($page - 1) + 1);
         $response->assertJsonPath('data.total', $totalLength);
     }
+
+    /** @test */
+    public function user_can_authenticate_with_correct_credentials()
+    {
+
+        $password = 'correctpassword';
+
+        $data = [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => Hash::make($password),
+        ];
+
+        $user = User::create($data);
+
+        $response = $this->postJson(route('users.login', [
+            'email' => $user->email,
+            'password' => $password,
+        ]));
+
+        $response->assertJson([
+            'success' => true,
+            'message' => 'Login successful',
+        ]);
+    }
+
+    /** @test */
+    public function user_cannot_authenticate_with_incorrect_email()
+    {
+        $password = 'correctpassword';
+
+        User::create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => Hash::make($password),
+        ]);
+
+        $response = $this->postJson(route('users.login', [
+            'email' => 'wrong@example.com',
+            'password' => $password,
+        ]));
+
+        $response->assertJson([
+            'success' => false,
+            'message' => 'Invalid credentials',
+        ]);
+    }
+
+    /** @test */
+    public function user_cannot_authenticate_with_incorrect_password()
+    {
+        $user = User::create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => Hash::make('correctpassword'),
+        ]);
+
+        $response = $this->postJson(route('users.login', [
+            'email' => $user->email,
+            'password' => "Oscar-jay",
+        ]));
+
+        $response->assertJson([
+            'success' => false,
+            'message' => 'Invalid credentials',
+        ]);
+    }
 }

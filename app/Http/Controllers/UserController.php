@@ -317,16 +317,63 @@ class UserController extends Controller
         return response()->json(['success' => true, 'data' => $users], 200);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/login",
+     *     summary="Authenticates a user and logs them in",
+     *     tags={"Authentication"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="User credentials",
+     *         @OA\JsonContent(
+     *             required={"email","password"},
+     *             @OA\Property(property="email", type="string", format="email", example="user@example.com"),
+     *             @OA\Property(property="password", type="string", format="password", example="password123")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Login successful",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="success",
+     *                 type="boolean",
+     *                 example=true
+     *             ),
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="Login successful"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Invalid credentials",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="success",
+     *                 type="boolean",
+     *                 example=false
+     *             ),
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="Invalid credentials"
+     *             )
+     *         )
+     *     )
+     * )
+     */
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
 
         $result = $this->userService->authenticate($credentials);
-
         if ($result) {
             return response()->json(['success' => true, 'message' => 'Login successful'], 200);
         } else {
-v            return response()->json(['success' => false, 'message' => 'Invalid credentials'], 401);
+            return response()->json(['success' => false, 'message' => 'Invalid credentials'], 401);
         }
     }
 }
