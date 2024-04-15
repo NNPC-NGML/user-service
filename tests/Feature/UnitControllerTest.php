@@ -6,6 +6,7 @@ use App\Models\department;
 use App\Models\Unit;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UnitControllerTest extends TestCase
 {
