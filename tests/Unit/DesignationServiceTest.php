@@ -1,6 +1,7 @@
 <?php
 
 namespace Tests\Unit;
+
 use Tests\TestCase;
 use App\Models\Designation;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class DesignationServiceTest extends TestCase
     public function test_if_designation_is_created(): void
     {
         $designationService = new DesignationService();
-        $data_array = ['role'=>'role name','description'=>'role description','level'=>'10'];
+        $data_array = ['role' => 'role name', 'description' => 'role description', 'level' => '10'];
         $data = new Request($data_array);
         $result = $designationService->create($data);
         $this->assertInstanceOf(Designation::class, $result);
@@ -24,7 +25,7 @@ class DesignationServiceTest extends TestCase
         $this->assertDatabaseHas('designations', [
             "role" => "role name",
             "description" => "role description",
-            'level'=>'10'
+            'level' => '10'
         ]);
         //$this->assertSame('this should be a route', $result->step_route);
     }
@@ -33,7 +34,7 @@ class DesignationServiceTest extends TestCase
     public function test_if_designation_is_not_created(): void
     {
         $designationService = new DesignationService();
-        $data_array = ['role'=>'role name'];
+        $data_array = ['role' => 'role name'];
         $data = new Request($data_array);
         $createDesignation = $designationService->create($data);
         $resultArray = $createDesignation->toArray();
@@ -60,7 +61,6 @@ class DesignationServiceTest extends TestCase
         $this->assertSame('description goes here', $fetchService->description);
         $this->assertSame('level 10', $fetchService->level);
         $this->assertInstanceOf(Designation::class, $fetchService);
-
     }
 
     public function test_to_see_if_designation_returns_null_when_there_is_no_data(): void
@@ -69,5 +69,34 @@ class DesignationServiceTest extends TestCase
         $fetchService = $designationService->getDesignation(2);
         $this->assertNull($fetchService);
         //dd($fetchService);
+    }
+
+
+
+    public function test_to_see_if_an_existing_designation_can_be_updated(): void
+    {
+        Designation::factory(5)->create();
+        $newDesignationService = new DesignationService();
+        $fetchService = $newDesignationService->getDesignation(1);
+        $this->assertDatabaseCount("designations", 5);
+        $data = new Request([
+            "role" => "New role Updated",
+            "description" => "Description goes here",
+        ]);
+        $newDesignationService->updateDesignation($fetchService->id, $data);
+        $this->assertDatabaseHas('designations', $data->all());
+    }
+
+    public function test_to_see_if_exception_would_be_thrown_if_there_is_an_error(): void
+    {
+        $this->expectException(\Exception::class);
+        $newDesignationService = new DesignationService();
+        $data = new Request([
+            "role" => "Update role",
+            "description" => "Updated description",
+        ]);
+
+        $newDesignationService->updateDesignation(1, $data);
+        $this->expectExceptionMessage('Something went wrong.');
     }
 }
