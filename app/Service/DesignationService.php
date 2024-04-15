@@ -46,11 +46,8 @@ class DesignationService
     }
 
 
-<<<<<<< HEAD
+
     /**
-=======
-        /**
->>>>>>> 35cc49d (WIP)
      * Retrieve a designation by its ID.
      *
      * @param int $id The ID of the designation to be retrieve.
@@ -58,20 +55,27 @@ class DesignationService
      * @return \App\Models\Designation|null The retrieved designation, or null if not found.
      */
 
-<<<<<<< HEAD
+
     public function getDesignation(int $id): Designation | null
     {
         return Designation::find($id);
     }
 
 
-=======
-     public function getDesignation(int $id):Designation | null {
-        return Designation::find($id);
-    }
-    
->>>>>>> 35cc49d (WIP)
-
+    /**
+     * The function `updateDesignation` updates a designation with the provided ID using data from a
+     * request, performing validation and returning the updated designation or throwing an exception if
+     * an error occurs.
+     * 
+     * @param int id The `id` parameter in the `updateDesignation` function is used to identify the
+     * specific designation that needs to be updated. It is an integer value that represents the unique
+     * identifier of the designation in the database.
+     * @param Request request The `updateDesignation` function you provided is responsible for updating
+     * a designation based on the given ID and request data.
+     * 
+     * @return bool|array|Designation The `updateDesignation` function can return three different types
+     * of values:
+     */
     public function updateDesignation(int $id, Request $request): bool|array|Designation
     {
         // validation
