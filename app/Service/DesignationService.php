@@ -46,7 +46,11 @@ class DesignationService
     }
 
 
+<<<<<<< HEAD
     /**
+=======
+        /**
+>>>>>>> 35cc49d (WIP)
      * Retrieve a designation by its ID.
      *
      * @param int $id The ID of the designation to be retrieve.
@@ -54,12 +58,19 @@ class DesignationService
      * @return \App\Models\Designation|null The retrieved designation, or null if not found.
      */
 
+<<<<<<< HEAD
     public function getDesignation(int $id): Designation | null
     {
         return Designation::find($id);
     }
 
 
+=======
+     public function getDesignation(int $id):Designation | null {
+        return Designation::find($id);
+    }
+    
+>>>>>>> 35cc49d (WIP)
 
     public function updateDesignation(int $id, Request $request): bool|array|Designation
     {
