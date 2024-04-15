@@ -42,4 +42,18 @@ class DesignationService{
         }
         
     }
+
+
+    /**
+     * Retrieve a designation by its ID.
+     *
+     * @param int $id The ID of the designation to be retrieve.
+     *
+     * @return \App\Models\Designation|null The retrieved designation, or null if not found.
+     */
+
+     public function getDesignation(int $id):Designation | null {
+        return Designation::find($id);
+    }
+    
 }
