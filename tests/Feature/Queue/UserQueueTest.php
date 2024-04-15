@@ -13,6 +13,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UserQueueTest extends TestCase
 {
+
+    use RefreshDatabase;
     public function test_it_dispatches_user_created_job()
     {
         Queue::fake();
