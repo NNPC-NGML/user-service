@@ -3065,10 +3065,14 @@
 #63 {main}
 "} 
 <<<<<<< HEAD
+<<<<<<< HEAD
 [2024-03-11 19:47:42] testing.ERROR: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: locations.location (Connection: sqlite_testing, SQL: update "locations" set "location" = ?, "updated_at" = 2024-03-11 19:47:42 where "id" = 1) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 23000): SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: locations.location (Connection: sqlite_testing, SQL: update \"locations\" set \"location\" = ?, \"updated_at\" = 2024-03-11 19:47:42 where \"id\" = 1) at /app/vendor/laravel/framework/src/Illuminate/Database/Connection.php:822)
 =======
 [2024-03-11 20:01:18] testing.ERROR: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: locations.location (Connection: sqlite_testing, SQL: update "locations" set "location" = ?, "updated_at" = 2024-03-11 20:01:18 where "id" = 1) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 23000): SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: locations.location (Connection: sqlite_testing, SQL: update \"locations\" set \"location\" = ?, \"updated_at\" = 2024-03-11 20:01:18 where \"id\" = 1) at /app/vendor/laravel/framework/src/Illuminate/Database/Connection.php:822)
 >>>>>>> 35cc49d (WIP)
+=======
+[2024-03-11 20:01:18] testing.ERROR: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: locations.location (Connection: sqlite_testing, SQL: update "locations" set "location" = ?, "updated_at" = 2024-03-11 20:01:18 where "id" = 1) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 23000): SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: locations.location (Connection: sqlite_testing, SQL: update \"locations\" set \"location\" = ?, \"updated_at\" = 2024-03-11 20:01:18 where \"id\" = 1) at /app/vendor/laravel/framework/src/Illuminate/Database/Connection.php:822)
+>>>>>>> 5125d0d5334e2258667bfe0e188b9af2afcd9a6f
 [stacktrace]
 #0 /app/vendor/laravel/framework/src/Illuminate/Database/Connection.php(776): Illuminate\\Database\\Connection->runQueryCallback('update \"locatio...', Array, Object(Closure))
 #1 /app/vendor/laravel/framework/src/Illuminate/Database/Connection.php(612): Illuminate\\Database\\Connection->run('update \"locatio...', Array, Object(Closure))
@@ -3201,10 +3205,14 @@
 #63 {main}
 "} 
 <<<<<<< HEAD
+<<<<<<< HEAD
 [2024-03-11 19:48:10] testing.ERROR: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: locations.location (Connection: sqlite_testing, SQL: update "locations" set "location" = ?, "updated_at" = 2024-03-11 19:48:09 where "id" = 1) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 23000): SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: locations.location (Connection: sqlite_testing, SQL: update \"locations\" set \"location\" = ?, \"updated_at\" = 2024-03-11 19:48:09 where \"id\" = 1) at /app/vendor/laravel/framework/src/Illuminate/Database/Connection.php:822)
 =======
 [2024-03-11 20:04:43] testing.ERROR: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: locations.location (Connection: sqlite_testing, SQL: update "locations" set "location" = ?, "updated_at" = 2024-03-11 20:04:43 where "id" = 1) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 23000): SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: locations.location (Connection: sqlite_testing, SQL: update \"locations\" set \"location\" = ?, \"updated_at\" = 2024-03-11 20:04:43 where \"id\" = 1) at /app/vendor/laravel/framework/src/Illuminate/Database/Connection.php:822)
 >>>>>>> 35cc49d (WIP)
+=======
+[2024-03-11 20:04:43] testing.ERROR: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: locations.location (Connection: sqlite_testing, SQL: update "locations" set "location" = ?, "updated_at" = 2024-03-11 20:04:43 where "id" = 1) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 23000): SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: locations.location (Connection: sqlite_testing, SQL: update \"locations\" set \"location\" = ?, \"updated_at\" = 2024-03-11 20:04:43 where \"id\" = 1) at /app/vendor/laravel/framework/src/Illuminate/Database/Connection.php:822)
+>>>>>>> 5125d0d5334e2258667bfe0e188b9af2afcd9a6f
 [stacktrace]
 #0 /app/vendor/laravel/framework/src/Illuminate/Database/Connection.php(776): Illuminate\\Database\\Connection->runQueryCallback('update \"locatio...', Array, Object(Closure))
 #1 /app/vendor/laravel/framework/src/Illuminate/Database/Connection.php(612): Illuminate\\Database\\Connection->run('update \"locatio...', Array, Object(Closure))
@@ -3336,6 +3344,7 @@
 #62 /app/vendor/phpunit/phpunit/phpunit(104): PHPUnit\\TextUI\\Application->run(Array)
 #63 {main}
 "} 
+<<<<<<< HEAD
 <<<<<<< HEAD
 [2024-04-15 15:45:37] testing.ERROR: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: locations.location (Connection: sqlite_testing, SQL: update "locations" set "location" = ?, "updated_at" = 2024-04-15 15:45:37 where "id" = 1) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 23000): SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: locations.location (Connection: sqlite_testing, SQL: update \"locations\" set \"location\" = ?, \"updated_at\" = 2024-04-15 15:45:37 where \"id\" = 1) at /app/vendor/laravel/framework/src/Illuminate/Database/Connection.php:822)
 =======
@@ -3473,6 +3482,9 @@
 #63 {main}
 "} 
 [2024-04-15 16:03:11] testing.ERROR: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: locations.location (Connection: sqlite_testing, SQL: update "locations" set "location" = ?, "updated_at" = 2024-04-15 16:03:11 where "id" = 1) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 23000): SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: locations.location (Connection: sqlite_testing, SQL: update \"locations\" set \"location\" = ?, \"updated_at\" = 2024-04-15 16:03:11 where \"id\" = 1) at /app/vendor/laravel/framework/src/Illuminate/Database/Connection.php:822)
+=======
+[2024-03-11 20:12:24] testing.ERROR: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: locations.location (Connection: sqlite_testing, SQL: update "locations" set "location" = ?, "updated_at" = 2024-03-11 20:12:24 where "id" = 1) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 23000): SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: locations.location (Connection: sqlite_testing, SQL: update \"locations\" set \"location\" = ?, \"updated_at\" = 2024-03-11 20:12:24 where \"id\" = 1) at /app/vendor/laravel/framework/src/Illuminate/Database/Connection.php:822)
+>>>>>>> 5125d0d5334e2258667bfe0e188b9af2afcd9a6f
 [stacktrace]
 #0 /app/vendor/laravel/framework/src/Illuminate/Database/Connection.php(776): Illuminate\\Database\\Connection->runQueryCallback('update \"locatio...', Array, Object(Closure))
 #1 /app/vendor/laravel/framework/src/Illuminate/Database/Connection.php(612): Illuminate\\Database\\Connection->run('update \"locatio...', Array, Object(Closure))
