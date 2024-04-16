@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('location');
             $table->string('zone');
-            $table->integer('state');
+            $table->string('state');
             $table->integer('status')->default('1'); ///To disable or enable a location
             $table->timestamps();
         });

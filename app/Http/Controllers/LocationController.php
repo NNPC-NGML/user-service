@@ -267,7 +267,7 @@ class LocationController extends Controller
      *             )
      *         )
      *     ),
-     *     security={{"apiAuth":{}}}
+     *     security={{ "apiAuth":{ }}}
      * )
      */
     public function updateLocation(Request $request, int $id,)
