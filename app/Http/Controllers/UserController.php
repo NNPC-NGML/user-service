@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Service\UserService;
 use Illuminate\Http\Request;
+use App\Jobs\User\UserCreated;
+use App\Jobs\User\UserDeleted;
+use App\Jobs\User\UserUpdated;
+use App\Http\Resources\UserResource;
 
 /**
  * @OA\Controller(
@@ -61,6 +64,7 @@ class UserController extends Controller
         $result = $this->userService->create($request);
 
         if ($result instanceof User) {
+            UserCreated::dispatch($result->toArray());
             return response()->json(['success' => true, 'data' => new UserResource($result)], 201);
         } else {
             return response()->json(['success' => false, 'error' => $result], 422);
@@ -113,6 +117,10 @@ class UserController extends Controller
         ]);
 
         $result = $this->userService->deleteUser($request->id);
+
+        if ($result) {
+            UserDeleted::dispatch($request->id);
+        }
 
         $response = $result
             ? ['success' => true, 'message' => 'User successfully deleted']
@@ -188,6 +196,8 @@ class UserController extends Controller
         } elseif (is_array($result)) {
             return response()->json(['success' => false, 'errors' => $result], 422);
         } else {
+
+            UserUpdated::dispatch($result->toArray());
             return response()->json(['success' => true, 'data' => new UserResource($result)], 200);
         }
     }
@@ -246,7 +256,7 @@ class UserController extends Controller
 
         return response()->json(['success' => true, 'data' => new UserResource($user)], 200);
     }
-       /**
+    /**
      * @OA\Get(
      *     path="/users",
      *     summary="Get a list of users",
