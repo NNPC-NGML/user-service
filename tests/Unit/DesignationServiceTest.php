@@ -117,4 +117,31 @@ class DesignationServiceTest extends TestCase
         $newDesignationService->updateDesignation(1, $data);
         $this->expectExceptionMessage('Something went wrong.');
     }
+
+    public function test_to_see_if_a_designation_is_deleted()
+    {
+        $data = new Request([
+            "role" => "role name",
+            "description" => "description",
+            "level" => "level 2",
+            
+        ]);
+
+        $designationService = new DesignationService();
+        $data = $designationService->create($data);
+        $this->assertDatabaseCount("designations", 1);
+        $delete = $designationService->deleteDesignation($data->id);
+        $this->assertDatabaseMissing("designations", ["rolw" => "role name"]);
+        $this->assertTrue($delete);
+
+    }
+
+
+    public function test_to_see_if_there_is_no_record_with_the_provided_designation_id()
+    {
+        $designationService = new DesignationService();
+        $delete = $designationService->deleteDesignation(5);
+        $this->assertFalse($delete);
+
+    }
 }

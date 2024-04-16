@@ -97,9 +97,34 @@ class DesignationService
         throw new \Exception('Something went wrong.');
     }
 
+    /**
+     * The function "viewAllDesignations" returns all designations.
+     * 
+     * @return all the designations.
+     */
+
     public function viewAllDesignations(): Collection | null
     {
         $returnArray = Designation::all();
         return $returnArray;
+    }
+
+    /**
+     * Delete a designation using its id.
+     *
+     * @param int $id The ID of the designation to be deleted.
+     *
+     * @return bool Return true if its deleted and false if not deleted
+     */
+
+    public function deleteDesignation(int $id): bool
+    {
+        $fetchService = $this->getDesignation($id);
+        if ($fetchService) {
+            if ($fetchService->delete()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
