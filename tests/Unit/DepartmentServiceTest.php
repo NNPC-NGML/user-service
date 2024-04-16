@@ -95,8 +95,9 @@ class DepartmentServiceTest extends TestCase
     {
         department::factory(5)->create();
         $newDepartmentservice = new DepartmentService();
-        $fetchService = $newDepartmentservice->getDepartment(1);
         $this->assertDatabaseCount("departments", 5);
+        $fetchService = $newDepartmentservice->getDepartment(1);
+        //dd($fetchService);
         $data = new Request([
             "name" => "New Department Updated",
             "description" => "Description goes here",

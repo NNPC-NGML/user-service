@@ -71,12 +71,31 @@ class DesignationServiceTest extends TestCase
         //dd($fetchService);
     }
 
+    public function test_to_view_all_designation(): void
+    {
+        $designationService = new DesignationService();
+        $data = new Request([
+            "role" => "role name",
+            "description" => "description goes here",
+            "level" => "level 1"
+        ]);
+
+
+        $designationService->create($data);
+
+        $fetchAllDesignations = $designationService->viewAllDesignations();
+        $this->assertCount(
+            1,
+            $fetchAllDesignations->toArray(),
+            "FetchAllDepartment Array doesn't return the correct data count"
+        );
+    }
 
     public function test_to_see_if_an_existing_designation_can_be_updated(): void
     {
         Designation::factory(5)->create();
         $newDesignationService = new DesignationService();
-        $fetchService = $newDesignationService->getDesignation(1);
+        $fetchService = $newDesignationService->getDesignation(5);
         $this->assertDatabaseCount("designations", 5);
         $data = new Request([
             "role" => "New role Updated",
@@ -97,5 +116,31 @@ class DesignationServiceTest extends TestCase
 
         $newDesignationService->updateDesignation(1, $data);
         $this->expectExceptionMessage('Something went wrong.');
+    }
+
+    public function test_to_see_if_a_designation_is_deleted()
+    {
+        $data = new Request([
+            "role" => "role name",
+            "description" => "description",
+            "level" => "level 2",
+        ]);
+
+        $designationService = new DesignationService();
+        $data = $designationService->create($data);
+        $this->assertDatabaseCount("designations", 1);
+        $delete = $designationService->deleteDesignation($data->id);
+        $this->assertDatabaseMissing("designations", ["role" => "role name"]);
+        $this->assertTrue($delete);
+
+    }
+
+
+    public function test_to_see_if_there_is_no_record_with_the_provided_designation_id()
+    {
+        $designationService = new DesignationService();
+        $delete = $designationService->deleteDesignation(5);
+        $this->assertFalse($delete);
+
     }
 }
