@@ -96,4 +96,10 @@ class DesignationService
         }
         throw new \Exception('Something went wrong.');
     }
+
+    public function viewAllDesignations(): Collection | null
+    {
+        $returnArray = Designation::all();
+        return $returnArray;
+    }
 }
