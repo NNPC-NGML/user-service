@@ -1,6 +1,7 @@
 <?php
 
 namespace Tests\Unit;
+
 use Tests\TestCase;
 use App\Models\Designation;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class DesignationServiceTest extends TestCase
     public function test_if_designation_is_created(): void
     {
         $designationService = new DesignationService();
-        $data_array = ['role'=>'role name','description'=>'role description','level'=>'10'];
+        $data_array = ['role' => 'role name', 'description' => 'role description', 'level' => '10'];
         $data = new Request($data_array);
         $result = $designationService->create($data);
         $this->assertInstanceOf(Designation::class, $result);
@@ -24,7 +25,7 @@ class DesignationServiceTest extends TestCase
         $this->assertDatabaseHas('designations', [
             "role" => "role name",
             "description" => "role description",
-            'level'=>'10'
+            'level' => '10'
         ]);
         //$this->assertSame('this should be a route', $result->step_route);
     }
@@ -33,7 +34,7 @@ class DesignationServiceTest extends TestCase
     public function test_if_designation_is_not_created(): void
     {
         $designationService = new DesignationService();
-        $data_array = ['role'=>'role name'];
+        $data_array = ['role' => 'role name'];
         $data = new Request($data_array);
         $createDesignation = $designationService->create($data);
         $resultArray = $createDesignation->toArray();
@@ -42,7 +43,6 @@ class DesignationServiceTest extends TestCase
         $this->assertArrayHasKey('description', $resultArray);
         //dd($resultArray);
     }
-
 
     public function test_to_see_if_a_designation_can_be_fetched(): void
     {
@@ -61,7 +61,6 @@ class DesignationServiceTest extends TestCase
         $this->assertSame('description goes here', $fetchService->description);
         $this->assertSame('level 10', $fetchService->level);
         $this->assertInstanceOf(Designation::class, $fetchService);
-
     }
 
     public function test_to_see_if_designation_returns_null_when_there_is_no_data(): void
@@ -71,25 +70,25 @@ class DesignationServiceTest extends TestCase
         $this->assertNull($fetchService);
         //dd($fetchService);
     }
-    
+
     public function test_to_view_all_designation(): void
     {
         $designationService = new DesignationService();
         $data = new Request([
             "role" => "role name",
             "description" => "description goes here",
-            "level"=>"level 1"
+            "level" => "level 1"
         ]);
 
-        
+
         $designationService->create($data);
 
         $fetchAllDesignations = $designationService->viewAllDesignations();
-        $this->assertCount( 
-            1, 
-            $fetchAllDesignations->toArray(), "FetchAllDepartment Array doesn't return the correct data count"
-        ); 
-
+        $this->assertCount(
+            1,
+            $fetchAllDesignations->toArray(),
+            "FetchAllDepartment Array doesn't return the correct data count"
+        );
     }
 
     public function test_to_see_if_an_existing_designation_can_be_updated(): void
