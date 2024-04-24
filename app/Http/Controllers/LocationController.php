@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\LocationResource;
-use App\Service\LocationService;
-use Illuminate\Http\Request;
 use App\Models\Location;
+use Illuminate\Http\Request;
+use App\Service\LocationService;
+use App\Jobs\Location\LocationDeleted;
+use App\Jobs\Location\LocationUpdated;
+use App\Http\Resources\LocationResource;
 
 class LocationController extends Controller
 {
@@ -56,6 +58,8 @@ class LocationController extends Controller
         $result = $this->locationService->deleteLocation($id);
 
         if ($result) {
+
+            LocationDeleted::dispatch($id);
             return response()->json(['success' => true, 'message' => 'Location deleted successfully'], 200);
         } else {
             return response()->json(['success' => false, 'message' => 'Location not found'], 404);
@@ -215,6 +219,7 @@ class LocationController extends Controller
         $result = $this->locationService->create($request);
 
         if ($result instanceof Location) {
+            LocationUpdated::dispatch($result->toArray());
             return response()->json(['success' => true, 'data' => $result], 201);
         } else {
             return response()->json(['success' => false, 'error' => $result], 422);
@@ -267,14 +272,16 @@ class LocationController extends Controller
      *             )
      *         )
      *     ),
-     *     security={{"apiAuth":{}}}
+     *     security={{ "apiAuth":{ }}}
      * )
      */
-    public function updateLocation(Request $request, int $id,)
+    public function updateLocation(Request $request, int $id, )
     {
         $result = $this->locationService->updateLocation($id, $request);
 
         if ($result instanceof Location) {
+
+            LocationUpdated::dispatch($result->toArray());
             return response()->json(['success' => true, 'data' => $result], 201);
         } else {
             return response()->json(['success' => false, 'error' => $result], 422);

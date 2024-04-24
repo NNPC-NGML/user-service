@@ -27,7 +27,7 @@ class DepartmentServiceTest extends TestCase
             "description" => "description",
         ]);
         //$this->assertSame('this should be a route', $result->step_route);
-        
+
     }
 
     public function test_if_department_is_not_created(): void
@@ -79,14 +79,14 @@ class DepartmentServiceTest extends TestCase
             "description" => "description goes here",
         ]);
 
-        
+
         $departmentService->create($data);
 
         $fetchAllDepartment = $departmentService->viewAllDepartment();
-        $this->assertCount( 
-            1, 
+        $this->assertCount(
+            1,
             $fetchAllDepartment->toArray(), "FetchAllDepartment Array doesn't return the correct data count"
-        ); 
+        );
 
     }
 
@@ -95,8 +95,9 @@ class DepartmentServiceTest extends TestCase
     {
         department::factory(5)->create();
         $newDepartmentservice = new DepartmentService();
-        $fetchService = $newDepartmentservice->getDepartment(1);
         $this->assertDatabaseCount("departments", 5);
+        $fetchService = $newDepartmentservice->getDepartment(1);
+        //dd($fetchService);
         $data = new Request([
             "name" => "New Department Updated",
             "description" => "Description goes here",
@@ -124,7 +125,7 @@ class DepartmentServiceTest extends TestCase
         $data = new Request([
             "name" => "department name",
             "description" => "description",
-            
+
         ]);
 
         $departmentService = new DepartmentService();

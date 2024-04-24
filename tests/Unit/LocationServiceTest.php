@@ -71,8 +71,9 @@ class LocationServiceTest extends TestCase
     {
         Location::factory(5)->create();
         $locationService = new LocationService();
-        $fetchService = $locationService->getLocation(1);
         $this->assertDatabaseCount("locations", 5);
+        $fetchService = $locationService->getLocation(1);
+        //dd($fetchService);
         $data = new Request([
             "location" => "Location1",
             "zone" => "Zone1",
