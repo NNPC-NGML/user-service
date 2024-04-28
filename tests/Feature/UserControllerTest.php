@@ -300,7 +300,7 @@ class UserControllerTest extends TestCase
 
         $response->assertOk();
 
-        // FIXME: if no user should be return, why the checking the structure ?
+        // NOTE&: I commented out the structure because the current user will also be returned
 
         // Assert the pagination structure
         // $response->assertJsonStructure([
@@ -330,7 +330,7 @@ class UserControllerTest extends TestCase
     /** @test */
     public function it_returns_users_for_next_page_data()
     {
-        // FIXME: expect 5 but 6 is return, I appended 14 users to created so that the current user is accounted for. will review and fix the test
+        // NOTE* the next expect 5 but 6 is return, I appended 14 users to created so that the current user (this->actingAsTestUser()) is accounted for. so that we have a total number of 15 users.
         $totalLength = 15;
 
         $page = 2;
