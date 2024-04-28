@@ -103,7 +103,7 @@ class DepartmentController extends Controller
     {
         $result = $this->departmentService->getDepartment($id);
         if ($result instanceof department) {
-            return response()->json(['success' => true, 'data' => new DepartmentResource($result)], 201);
+            return response()->json(['success' => true, 'data' => new DepartmentResource($result)], 200);
         } else {
             return response()->json(['success' => false, 'error' => $result], 422);
         }
@@ -170,7 +170,7 @@ class DepartmentController extends Controller
         $result = $this->departmentService->deleteDepartment($id);
         if ($result) {
             DepartmentDeleted::dispatch($id);
-            return response()->json(['success' => true], 201);
+            return response()->json(['success' => true], 204);
         } else {
             return response()->json(['success' => false], 422);
         }
