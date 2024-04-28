@@ -60,7 +60,9 @@ Route::group(['prefix' => 'v1'], function () {
     // Designation
     Route::post('/create_designation', [DesignationController::class, 'create'])->name('designations.create');
     Route::patch('/designations/{id}', [DesignationController::class, 'updateDesignation'])->name('designations.update');
-
+    Route::get('/designations', [DesignationController::class, 'index'])->name('designations.index');
+    Route::get('/designations/{id}', [DesignationController::class, 'show'])->name('designations.show');
+    Route::delete('/designations/{id}', [DesignationController::class, 'destroy'])->name('designations.destroy');
 
 });
 
