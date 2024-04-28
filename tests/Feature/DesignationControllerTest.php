@@ -19,7 +19,7 @@ class DesignationControllerTest extends TestCase
             "level" => "level 2"
         ];
 
-        $response = $this->postJson(route('designations.create', $data));
+        $response = $this->actingAsTestUser()->postJson(route('designations.create', $data));
 
         $response->assertStatus(201);
 
@@ -33,7 +33,7 @@ class DesignationControllerTest extends TestCase
             "description" => "",
         ];
 
-        $response = $this->postJson(route('designations.create', $data));
+        $response = $this->actingAsTestUser()->postJson(route('designations.create', $data));
 
         $response->assertStatus(422);
 
@@ -54,7 +54,7 @@ class DesignationControllerTest extends TestCase
 
         $designation = Designation::create($data_array);
 
-        $response = $this->patchJson(route('designations.update', $designation->id), [
+        $response = $this->actingAsTestUser()->patchJson(route('designations.update', $designation->id), [
             'role' => 'role updated',
             'description' => "updated description",
         ]);
@@ -72,7 +72,7 @@ class DesignationControllerTest extends TestCase
     {
         $data_array = ['role' => 'role name', 'description' => "Description goes here"];
         $designation = Designation::create($data_array);
-        $response = $this->patchJson(route('designations.update', $designation->id), [
+        $response = $this->actingAsTestUser()->patchJson(route('designations.update', $designation->id), [
             'role' => '',
         ]);
         $response->assertStatus(500);
@@ -86,7 +86,7 @@ class DesignationControllerTest extends TestCase
 
         $data = Designation::factory()->count(10)->create();
 
-        $response = $this->getJson(route('designations.index'));
+        $response = $this->actingAsTestUser()->getJson(route('designations.index'));
 
         $response->assertStatus(200);
         // $response->assertJsonStructure([
@@ -108,7 +108,7 @@ class DesignationControllerTest extends TestCase
     public function test_to_return_no_designation()
     {
 
-        $response = $this->getJson(route('designations.index'));
+        $response = $this->actingAsTestUser()->getJson(route('designations.index'));
 
         $response->assertStatus(200);
     }
@@ -120,7 +120,7 @@ class DesignationControllerTest extends TestCase
 
 
 
-        $response = $this->deleteJson(route('designations.destroy', ['id' => $data->id]));
+        $response = $this->actingAsTestUser()->deleteJson(route('designations.destroy', ['id' => $data->id]));
 
 
         $response->assertStatus(204);
@@ -133,7 +133,7 @@ class DesignationControllerTest extends TestCase
 
         $nonExistentUnit = mt_rand(1000000000, 9999999999);
 
-        $response = $this->deleteJson(route('designations.destroy', ['id' => $nonExistentUnit]));
+        $response = $this->actingAsTestUser()->deleteJson(route('designations.destroy', ['id' => $nonExistentUnit]));
 
         $response->assertStatus(404);
     }
@@ -146,7 +146,7 @@ class DesignationControllerTest extends TestCase
 
         $designation = Designation::factory()->create();
 
-        $response = $this->getJson(route('designations.show', ['id' => $designation->id]));
+        $response = $this->actingAsTestUser()->getJson(route('designations.show', ['id' => $designation->id]));
 
         $response->assertStatus(200);
 
@@ -169,7 +169,7 @@ class DesignationControllerTest extends TestCase
         $nonExistingUnitId = mt_rand(1000000000, 9999999999);
 
 
-        $response = $this->getJson(route('designations.show', ['id' => $nonExistingUnitId]));
+        $response = $this->actingAsTestUser()->getJson(route('designations.show', ['id' => $nonExistingUnitId]));
 
         $response->assertStatus(404);
     }
