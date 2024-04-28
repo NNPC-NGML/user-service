@@ -174,11 +174,9 @@ class DesignationController extends Controller
 
     public function updateDesignation(Request $request, int $id, )
     {
-
-
         $result = $this->designationService->updateDesignation($id, $request);
+
         if ($result instanceof Designation) {
-            DesignationUpdated::dispatch($result);
             return response()->json(['success' => true, 'data' => $result], 201);
         } else {
             return response()->json(['success' => false, 'error' => $result], 422);

@@ -50,12 +50,9 @@ class DesignationControllerTest extends TestCase
 
     public function testUpdateDesignationSuccessfully()
     {
+        $data_array = ['role' => 'role name', 'description' => "Description goes here"];
 
-
-        $designation = Designation::factory()->create();
-        // $data_array = ['role' => 'role name', 'description' => "Description goes here"];
-
-        // $designation = Designation::create($data_array);
+        $designation = Designation::create($data_array);
 
         $response = $this->patchJson(route('designations.update', $designation->id), [
             'role' => 'role updated',

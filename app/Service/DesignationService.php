@@ -76,25 +76,9 @@ class DesignationService
      * @return bool|array|Designation The `updateDesignation` function can return three different types
      * of values:
      */
+
     public function updateDesignation(int $id, Request $request): bool|array|Designation
     {
-        // // validation
-        // $validator = Validator::make($request->all(), [
-        //     'name' => 'sometimes|nullable|string',
-        //     "description" => "sometimes|nullable|string",
-        // ]);
-        // if ($validator->fails()) {
-        //     throw new \Exception($validator->errors());
-        // }
-
-        // $fetchService = $this->getDesignation($id);
-        // if ($fetchService) {
-        //     if ($fetchService->update($request->all())) {
-        //         return $fetchService;
-        //     }
-        //     throw new \Exception('Something went wrong.');
-        // }
-        // throw new \Exception('Something went wrong.');
         // validation
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|nullable|string',
@@ -104,17 +88,55 @@ class DesignationService
             throw new \Exception($validator->errors());
         }
 
-        $designation = $this->getDesignation($id);
-        if ($designation) {
-            // Update the designation attributes
-            $designation->fill($request->all());
-            if ($designation->save()) {
-                return $designation; // Return the updated designation
+        $fetchService = $this->getDesignation($id);
+        if ($fetchService) {
+            if ($fetchService->update($request->all())) {
+                return $fetchService;
             }
-            throw new \Exception('Something went wrong while saving.');
+            throw new \Exception('Something went wrong.');
         }
-        throw new \Exception('Designation not found.');
+        throw new \Exception('Something went wrong.');
     }
+
+    // public function updateDesignation(int $id, Request $request): bool|array|Designation
+    // {
+    //     // // validation
+    //     // $validator = Validator::make($request->all(), [
+    //     //     'name' => 'sometimes|nullable|string',
+    //     //     "description" => "sometimes|nullable|string",
+    //     // ]);
+    //     // if ($validator->fails()) {
+    //     //     throw new \Exception($validator->errors());
+    //     // }
+
+    //     // $fetchService = $this->getDesignation($id);
+    //     // if ($fetchService) {
+    //     //     if ($fetchService->update($request->all())) {
+    //     //         return $fetchService;
+    //     //     }
+    //     //     throw new \Exception('Something went wrong.');
+    //     // }
+    //     // throw new \Exception('Something went wrong.');
+    //     // validation
+    //     $validator = Validator::make($request->all(), [
+    //         'name' => 'sometimes|nullable|string',
+    //         "description" => "sometimes|nullable|string",
+    //     ]);
+    //     if ($validator->fails()) {
+    //         throw new \Exception($validator->errors());
+    //     }
+
+    //     $designation = $this->getDesignation($id);
+    //     if ($designation) {
+    //         // Update the designation attributes
+    //         $designation->fill($request->all());
+    //         if ($designation->save()) {
+    //             return $designation; // Return the updated designation
+    //         }
+    //         throw new \Exception('Something went wrong while saving.');
+    //     }
+    //     throw new \Exception('Designation not found.');
+    // }
 
     /**
      * The function "viewAllDesignations" returns all designations.
