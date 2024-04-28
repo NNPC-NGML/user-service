@@ -22,7 +22,7 @@ class UnitControllerTest extends TestCase
             'departmentId' => $department->id,
         ];
 
-        $response = $this->post(route('create_unit'), $data);
+        $response = $this->actingAsTestUser()->post(route('create_unit'), $data);
 
         $response->assertStatus(201);
         $this->assertDatabaseHas('units', [
@@ -42,7 +42,7 @@ class UnitControllerTest extends TestCase
             'departmentId' => $department->id,
         ];
 
-        $response = $this->post(route('create_unit'), $data);
+        $response = $this->actingAsTestUser()->post(route('create_unit'), $data);
 
         $response->assertStatus(422)
             ->assertJson([
@@ -59,7 +59,7 @@ class UnitControllerTest extends TestCase
 
         $users = Unit::factory()->count(10)->create();
 
-        $response = $this->getJson(route('units.index'));
+        $response = $this->actingAsTestUser()->getJson(route('units.index'));
 
         $response->assertOk();
 
@@ -85,7 +85,7 @@ class UnitControllerTest extends TestCase
     public function it_returns_no_units()
     {
 
-        $response = $this->getJson(route('units.index'));
+        $response = $this->actingAsTestUser()->getJson(route('units.index'));
 
         $response->assertOk();
 
@@ -116,13 +116,13 @@ class UnitControllerTest extends TestCase
             'department_id' => $department->id,
         ]);
 
-        $response = $this->deleteJson(route('delete_unit', ['id' => $unit->id]));
+        $response = $this->actingAsTestUser()->deleteJson(route('delete_unit', ['id' => $unit->id]));
 
 
         $response->assertStatus(200)
             ->assertJson(['success' => true, 'message' => 'Unit successfully deleted']);
 
-        $this->assertDatabaseMissing('users', ['id' => $unit->id]);
+        $this->assertDatabaseMissing('units', ['id' => $unit->id]);
     }
 
     /** @test */
@@ -131,7 +131,7 @@ class UnitControllerTest extends TestCase
 
         $nonExistentUnit = mt_rand(1000000000, 9999999999);
 
-        $response = $this->deleteJson(route('delete_unit', ['id' => $nonExistentUnit]));
+        $response = $this->actingAsTestUser()->deleteJson(route('delete_unit', ['id' => $nonExistentUnit]));
 
         $response->assertStatus(404)
             ->assertJson([
@@ -152,7 +152,7 @@ class UnitControllerTest extends TestCase
             'department_id' => $department->id,
         ]);
 
-        $response = $this->getJson(route('units.show', ['id' => $unit->id]));
+        $response = $this->actingAsTestUser()->getJson(route('units.show', ['id' => $unit->id]));
 
         $response->assertStatus(200);
 
@@ -172,7 +172,7 @@ class UnitControllerTest extends TestCase
         $nonExistingUnitId = mt_rand(1000000000, 9999999999);
 
 
-        $response = $this->getJson(route('units.show', ['id' => $nonExistingUnitId]));
+        $response = $this->actingAsTestUser()->getJson(route('units.show', ['id' => $nonExistingUnitId]));
 
         $response->assertStatus(404);
 
@@ -197,7 +197,7 @@ class UnitControllerTest extends TestCase
             'department_id' => $department->id,
         ]);
 
-        $response = $this->get(route('show_units_in_department', ['departmentId' => $department->id]));
+        $response = $this->actingAsTestUser()->get(route('show_units_in_department', ['departmentId' => $department->id]));
 
         $response->assertStatus(200);
         $this->assertDatabaseHas('units', [
@@ -213,7 +213,7 @@ class UnitControllerTest extends TestCase
 
         $nonExistentDepartmentId = mt_rand(1000000000, 9999999999);
 
-        $response = $this->get(route('show_units_in_department', ['departmentId' => $nonExistentDepartmentId]));
+        $response = $this->actingAsTestUser()->get(route('show_units_in_department', ['departmentId' => $nonExistentDepartmentId]));
 
         $response->assertStatus(200);
 
@@ -243,7 +243,7 @@ class UnitControllerTest extends TestCase
             'department_id' => $department->id,
         ];
 
-        $response = $this->putJson(route('units.update', ['id' => $unit1->id]), $updatedUnit);
+        $response = $this->actingAsTestUser()->putJson(route('units.update', ['id' => $unit1->id]), $updatedUnit);
 
         $response->assertStatus(200)
             ->assertJson([
@@ -267,7 +267,7 @@ class UnitControllerTest extends TestCase
 
         $nonExistentUnitId = mt_rand(1000000000, 9999999999);
 
-        $response = $this->putJson(route('units.update', ['id' => $nonExistentUnitId]), []);
+        $response = $this->actingAsTestUser()->putJson(route('units.update', ['id' => $nonExistentUnitId]), []);
 
         $response->assertStatus(422)
             ->assertJson([
@@ -293,7 +293,7 @@ class UnitControllerTest extends TestCase
             'department_id' => $department->id,
         ];
 
-        $response = $this->putJson(route('units.update', ['id' => $unit->id]), $updatedUnit);
+        $response = $this->actingAsTestUser()->putJson(route('units.update', ['id' => $unit->id]), $updatedUnit);
 
         $response->assertStatus(422);
 
