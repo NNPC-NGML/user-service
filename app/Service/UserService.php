@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Location;
 use App\Models\Designation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -48,8 +49,9 @@ class UserService
         if ($validator->fails()) {
             return $validator->errors()->toArray();
         }
-
-        $user = new User($request->all());
+        $data = $request->only(['email', 'name', 'password']);
+        $data['password'] = Hash::make($data['password']);
+        $user = new User($data);
         $user->save();
 
         return $user;
@@ -196,14 +198,14 @@ class UserService
 
     /**
      * The function assigns a user to a location if they are not already assigned.
-     * 
+     *
      * @param int userId The `userId` parameter is an integer that represents the unique identifier of
      * the user to be assigned to a location.
      * @param int locationId The `locationId` parameter in the `assignUserToLocation` function
      * represents the unique identifier of the location to which you want to assign a user. This
      * parameter is used to retrieve the specific location from the database based on its ID so that
      * the user can be assigned to that location.
-     * 
+     *
      * @return bool The function `assignUserToLocation` returns a boolean value. It returns `true` if
      * the user is successfully assigned to the location, and `false` in the following cases:
      * 1. If the user or location is not found (if `` or `` is null).
@@ -229,16 +231,16 @@ class UserService
     }
 
 
-     /**
+    /**
      * The function assigns a user to a designation if they are not already assigned.
-     * 
+     *
      * @param int userId The `userId` parameter is an integer that represents the unique identifier of
      * the user to be assigned to a designation.
      * @param int designationId The `designationId` parameter in the `assignUserToDesignation` function
      * represents the unique identifier of the designation to which you want to assign a user. This
      * parameter is used to retrieve the specific designation from the database based on its ID so that
      * the user can be assigned to that designation.
-     * 
+     *
      * @return bool The function `assignUserToDesignation` returns a boolean value. It returns `true` if
      * the user is successfully assigned to the designation, and `false` in the following cases:
      * 1. If the user or designation is not found (if `` or `` is null).

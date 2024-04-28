@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Support\Facades\Hash;
-use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
+use Tests\TestCase;
 
 class UserControllerTest extends TestCase
 {
@@ -21,16 +21,16 @@ class UserControllerTest extends TestCase
         ];
 
         $response = $this->actingAsTestUser()->post(route('create_user'), $data);
-
         $response->assertStatus(201);
+
+        $user = User::where('email', 'test@example.com')->first();
+
         $this->assertDatabaseHas('users', [
             'email' => 'test@example.com',
             'name' => 'John Doe',
         ]);
 
-        // FIXME: this false, the hashing doesnot work, review code
-        // check if the user password is hashed
-        // $this->assertTrue(Hash::check('password123', User::first()->password));
+        $this->assertTrue(Hash::check('password123', $user->password));
     }
 
     /** @test */
@@ -45,10 +45,11 @@ class UserControllerTest extends TestCase
                 'success' => false,
                 'error' => [
                     'email' => ['The email field is required.'],
-                    'password' => ['The password field is required.']
-                ]
+                    'password' => ['The password field is required.'],
+                ],
             ]);
     }
+
     /** @test */
     public function it_validates_email_format_for_user_creation()
     {
@@ -65,9 +66,10 @@ class UserControllerTest extends TestCase
                 'success' => false,
                 'error' => [
                     'email' => ['The email field must be a valid email address.'],
-                ]
+                ],
             ]);
     }
+
     /** @test */
     public function it_validates_unique_email_for_user_creation()
     {
@@ -87,9 +89,10 @@ class UserControllerTest extends TestCase
                 'success' => false,
                 'error' => [
                     'email' => ['The email has already been taken.'],
-                ]
+                ],
             ]);
     }
+
     /** @test */
     public function it_validates_password_length_for_user_creation()
     {
@@ -106,9 +109,10 @@ class UserControllerTest extends TestCase
                 'success' => false,
                 'error' => [
                     'password' => ['The password field must be at least 8 characters.'],
-                ]
+                ],
             ]);
     }
+
     /** @test */
     public function it_can_delete_an_existing_user()
     {
@@ -173,7 +177,7 @@ class UserControllerTest extends TestCase
                 'data' => [
                     'email' => $newUserData['email'],
                     'name' => $newUserData['name'],
-                ]
+                ],
             ]);
 
         $this->assertDatabaseHas('users', [
@@ -194,7 +198,7 @@ class UserControllerTest extends TestCase
         $response->assertStatus(404)
             ->assertJson([
                 'success' => false,
-                'message' => 'User not found'
+                'message' => 'User not found',
             ]);
     }
 
@@ -229,24 +233,25 @@ class UserControllerTest extends TestCase
             'data' => [
                 'id' => $user->id,
                 'email' => $user->email,
-                'name' => $user->name
-            ]
+                'name' => $user->name,
+            ],
         ]);
     }
+
     /** @test */
     public function test_show_user_not_found()
     {
         $nonUserId = mt_rand(1000000000, 9999999999);
-
 
         $response = $this->actingAsTestUser()->getJson(route('users.show', ['userId' => $nonUserId]));
 
         $response->assertStatus(404);
 
         $response->assertJson([
-            'error' => 'User not found'
+            'error' => 'User not found',
         ]);
     }
+
     /** @test */
     public function it_returns_users_paginated()
     {
@@ -263,7 +268,7 @@ class UserControllerTest extends TestCase
             'data' => [
                 'current_page',
                 'data' => [
-                    '*' => ['id', 'name', 'email', 'email_verified_at', 'created_at', 'updated_at', 'department_id']
+                    '*' => ['id', 'name', 'email', 'email_verified_at', 'created_at', 'updated_at', 'department_id'],
                 ],
                 'first_page_url',
                 'from',
@@ -276,9 +281,8 @@ class UserControllerTest extends TestCase
                 'prev_page_url',
                 'to',
                 'total',
-            ]
+            ],
         ]);
-
 
         $response->assertJsonCount(count($users), 'data.data');
 
@@ -295,7 +299,6 @@ class UserControllerTest extends TestCase
         $response = $this->actingAsTestUser()->getJson(route('users.index', ['page' => 1, 'perPage' => 10]));
 
         $response->assertOk();
-
 
         // FIXME: if no user should be return, why the checking the structure ?
 
@@ -327,17 +330,13 @@ class UserControllerTest extends TestCase
     /** @test */
     public function it_returns_users_for_next_page_data()
     {
-// FIXME: expect 5 but 6 is return, I appended 14 users to created so that the current user is accounted for. will review and fix the test
+        // FIXME: expect 5 but 6 is return, I appended 14 users to created so that the current user is accounted for. will review and fix the test
         $totalLength = 15;
 
         $page = 2;
         $perPage = 10;
         // User::factory()->count($totalLength)->create();
         User::factory()->count(14)->create();
-
-
-
-
 
         $response = $this->actingAsTestUser()->getJson(route('users.index', ['page' => $page, 'perPage' => $perPage]));
 
@@ -349,7 +348,7 @@ class UserControllerTest extends TestCase
             'data' => [
                 'current_page',
                 'data' => [
-                    '*' => ['id', 'name', 'email', 'email_verified_at', 'created_at', 'updated_at', 'department_id']
+                    '*' => ['id', 'name', 'email', 'email_verified_at', 'created_at', 'updated_at', 'department_id'],
                 ],
                 'first_page_url',
                 'from',
@@ -362,7 +361,7 @@ class UserControllerTest extends TestCase
                 'prev_page_url',
                 'to',
                 'total',
-            ]
+            ],
         ]);
 
         $response->assertJsonCount($totalLength - $perPage, 'data.data');
