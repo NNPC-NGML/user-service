@@ -74,8 +74,8 @@ class UnitController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Successful operation",
-     *         @OA\JsonContent(
-     *             type="object",
+     * @OA\JsonContent(
+     * type="object",
      *             @OA\Property(property="success", type="boolean", example=true),
      *             @OA\Property(
      *                 property="data",
@@ -84,7 +84,7 @@ class UnitController extends Controller
      *                     type="object",
      *                     @OA\Property(property="id", type="integer", example=1),
      *                     @OA\Property(property="name", type="string", example="Unit 1"),
-     *                     // Define other properties of a unit here
+     *
      *                 ),
      *             ),
      *         ),

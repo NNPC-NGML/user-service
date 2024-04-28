@@ -58,8 +58,7 @@ class DesignationController extends Controller
      *              )
      *          )
      *      )
-     * )
-     */
+     * )*/
     public function index()
     {
         $result = $this->designationService->viewAllDesignations();

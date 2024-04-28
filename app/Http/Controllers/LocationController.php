@@ -84,9 +84,9 @@ class LocationController extends Controller
      *              ),
      *              @OA\Property(
      *                  property="data",
-     *                  type="object",
-     *                  description="Location resource",
-     *                  ref="#/components/schemas/LocationResource"
+     * type="object",
+     * description="Location resource",
+     * ref="#/components/schemas/LocationResource"
      *              )
      *          )
      *      ),
@@ -241,7 +241,7 @@ class LocationController extends Controller
      *         description="Location data to update",
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"name", "description"}, // Adjust based on the fields that can be updated
+     *             required={"name", "description"},
      *             @OA\Property(property="name", type="string", example="Central Park"),
      *             @OA\Property(property="description", type="string", example="A large public park in New York City")
      *         )
@@ -254,7 +254,7 @@ class LocationController extends Controller
      *             @OA\Property(
      *                 property="data",
      *                 type="object",
-     *                 ref="#/components/schemas/Location" // Adjust with actual reference to your Location schema
+     * ref="#/components/schemas/Location"
      *             )
      *         )
      *     ),
