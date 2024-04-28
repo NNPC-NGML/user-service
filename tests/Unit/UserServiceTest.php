@@ -7,6 +7,7 @@ use App\Models\Unit;
 use App\Models\User;
 use App\Models\Location;
 use App\Models\department;
+use App\Models\Designation;
 use App\Service\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -366,6 +367,43 @@ class UserServiceTest extends TestCase
         $nonExistentLocationId = mt_rand(1000000000, 9999999999);
         $userService = new UserService();
         $assigned = $userService->assignUserToLocation($user->id, $nonExistentLocationId);
+
+        $this->assertFalse($assigned);
+    }
+
+
+    public function testAssignUserToDesignation(): void
+    {
+        
+        $designation = Designation::create(['role'=>'role name','description'=>'description goes here','level'=>'level 12']);
+        //dd($designation);
+        $user = User::create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $user->save();
+
+        $userService = new UserService();
+        $assigned = $userService->assignUserToDesignation($user->id, $designation->id);
+
+        $this->assertTrue($assigned);
+        // Assert that the user now belongs to the designation
+        $this->assertTrue($user->designations->contains($designation));
+    }
+
+    public function testAssignUserToNonExistentDesignation(): void
+    {
+        $user = User::create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $nonExistentDesignationId = mt_rand(1000000000, 9999999999);
+        $userService = new UserService();
+        $assigned = $userService->assignUserToDesignation($user->id, $nonExistentDesignationId);
 
         $this->assertFalse($assigned);
     }

@@ -6,6 +6,8 @@ use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\DesignationController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +56,11 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/units', [UnitController::class, 'index'])->name('units.index');
     Route::delete('/unit/{id}', [UnitController::class, 'destroy'])->name('delete_unit');
     Route::get('/unit/{id}', [UnitController::class, 'show'])->name('units.show');
+
+    // Designation
+    Route::post('/create_designation', [DesignationController::class, 'create'])->name('designations.create');
+    Route::patch('/designations/{id}', [DesignationController::class, 'updateDesignation'])->name('designations.update');
+
 
 });
 
