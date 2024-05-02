@@ -6,6 +6,9 @@ RUN apt-get update && \
     docker-php-ext-configure gd --with-jpeg && \
     docker-php-ext-install pdo_mysql gd
 
+RUN docker-php-ext-install sockets
+
+
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
@@ -15,7 +18,7 @@ COPY . /app
 
 # Install application dependencies
 RUN composer update
-RUN composer install 
+RUN composer install
 
 # Expose the port and start the PHP server
 EXPOSE $PORT

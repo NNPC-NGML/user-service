@@ -13,7 +13,7 @@ class DepartmentCreated implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
 
-    private array $data;
+    public array $data;
     public function __construct(array $data)
     {
         $this->data = $data;
