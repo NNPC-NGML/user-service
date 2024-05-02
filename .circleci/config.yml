@@ -106,7 +106,4 @@ workflows:
           #   branches:
           #     only: dev
       
-      # - deploy-nest: # Use the pre-configured job, deploy-via-git
-      #     filters:
-      #       branches:
-      #         only: nest
+      
