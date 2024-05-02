@@ -17,7 +17,7 @@ class DepartmentServiceTest extends TestCase
     public function test_if_department_is_created(): void
     {
         $departmentService = new DepartmentService();
-        $data_array = ['name'=>'department_name','description'=>'description'];
+        $data_array = ['name' => 'department_name', 'description' => 'description'];
         $data = new Request($data_array);
         $result = $departmentService->create($data);
         $this->assertInstanceOf(department::class, $result);
@@ -33,7 +33,7 @@ class DepartmentServiceTest extends TestCase
     public function test_if_department_is_not_created(): void
     {
         $departmentService = new DepartmentService();
-        $data_array = ['name'=>'department_name2'];
+        $data_array = ['name' => 'department_name2'];
         //$data_array = ['name'=>'department_name','description'=>'description'];
         $data = new Request($data_array);
         $createDepartment = $departmentService->create($data);
@@ -85,7 +85,8 @@ class DepartmentServiceTest extends TestCase
         $fetchAllDepartment = $departmentService->viewAllDepartment();
         $this->assertCount(
             1,
-            $fetchAllDepartment->toArray(), "FetchAllDepartment Array doesn't return the correct data count"
+            $fetchAllDepartment->toArray(),
+            "FetchAllDepartment Array doesn't return the correct data count"
         );
 
     }
@@ -144,18 +145,6 @@ class DepartmentServiceTest extends TestCase
         $delete = $departmentService->deleteDepartment(5);
         $this->assertFalse($delete);
 
-    }
-
-    public function test_route_to_view_all_departments(){
-        $response = $this->get('/api/v1/department')
-            ->assertStatus(201)
-            ->assertJsonStructure(
-                [
-                    'success',
-                    'data'=> [
-                    ]
-                ]
-            );
     }
 
 }

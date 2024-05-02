@@ -19,7 +19,7 @@ class DesignationControllerTest extends TestCase
             "level" => "level 2"
         ];
 
-        $response = $this->postJson(route('designations.create', $data));
+        $response = $this->actingAsTestUser()->postJson(route('designations.create', $data));
 
         $response->assertStatus(201);
 
@@ -33,7 +33,7 @@ class DesignationControllerTest extends TestCase
             "description" => "",
         ];
 
-        $response = $this->postJson(route('designations.create', $data));
+        $response = $this->actingAsTestUser()->postJson(route('designations.create', $data));
 
         $response->assertStatus(422);
 
@@ -54,7 +54,7 @@ class DesignationControllerTest extends TestCase
 
         $designation = Designation::create($data_array);
 
-        $response = $this->patchJson(route('designations.update', $designation->id), [
+        $response = $this->actingAsTestUser()->patchJson(route('designations.update', $designation->id), [
             'role' => 'role updated',
             'description' => "updated description",
         ]);
@@ -72,9 +72,105 @@ class DesignationControllerTest extends TestCase
     {
         $data_array = ['role' => 'role name', 'description' => "Description goes here"];
         $designation = Designation::create($data_array);
-        $response = $this->patchJson(route('designations.update', $designation->id), [
+        $response = $this->actingAsTestUser()->patchJson(route('designations.update', $designation->id), [
             'role' => '',
         ]);
         $response->assertStatus(500);
+    }
+
+
+    // designations get all, signle, delete
+
+    public function test_authenticated_returns_designations()
+    {
+
+        $data = Designation::factory()->count(10)->create();
+
+        $response = $this->actingAsTestUser()->getJson(route('designations.index'));
+
+        $response->assertStatus(200);
+        // $response->assertJsonStructure([
+        //     'data' => [
+        //         '*' => [
+        //             'id',
+        //             'role',
+        //             'description',
+        //             'level',
+        //             'statu',
+        //             'created_at',
+        //             'updated_at'
+        //         ],
+        //     ],
+        // ]);
+    }
+
+    /** @test */
+    public function test_to_return_no_designation()
+    {
+
+        $response = $this->actingAsTestUser()->getJson(route('designations.index'));
+
+        $response->assertStatus(200);
+    }
+    /** @test */
+    public function test_it_can_delete_an_existing_designation()
+    {
+
+        $data = Designation::factory()->create();
+
+
+
+        $response = $this->actingAsTestUser()->deleteJson(route('designations.destroy', ['id' => $data->id]));
+
+
+        $response->assertStatus(204);
+        $this->assertDatabaseMissing('designations', ['id' => $data->id]);
+    }
+
+    /** @test */
+    public function test_to_returns_false_if_unit_does_not_exist()
+    {
+
+        $nonExistentUnit = mt_rand(1000000000, 9999999999);
+
+        $response = $this->actingAsTestUser()->deleteJson(route('designations.destroy', ['id' => $nonExistentUnit]));
+
+        $response->assertStatus(404);
+    }
+
+
+
+    /** @test */
+    public function test_show_a_single_designation_exists()
+    {
+
+        $designation = Designation::factory()->create();
+
+        $response = $this->actingAsTestUser()->getJson(route('designations.show', ['id' => $designation->id]));
+
+        $response->assertStatus(200);
+
+        $response->assertJson([
+            'success' => true,
+            'data' => [
+                'id' => $designation->id,
+                'role' => $designation->role,
+                'description' => $designation->description,
+                'level' => $designation->level,
+                // 'status' => $designation->status,
+            ]
+        ]);
+
+    }
+
+    /** @test */
+    public function test_to_show_designation_not_found()
+    {
+        $nonExistingUnitId = mt_rand(1000000000, 9999999999);
+
+
+        $response = $this->actingAsTestUser()->getJson(route('designations.show', ['id' => $nonExistingUnitId]));
+
+        $response->assertStatus(404);
     }
 }

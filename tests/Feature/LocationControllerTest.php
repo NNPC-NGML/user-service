@@ -12,7 +12,7 @@ class LocationControllerTest extends TestCase
     {
         $location = Location::factory()->create();
 
-        $response = $this->deleteJson(route('locations.delete', ['id' => $location->id]));
+        $response = $this->actingAsTestUser()->deleteJson(route('locations.delete', ['id' => $location->id]));
 
         $response->assertStatus(200)
             ->assertJson(['success' => true, 'message' => 'Location deleted successfully']);
@@ -21,7 +21,7 @@ class LocationControllerTest extends TestCase
     /** @test */
     public function it_returns_error_if_location_not_found()
     {
-        $response = $this->deleteJson(route('locations.delete', ['id' => 999]));
+        $response = $this->actingAsTestUser()->deleteJson(route('locations.delete', ['id' => 999]));
 
         $response->assertStatus(404)
             ->assertJson(['success' => false, 'message' => 'Location not found']);
@@ -37,7 +37,7 @@ class LocationControllerTest extends TestCase
 
         Location::create($data);
 
-        $response = $this->get(route('locations.index'));
+        $response = $this->actingAsTestUser()->get(route('locations.index'));
 
         $response->assertStatus(200);
 
@@ -57,7 +57,7 @@ class LocationControllerTest extends TestCase
 
     public function test_get_all_locations_returns_no_data()
     {
-        $response = $this->get(route('locations.index'));
+        $response = $this->actingAsTestUser()->get(route('locations.index'));
 
         $response->assertStatus(200);
 
@@ -84,7 +84,7 @@ class LocationControllerTest extends TestCase
 
         $location = Location::create($data);
 
-        $response = $this->getJson(route('locations.show', ['locationId' => $location->id]));
+        $response = $this->actingAsTestUser()->getJson(route('locations.show', ['locationId' => $location->id]));
 
         $response->assertStatus(200);
 
@@ -105,7 +105,7 @@ class LocationControllerTest extends TestCase
         $nonExistingLocationId = mt_rand(1000000000, 9999999999);
 
 
-        $response = $this->getJson(route('locations.show', ['locationId' => $nonExistingLocationId]));
+        $response = $this->actingAsTestUser()->getJson(route('locations.show', ['locationId' => $nonExistingLocationId]));
 
         $response->assertStatus(404);
 
@@ -123,7 +123,7 @@ class LocationControllerTest extends TestCase
             'state' => 1
         ];
 
-        $response = $this->postJson(route('locations.create', $data));
+        $response = $this->actingAsTestUser()->postJson(route('locations.create', $data));
 
         $response->assertStatus(201);
 
@@ -138,7 +138,7 @@ class LocationControllerTest extends TestCase
             'state' => ''
         ];
 
-        $response = $this->postJson(route('locations.create', $data));
+        $response = $this->actingAsTestUser()->postJson(route('locations.create', $data));
 
         $response->assertStatus(422);
 
@@ -159,7 +159,7 @@ class LocationControllerTest extends TestCase
 
         $location = Location::create($data_array);
 
-        $response = $this->patchJson(route('locations.update', $location->id), [
+        $response = $this->actingAsTestUser()->patchJson(route('locations.update', $location->id), [
             'location' => 'location1',
             'state' => 2,
         ]);
@@ -180,7 +180,7 @@ class LocationControllerTest extends TestCase
         $location = Location::create($data_array);
 
 
-        $response = $this->patchJson(route('locations.update', $location->id), [
+        $response = $this->actingAsTestUser()->patchJson(route('locations.update', $location->id), [
             'location' => '',
         ]);
 
