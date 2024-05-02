@@ -1,7 +1,7 @@
 .PHONY: help ps build build-prod start fresh fresh-prod stop restart destroy \
 	cache cache-clear migrate migrate migrate-fresh tests tests-html
 
-CONTAINER_PHP="your primary container"
+CONTAINER_PHP=user_service
 
 
 help: ## Print help.
@@ -26,7 +26,7 @@ fresh:  ## Destroy & recreate all uing dev containers.
 	make start
 
 ssh: ## SSH into PHP container
-	docker exec -it ${CONTAINER_PHP} sh
+	docker-compose  exec  ${CONTAINER_PHP} bash
 
 install: ## Run composer install
 	docker exec ${CONTAINER_PHP} composer install
@@ -38,7 +38,7 @@ migrate-fresh: ## Clear database and run all migrations
 	docker exec ${CONTAINER_PHP} php artisan migrate:fresh
 
 tests: ## Run all tests
-	docker exec ${CONTAINER_PHP} ./vendor/bin/phpunit
+	docker-compose exec ${CONTAINER_PHP} php artisan test
 
 tests-html: ## Run tests and generate coverage. Report found in reports/index.html
 	docker exec ${CONTAINER_PHP} php -d zend_extension=xdebug.so -d xdebug.mode=coverage ./vendor/bin/phpunit --coverage-html reports
@@ -48,3 +48,5 @@ lint: ## Run phpcs
 
 lint-fix: ## Run phpcbf
 	./vendor/bin/phpcbf --standard=ruleset.xml app/
+swagger: ## Run phpcbf
+	docker-compose exec ${CONTAINER_PHP} php artisan l5-swagger:generate
