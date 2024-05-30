@@ -9,18 +9,103 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    /**
+     * @OA\Post(
+     *     path="/api/register",
+     *     summary="Register a new user",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name","email","password","password_confirmation"},
+     *             @OA\Property(property="name", type="string", example="John Doe"),
+     *             @OA\Property(property="email", type="string", format="email", example="john@example.com"),
+     *             @OA\Property(property="password", type="string", format="password", example="password"),
+     *             @OA\Property(property="password_confirmation", type="string", format="password", example="password")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Successful registration",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="name", type="string", example="John Doe"),
+     *             @OA\Property(property="email", type="string", format="email", example="john@example.com"),
+     *             @OA\Property(property="updated_at", type="string", format="date-time"),
+     *             @OA\Property(property="created_at", type="string", format="date-time"),
+     *             @OA\Property(property="id", type="integer", format="int64", example=1)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="The given data was invalid."),
+     *             @OA\Property(property="errors", type="object", example={"email": {"The email has already been taken."}}),
+     *         )
+     *     )
+     * )
+     */
 
     public function register(Request $request)
     {
-        $user = User::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
+        // Create a new user with the validated data
+        $user = User::create([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => Hash::make($validatedData['password']),
+        ]);
         return response()->json($user, 201);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/login",
+     *     summary="Login user",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email","password"},
+     *             @OA\Property(property="email", type="string", format="email", example="john@example.com"),
+     *             @OA\Property(property="password", type="string", format="password", example="password")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful login",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="user",
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="name",
+     *                     type="string",
+     *                     example="John Doe"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="email",
+     *                     type="string",
+     *                     format="email",
+     *                     example="john@example.com"
+     *                 )
+     *             ),
+     *             @OA\Property(property="jwt", type="string", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Invalid credentials",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="invalid credentials")
+     *         )
+     *     ),
+     *     security={{"bearerAuth": {}}}
+     * )
+     */
     public function login(Request $request)
     {
         if (!Auth::attempt($request->only('email', 'password'))) {
@@ -31,7 +116,11 @@ class AuthController extends Controller
 
         $jwt = $user->createToken('token', [$request->input('scope')])->plainTextToken;
 
-        return response()->json(compact('jwt'));
+        // return response()->json(compact('jwt'));
+        return response()->json([
+            'user' => $user,
+            'jwt' => $jwt
+        ]);
     }
 
 
