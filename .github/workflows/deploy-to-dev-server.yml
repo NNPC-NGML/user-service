@@ -1,0 +1,83 @@
+name: nnpc_user-service_deploy
+
+on:
+  # push:
+  #   # branches:
+  #   #   - main
+  pull_request:
+    branches:
+      - dev
+    types: [closed]
+
+jobs:
+  deploy-user-service-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
+        with:
+          php-version: '8.3'
+
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+      - name: Install Dependencies
+        run: CI=false composer clear-cache && CI=false composer install && CI=false php artisan key:generate
+
+      - name: Run Tests
+        run: CI=false php artisan test
+
+  deploy-user-service-dev:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
+        with:
+          php-version: '8.3'
+
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+      - name: Install Dependencies
+        run: CI=false composer clear-cache && CI=false composer install && CI=false php artisan key:generate
+
+      - name: Update apt repositories
+        run: sudo apt update
+
+      - name: Install rsync
+        run: sudo apt-get install -y rsync
+
+      - name: Find and replace in document
+        run: |
+          sed -i -e 's:/public/index.php:/index.php:g' public/index.php &&
+          sed -i -e 's:/../vendor/autoload.php:/vendor/autoload.php:g' public/index.php &&
+          sed -i -e 's:DB_DATABASE=forge:DB_DATABASE=skillz_nnpc_users:g' .env &&
+          sed -i -e 's:DB_USERNAME=forge:DB_USERNAME=skillz_nnpc:g' .env  &&
+          sed -i -e 's:/../bootstrap/app.php:/bootstrap/app.php:g' public/index.php &&
+          sed -i -e 's:DB_PASSWORD=forge:DB_PASSWORD=nnpcNGML:g' .env &&
+          sed -i -e "s|USERS_MS=forge|USERS_MS=${USERS_MSDEV}|g" .env &&
+          sed -i -e "s:RABBITMQ_HOST=forge:RABBITMQ_HOST=${RABBITMQ_HOST}:g" .env &&
+          sed -i -e "s:RABBITMQ_PORT=forge:RABBITMQ_PORT=${RABBITMQ_PORT}:g" .env &&
+          sed -i -e "s:RABBITMQ_USER=forge:RABBITMQ_USER=${RABBITMQ_USER}:g" .env &&
+          sed -i -e "s:RABBITMQ_PASSWORD=forge:RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}:g" .env &&
+          sed -i -e "s:RABBITMQ_VHOST=forge:RABBITMQ_VHOST=${RABBITMQ_VHOST}:g" .env
+
+      - name: SSH login
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          rsync --delete -va -e 'ssh -p 7822 -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no' \
+            app database phpunit.xml storage vendor artisan .env tests bootstrap \
+            composer.json resources composer.lock routes config package.json \
+            public/ public skillz@185.160.67.60:nnpc/api/users
+
+      - name: SSH and effect migration
+        run: |
+          ssh -p 7822 -i ~/.ssh/id_rsa -t skillz@185.160.67.60 "cd nnpc/api/users && php artisan migrate"
