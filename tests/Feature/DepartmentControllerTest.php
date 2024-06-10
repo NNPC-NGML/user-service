@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use App\Models\department;
+use App\Models\Department;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -14,7 +14,7 @@ class DepartmentControllerTest extends TestCase
 
     public function test_route_to_view_all_departments()
     {
-        department::factory(10)->create();
+        Department::factory(10)->create();
         $this->actingAsTestUser()->get('/api/v1/department')
             ->assertStatus(201);
     }
@@ -43,7 +43,7 @@ class DepartmentControllerTest extends TestCase
 
     public function test_to_show_an_existing_department()
     {
-        $department = department::factory()->create();
+        $department = Department::factory()->create();
 
         $response = $this->actingAsTestUser()->getJson(route('view_department', $department));
 
@@ -60,7 +60,7 @@ class DepartmentControllerTest extends TestCase
 
     public function test_to_update_an_existing_department_successfully()
     {
-        $department = department::factory()->create();
+        $department = Department::factory()->create();
 
         $data = [
             'name' => 'Updated Department',
@@ -83,7 +83,7 @@ class DepartmentControllerTest extends TestCase
 
     public function test_to_delete_a_department_successfully()
     {
-        $department = department::factory()->create();
+        $department = Department::factory()->create();
 
         $response = $this->actingAsTestUser()->deleteJson(route('delete_department', $department->id));
 
@@ -95,7 +95,7 @@ class DepartmentControllerTest extends TestCase
     }
     public function test_unauthenticated_cannot_delete_a_department()
     {
-        $department = department::factory()->create();
+        $department = Department::factory()->create();
 
         $response = $this->deleteJson(route('delete_department', $department->id));
 

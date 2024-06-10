@@ -24,7 +24,7 @@ class UnitServiceTest extends TestCase
     public function testCreateUnit(): void
     {
         // Create a department for testing
-        $department = department::factory()->create();
+        $department = Department::factory()->create();
 
         $unitData = [
             'name' => 'Test Unit',
@@ -80,7 +80,7 @@ class UnitServiceTest extends TestCase
     public function testUpdateUnitSuccessfully(): void
     {
 
-        $department = department::factory()->create();
+        $department = Department::factory()->create();
 
         $unit = Unit::create([
             'name' => 'Test Unit',
@@ -105,7 +105,7 @@ class UnitServiceTest extends TestCase
     }
     public function testUpdateUnitWithValidationErrors(): void
     {
-        $department = department::factory()->create();
+        $department = Department::factory()->create();
         $nonExistentDepartmentId = mt_rand(1000000000, 9999999999);
 
         $unit = Unit::create([
@@ -148,7 +148,7 @@ class UnitServiceTest extends TestCase
     {
 
         // Create a department for testing
-        $department = department::factory()->create();
+        $department = Department::factory()->create();
 
         $unitData = [
             'name' => 'Test Unit',
@@ -185,7 +185,7 @@ class UnitServiceTest extends TestCase
      */
     public function testGetUnitsInDepartment(): void
     {
-        $department = department::factory()->create();
+        $department = Department::factory()->create();
 
         // Create units in the department
         $unit1 = Unit::create([
@@ -225,7 +225,7 @@ class UnitServiceTest extends TestCase
      */
     public function testDeleteExistingUnit(): void
     {
-        $department = department::factory()->create();
+        $department = Department::factory()->create();
 
         $unit = Unit::create([
             'name' => 'Test Unit',
