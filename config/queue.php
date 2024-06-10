@@ -1,5 +1,4 @@
 <?php
-
 return [
 
     /*
@@ -89,7 +88,10 @@ return [
 
                     'prioritize_delayed' => false,
                     'queue_max_priority' => 10,
+                    'durable' => true,
                 ],
+
+
             ],
             'worker' => env('RABBITMQ_WORKER', 'default'),
 
