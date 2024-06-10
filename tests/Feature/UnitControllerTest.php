@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\department;
+use App\Models\Department;
 use App\Models\Unit;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -14,7 +14,7 @@ class UnitControllerTest extends TestCase
     public function it_can_create_a_unit(): void
     {
         // Create a department for testing
-        $department = department::factory()->create();
+        $department = Department::factory()->create();
 
         $data = [
             'name' => 'Test Unit',
@@ -35,7 +35,7 @@ class UnitControllerTest extends TestCase
     public function it_cannot_create_a_unit(): void
     {
         // Create a department for testing
-        $department = department::factory()->create();
+        $department = Department::factory()->create();
 
         $data = [
             'name' => 'Test Unit',
@@ -108,7 +108,7 @@ class UnitControllerTest extends TestCase
     public function it_can_delete_an_existing_unit()
     {
 
-        $department = department::factory()->create();
+        $department = Department::factory()->create();
 
         $unit = Unit::create([
             'name' => 'Test Unit',
@@ -144,7 +144,7 @@ class UnitControllerTest extends TestCase
     public function test_show_unit_exists()
     {
 
-        $department = department::factory()->create();
+        $department = Department::factory()->create();
 
         $unit = Unit::create([
             'name' => 'Test Unit',
@@ -183,7 +183,7 @@ class UnitControllerTest extends TestCase
     /** @test */
     public function it_can_get_units_in_department(): void
     {
-        $department = department::factory()->create();
+        $department = Department::factory()->create();
 
         $unit = Unit::create([
             'name' => 'Unit 1',
@@ -229,7 +229,7 @@ class UnitControllerTest extends TestCase
     /** @test */
     public function it_updates_unit_record()
     {
-        $department = department::factory()->create();
+        $department = Department::factory()->create();
 
         $unit1 = Unit::create([
             'name' => 'Unit 2',
@@ -279,7 +279,7 @@ class UnitControllerTest extends TestCase
     /** @test */
     public function it_validates_unit_update_request_data()
     {
-        $department = department::factory()->create();
+        $department = Department::factory()->create();
 
         $unit = Unit::create([
             'name' => 'Unit 2',

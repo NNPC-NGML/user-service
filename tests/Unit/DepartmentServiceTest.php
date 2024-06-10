@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use App\Models\department;
+use App\Models\Department;
 use Illuminate\Http\Request;
 use App\Service\DepartmentService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -20,7 +20,7 @@ class DepartmentServiceTest extends TestCase
         $data_array = ['name' => 'department_name', 'description' => 'description'];
         $data = new Request($data_array);
         $result = $departmentService->create($data);
-        $this->assertInstanceOf(department::class, $result);
+        $this->assertInstanceOf(Department::class, $result);
         $this->assertNotNull($result->id);
         $this->assertDatabaseHas('departments', [
             "name" => "department_name",
@@ -59,8 +59,7 @@ class DepartmentServiceTest extends TestCase
         $this->assertEquals($fetchService->id, $result->id);
         $this->assertSame('department name', $fetchService->name);
         $this->assertSame('description goes here', $fetchService->description);
-        $this->assertInstanceOf(department::class, $fetchService);
-
+        $this->assertInstanceOf(Department::class, $fetchService);
     }
 
     public function test_to_see_if_department_returns_null_when_there_is_no_data(): void
@@ -88,13 +87,12 @@ class DepartmentServiceTest extends TestCase
             $fetchAllDepartment->toArray(),
             "FetchAllDepartment Array doesn't return the correct data count"
         );
-
     }
 
 
     public function test_to_see_if_an_existing_department_can_be_updated(): void
     {
-        department::factory(5)->create();
+        Department::factory(5)->create();
         $newDepartmentservice = new DepartmentService();
         $this->assertDatabaseCount("departments", 5);
         $fetchService = $newDepartmentservice->getDepartment(1);
@@ -135,7 +133,6 @@ class DepartmentServiceTest extends TestCase
         $delete = $departmentService->deleteDepartment($data->id);
         $this->assertDatabaseMissing("departments", ["name" => "department name"]);
         $this->assertTrue($delete);
-
     }
 
 
@@ -144,7 +141,5 @@ class DepartmentServiceTest extends TestCase
         $departmentService = new DepartmentService();
         $delete = $departmentService->deleteDepartment(5);
         $this->assertFalse($delete);
-
     }
-
 }
