@@ -92,18 +92,14 @@ workflows:
   version: 2
   nnpc_users_deploy:
     jobs:
-      - deploy-processflow-test: # Use the pre-configured job, deploy-via-git
-          
-          filters:
-              branches:
-                only: dev
+      - deploy-processflow-test # Use the pre-configured job, deploy-via-git
          
       - deploy-processflow-dev: # Use the pre-configured job, deploy-via-git
           context: nnpc
-          # requires:
-          #   - deploy-processflow-test
-          # filters:
-          #   branches:
-          #     only: dev
+          requires:
+            - deploy-processflow-test
+          filters:
+            branches:
+              only: dev
       
       
