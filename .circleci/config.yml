@@ -3,7 +3,7 @@ version: 2.1
 
 jobs:
   
-  deploy-processflow-test:
+  deploy-user-service-test:
     docker:
         - image: cimg/php:8.3
     working_directory: ~/repo
@@ -46,7 +46,7 @@ jobs:
       #     name: ssh and effect migration  
       #     command: |
       #        ssh -p 7822 -t skillz@185.160.67.60 "cd revenuehub/api && php artisan migrate"
-  deploy-processflow-dev:
+  deploy-user-service-dev:
     docker:
         - image: cimg/php:8.3
     working_directory: ~/repo
@@ -92,12 +92,12 @@ workflows:
   version: 2
   nnpc_users_deploy:
     jobs:
-      - deploy-processflow-test # Use the pre-configured job, deploy-via-git
+      - deploy-user-service-test # Use the pre-configured job, deploy-via-git
          
-      - deploy-processflow-dev: # Use the pre-configured job, deploy-via-git
+      - deploy-user-service-dev: # Use the pre-configured job, deploy-via-git
           context: nnpc
           requires:
-            - deploy-processflow-test
+            - deploy-user-service-test
           filters:
             branches:
               only: dev
