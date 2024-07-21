@@ -80,6 +80,14 @@ jobs:
             sed -i -e 's:/public/index.php:/index.php:g' public/index.php && sed -i -e 's:/../vendor/autoload.php:/vendor/autoload.php:g' public/index.php && sed -i -e 's:DB_DATABASE=forge:DB_DATABASE=skillz_nnpc_users:g' .env && sed -i -e 's:DB_USERNAME=forge:DB_USERNAME=skillz_nnpc:g' .env  && sed -i -e 's:/../bootstrap/app.php:/bootstrap/app.php:g' public/index.php && sed -i -e 's:DB_PASSWORD=forge:DB_PASSWORD=nnpcNGML:g' .env && sed -i -e "s|USERS_MS=forge|USERS_MS=${USERS_MSDEV}|g" .env && sed -i -e "s:RABBITMQ_HOST=forge:RABBITMQ_HOST=${RABBITMQ_HOST}:g" .env && sed -i -e "s:RABBITMQ_PORT=forge:RABBITMQ_PORT=${RABBITMQ_PORT}:g" .env && sed -i -e "s:RABBITMQ_USER=forge:RABBITMQ_USER=${RABBITMQ_USER}:g" .env && sed -i -e "s:RABBITMQ_PASSWORD=forge:RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}:g" .env && sed -i -e "s:RABBITMQ_VHOST=forge:RABBITMQ_VHOST=${RABBITMQ_VHOST}:g" .env
       
       - run:
+          name: find and replace env publishers
+          command: |
+             sed -i -e "s:AUTOMATOR_TASK_CREATED=forge:AUTOMATOR_TASK_CREATED=processflow_queue,formbuilder_queue,notification_queue:g" .env
+             sed -i -e "s:AUTOMATOR_TASK_UPDATED=forge:AUTOMATOR_TASK_UPDATED=processflow_queue,formbuilder_queue,notification_queue:g" .env
+             sed -i -e "s:AUTOMATOR_TASK_DELETED=forge:AUTOMATOR_TASK_DELETED=processflow_queue,formbuilder_queue,notification_queue:g" .env
+             
+      
+      - run:
           name: ssh login  
           command: |
              rsync --delete -va -e 'ssh -p 7822 -o StrictHostKeyChecking=no'   app database phpunit.xml storage vendor artisan .env tests bootstrap composer.json resources composer.lock routes config package.json public/ public skillz@185.160.67.60:nnpc/api/users

@@ -25,7 +25,8 @@ use App\Http\Controllers\DesignationController;
 // });
 
 Route::group(['prefix' => 'v1'], function () {
-    // Route::post('/create_user', [UserController::class, 'create'])->name('create_user');
+
+    Route::post('/create_user', [UserController::class, 'create'])->name('create_user');
     // Route::get('/users', [UserController::class, 'index'])->name('users.index');
     // Route::get('/users/{userId}', [UserController::class, 'show'])->name('users.show');
     // /////// Create Department
@@ -76,7 +77,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::group(['prefix' => 'v1'], function () {
-        Route::post('/create_user', [UserController::class, 'create'])->name('create_user');
+        //Route::post('/create_user', [UserController::class, 'create'])->name('create_user');
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::get('/users/{userId}', [UserController::class, 'show'])->name('users.show');
         /////// Create Department
@@ -113,7 +114,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/designations', [DesignationController::class, 'index'])->name('designations.index');
         Route::get('/designations/{id}', [DesignationController::class, 'show'])->name('designations.show');
         Route::delete('/designations/{id}', [DesignationController::class, 'destroy'])->name('designations.destroy');
-
     });
     Route::get('scope/{scope}', [AuthController::class, 'scopeCan']);
 });

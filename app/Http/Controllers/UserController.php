@@ -64,7 +64,7 @@ class UserController extends Controller
         $result = $this->userService->create($request);
 
         if ($result instanceof User) {
-            UserCreated::dispatch($result->toArray());
+            UserCreated::dispatch($result->toArray())->onQueue(config("nnpcreusable.USER_CREATED"));
             return response()->json(['success' => true, 'data' => new UserResource($result)], 201);
         } else {
             return response()->json(['success' => false, 'error' => $result], 422);
