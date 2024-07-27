@@ -9,6 +9,7 @@ use App\Jobs\User\UserCreated;
 use App\Jobs\User\UserDeleted;
 use App\Jobs\User\UserUpdated;
 use App\Http\Resources\UserResource;
+use Illuminate\Validation\ValidationException;
 
 /**
  * @OA\Controller(
@@ -110,23 +111,27 @@ class UserController extends Controller
      *     )
      * )
      */
+   
+
+
     public function delete(Request $request)
     {
-        $request->validate([
-            'id' => 'required|integer'
-        ]);
+        try {
+            $validated = $request->validate([
+                'id' => 'required|integer'
+            ]);
 
-        $result = $this->userService->deleteUser($request->id);
+            $result = $this->userService->deleteUser($validated['id']);
 
-        if ($result) {
-            UserDeleted::dispatch($request->id);
+            if ($result) {
+                UserDeleted::dispatch($validated['id']);
+                return response()->json(['success' => true, 'message' => 'User successfully deleted'], 200);
+            } else {
+                return response()->json(['success' => false, 'message' => 'User not found'], 404);
+            }
+        } catch (ValidationException $e) {
+            return response()->json(['success' => false, 'errors' => $e->errors()], 422);
         }
-
-        $response = $result
-            ? ['success' => true, 'message' => 'User successfully deleted']
-            : ['success' => false, 'message' => 'User not found'];
-
-        return response()->json($response, $result ? 200 : 404);
     }
 
     /**
