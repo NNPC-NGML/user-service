@@ -244,6 +244,7 @@ class AuthController extends Controller
         if (!$request->user()->tokenCan($scope)) {
             abort(401, 'unauthorized');
         }
-        return 'ok';
+
+        return $request->user();
     }
 }
