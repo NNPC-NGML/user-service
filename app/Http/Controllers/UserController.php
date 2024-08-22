@@ -167,7 +167,7 @@ class UserController extends Controller
      *             @OA\Property(
      *                 property="data",
      *                 type="object",
-     *                 ref="#/components/schemas/User"
+     *                 ref="#/components/schemas/UserResource"
      *             )
      *         )
      *     ),
@@ -295,7 +295,7 @@ class UserController extends Controller
      *             @OA\Property(
      *                 property="data",
      *                 type="array",
-     *                 @OA\Items(ref="#/components/schemas/User")
+     *                 @OA\Items(ref="#/components/schemas/UserResource")
      *             )
      *         )
      *     ),

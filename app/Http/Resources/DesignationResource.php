@@ -9,6 +9,10 @@ class DesignationResource extends JsonResource
 {
 
     /**
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
+     * 
      * @OA\Schema(
      *     schema="DesignationResource",
      *     @OA\Property(property="id", type="integer"),
@@ -18,11 +22,7 @@ class DesignationResource extends JsonResource
      *     @OA\Property(property="level", type="string"),
      * )
      */
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
+
     public function toArray(Request $request): array
     {
         return parent::toArray($request);
