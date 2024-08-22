@@ -94,7 +94,7 @@ jobs:
           # sed -i -e 's:UNIT_CREATED=forge:UNIT_CREATED=sample1,sample2:g' .env &&
           # sed -i -e 's:UNIT_UPDATED=forge:UNIT_UPDATED=sample1,sample2:g' .env &&
           # sed -i -e 's:UNIT_DELETED=forge:UNIT_DELETED=sample1,sample2:g' .env &&
-          sed -i -e 's:USER_CREATED=forge:USER_CREATED=notification_queue,sample2:g' .env &&
+          # sed -i -e 's:USER_CREATED=forge:USER_CREATED=notification_queue,sample2:g' .env &&
           # sed -i -e 's:USER_UPDATED=forge:USER_UPDATED=sample1,sample2:g' .env &&
           # sed -i -e 's:USER_DELETED=forge:USER_DELETED=sample1,sample2:g' .env &&
           # sed -i -e 's:TAG_CREATED=forge:TAG_CREATED=sample1,sample2:g' .env 
