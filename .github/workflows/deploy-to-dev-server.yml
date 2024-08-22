@@ -76,8 +76,8 @@ jobs:
           rsync --delete -va -e 'ssh -p 7822 -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no' \
             app database phpunit.xml storage vendor artisan .env tests bootstrap \
             composer.json resources composer.lock routes config package.json \
-            public/ public skillz@185.160.67.60:nnpc/api/users
+            public/ public skillz@103.72.76.68:nnpc/api/users
 
       - name: SSH and effect migration
         run: |
-          ssh -p 7822 -i ~/.ssh/id_rsa -t skillz@185.160.67.60 "cd nnpc/api/users && php artisan migrate"
+          ssh -p 7822 -i ~/.ssh/id_rsa -t skillz@103.72.76.68 "cd nnpc/api/users && php artisan migrate"

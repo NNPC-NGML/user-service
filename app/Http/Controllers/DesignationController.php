@@ -130,7 +130,7 @@ class DesignationController extends Controller
      *             @OA\Property(
      *                 property="data",
      *                 type="object",
-     *                 ref="#/components/schemas/Designation"
+     *                 ref="#/components/schemas/DesignationResource"
      *             ),
      *         ),
      *     ),
@@ -171,7 +171,7 @@ class DesignationController extends Controller
     }
 
 
-    public function updateDesignation(Request $request, int $id, )
+    public function updateDesignation(Request $request, int $id,)
     {
         $result = $this->designationService->updateDesignation($id, $request);
 

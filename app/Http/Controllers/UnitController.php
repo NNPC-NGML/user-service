@@ -25,11 +25,6 @@ class UnitController extends Controller
      *     summary="Create a new unit",
      *     tags={"Unit"},
      *     operationId="createUnit",
-     *     @OA\RequestBody(
-     *         description="Data for creating a new unit",
-     *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/UnitRequest")
-     *     ),
      *     @OA\Response(
      *         response=201,
      *         description="Unit created successfully",
@@ -182,7 +177,7 @@ class UnitController extends Controller
      *         description="Successful operation",
      *         @OA\JsonContent(
      *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="data", ref="#/components/schemas/Unit")
+     *             @OA\Property(property="data", ref="#/components/schemas/UnitResource")
      *         )
      *     ),
      *     @OA\Response(
@@ -238,7 +233,7 @@ class UnitController extends Controller
      *              @OA\Property(
      *                  property="data",
      *                  type="array",
-     *                  @OA\Items(ref="#/components/schemas/Unit"),
+     *                  @OA\Items(ref="#/components/schemas/UnitResource"),
      *                  description="Array of units belonging to the department"
      *              ),
      *              @OA\Property(
@@ -337,7 +332,7 @@ class UnitController extends Controller
      *                 property="data",
      *                 type="object",
      *                 description="Updated unit data",
-     *                 ref="#/components/schemas/Unit"
+     *                 ref="#/components/schemas/UnitResource"
      *             ),
      *             @OA\Property(
      *                 property="message",

@@ -136,7 +136,7 @@ class LocationController extends Controller
      *         description="Successful operation",
      *         @OA\JsonContent(
      *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="data", type="object", ref="#/components/schemas/Location"),
+     *             @OA\Property(property="data", type="object", ref="#/components/schemas/LocationResource"),
      *         ),
      *     ),
      *     @OA\Response(
@@ -182,7 +182,7 @@ class LocationController extends Controller
      *             @OA\Property(
      *                 property="data",
      *                 type="object",
-     *                 ref="#/components/schemas/Location"
+     *                 ref="#/components/schemas/LocationResource"
      *             ),
      *         ),
      *     ),
@@ -254,7 +254,7 @@ class LocationController extends Controller
      *             @OA\Property(
      *                 property="data",
      *                 type="object",
-     * ref="#/components/schemas/Location"
+     * ref="#/components/schemas/LocationResource"
      *             )
      *         )
      *     ),
@@ -275,7 +275,7 @@ class LocationController extends Controller
      *     security={{ "apiAuth":{ }}}
      * )
      */
-    public function updateLocation(Request $request, int $id, )
+    public function updateLocation(Request $request, int $id,)
     {
         $result = $this->locationService->updateLocation($id, $request);
 
