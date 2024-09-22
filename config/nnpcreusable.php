@@ -61,4 +61,12 @@ return [
 
     'TAG_CREATED' => explode(",", env('TAG_CREATED', '')),
 
+    'HEADOFUNIT_CREATED' => explode(",", env('HEADOFUNIT_CREATED', '')),
+    'HEADOFUNIT_UPDATED' => explode(",", env('HEADOFUNIT_UPDATED', '')),
+    'HEADOFUNIT_DELETED' => explode(",", env('HEADOFUNIT_DELETED', '')),
+
+    'LOCATION_CREATED' => explode(",", env('LOCATION_CREATED', '')),
+    'LOCATION_UPDATED' => explode(",", env('LOCATION_UPDATED', '')),
+    'LOCATION_DELETED' => explode(",", env('LOCATION_DELETED', '')),
+
 ];

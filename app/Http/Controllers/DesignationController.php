@@ -6,6 +6,7 @@ use App\Models\Designation;
 use Illuminate\Http\Request;
 use App\Service\DesignationService;
 use App\Http\Resources\DesignationResource;
+use App\Jobs\Designation\DesignationCreated;
 use App\Jobs\Designation\DesignationDeleted;
 use App\Jobs\Designation\DesignationUpdated;
 
@@ -164,6 +165,9 @@ class DesignationController extends Controller
         $result = $this->designationService->create($request);
 
         if ($result instanceof Designation) {
+            foreach (config("nnpcreusable.DESIGNATION_CREATED") as $queue) {
+                DesignationCreated::dispatch($result->toArray())->onQueue($queue);
+            }
             return response()->json(['success' => true, 'data' => $result], 201);
         } else {
             return response()->json(['success' => false, 'error' => $result], 422);
@@ -176,6 +180,9 @@ class DesignationController extends Controller
         $result = $this->designationService->updateDesignation($id, $request);
 
         if ($result instanceof Designation) {
+            foreach (config("nnpcreusable.DESIGNATION_UPDATED") as $queue) {
+                DesignationUpdated::dispatch($result->toArray())->onQueue($queue);
+            }
             return response()->json(['success' => true, 'data' => $result], 201);
         } else {
             return response()->json(['success' => false, 'error' => $result], 422);
@@ -221,7 +228,9 @@ class DesignationController extends Controller
     {
         $result = $this->designationService->deleteDesignation($id);
         if ($result) {
-            DesignationDeleted::dispatch($id);
+            foreach (config("nnpcreusable.DESIGNATION_DELETED") as $queue) {
+                DesignationDeleted::dispatch($id)->onQueue($queue);
+            }
             return response()->json(['success' => true], 204);
         } else {
             return response()->json(['success' => false], 404);

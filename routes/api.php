@@ -6,6 +6,7 @@ use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\HeadOfUnitController;
 use App\Http\Controllers\DesignationController;
 
 
@@ -114,6 +115,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/designations', [DesignationController::class, 'index'])->name('designations.index');
         Route::get('/designations/{id}', [DesignationController::class, 'show'])->name('designations.show');
         Route::delete('/designations/{id}', [DesignationController::class, 'destroy'])->name('designations.destroy');
+
+        Route::get('/headofunit', [HeadOfUnitController::class, 'index'])->name('headofunit.ind');
+        Route::get('/headofunit/view/{id}', [HeadOfUnitController::class, 'show'])->name('headofunit.view');
+        Route::post('/headofunit/create', [HeadOfUnitController::class, 'store'])->name('headofunit.create');
     });
     Route::get('scope/{scope}', [AuthController::class, 'scopeCan']);
 });
