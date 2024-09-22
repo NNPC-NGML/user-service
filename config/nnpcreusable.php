@@ -61,4 +61,6 @@ return [
 
     'TAG_CREATED' => explode(",", env('TAG_CREATED', '')),
 
+    'HEADOFUNIT_CREATED' => explode(",", env('HEADOFUNIT_CREATED', '')),
+
 ];
