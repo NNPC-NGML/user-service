@@ -52,7 +52,9 @@ class UnitController extends Controller
 
         if ($result instanceof Unit) {
 
-            UnitCreated::dispatch($result->toArray());
+            foreach (config("nnpcreusable.UNIT_CREATED") as $queue) {
+                UnitCreated::dispatch($result->toArray())->onQueue($queue);
+            }
             return response()->json(['success' => true, 'message' => 'Unit created successfully'], 201);
         } else {
             return response()->json(['success' => false, 'error' => $result], 422);
@@ -146,7 +148,10 @@ class UnitController extends Controller
 
 
         if ($result) {
-            UnitDeleted::dispatch($id);
+
+            foreach (config("nnpcreusable.UNIT_DELETED") as $queue) {
+                UnitDeleted::dispatch($id)->onQueue($queue);
+            }
         }
         $response = $result
             ? ['success' => true, 'message' => 'Unit successfully deleted']
@@ -376,7 +381,10 @@ class UnitController extends Controller
         $result = $this->unitService->updateUnit($id, $request->all());
 
         if ($result instanceof unit) {
-            UnitUpdated::dispatch($result->toArray());
+
+            foreach (config("nnpcreusable.UNIT_UPDATED") as $queue) {
+                UnitUpdated::dispatch($result->toArray())->onQueue($queue);
+            }
             return response()->json(['success' => true, 'data' => $result, 'message' => 'Unit updated successfully'], 200);
         } else {
             return response()->json(['success' => false, 'error' => $result], 422);

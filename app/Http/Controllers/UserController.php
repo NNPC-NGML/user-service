@@ -65,7 +65,9 @@ class UserController extends Controller
         $result = $this->userService->create($request);
 
         if ($result instanceof User) {
-            UserCreated::dispatch($result->toArray())->onQueue(config("nnpcreusable.USER_CREATED"));
+            foreach (config("nnpcreusable.USER_CREATED") as $queue) {
+                UserCreated::dispatch($result->toArray())->onQueue($queue);
+            }
             return response()->json(['success' => true, 'data' => new UserResource($result)], 201);
         } else {
             return response()->json(['success' => false, 'error' => $result], 422);
@@ -111,7 +113,7 @@ class UserController extends Controller
      *     )
      * )
      */
-   
+
 
 
     public function delete(Request $request)
@@ -124,7 +126,10 @@ class UserController extends Controller
             $result = $this->userService->deleteUser($validated['id']);
 
             if ($result) {
-                UserDeleted::dispatch($validated['id']);
+
+                foreach (config("nnpcreusable.USER_DELETED") as $queue) {
+                    UserDeleted::dispatch($validated['id'])->onQueue($queue);
+                }
                 return response()->json(['success' => true, 'message' => 'User successfully deleted'], 200);
             } else {
                 return response()->json(['success' => false, 'message' => 'User not found'], 404);
@@ -202,7 +207,9 @@ class UserController extends Controller
             return response()->json(['success' => false, 'errors' => $result], 422);
         } else {
 
-            UserUpdated::dispatch($result->toArray());
+            foreach (config("nnpcreusable.USER_UPDATED") as $queue) {
+                UserUpdated::dispatch($result->toArray())->onQueue($queue);
+            }
             return response()->json(['success' => true, 'data' => new UserResource($result)], 200);
         }
     }

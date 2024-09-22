@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Location;
 use Illuminate\Http\Request;
 use App\Service\LocationService;
+use App\Jobs\Location\LocationCreated;
 use App\Jobs\Location\LocationDeleted;
 use App\Jobs\Location\LocationUpdated;
 use App\Http\Resources\LocationResource;
@@ -59,7 +60,9 @@ class LocationController extends Controller
 
         if ($result) {
 
-            LocationDeleted::dispatch($id);
+            foreach (config("nnpcreusable.LOCATION_DELETED") as $queue) {
+                LocationDeleted::dispatch($id)->onQueue($queue);
+            }
             return response()->json(['success' => true, 'message' => 'Location deleted successfully'], 200);
         } else {
             return response()->json(['success' => false, 'message' => 'Location not found'], 404);
@@ -219,7 +222,9 @@ class LocationController extends Controller
         $result = $this->locationService->create($request);
 
         if ($result instanceof Location) {
-            LocationUpdated::dispatch($result->toArray());
+            foreach (config("nnpcreusable.LOCATION_CREATED") as $queue) {
+                LocationCreated::dispatch($result->toArray())->onQueue($queue);
+            }
             return response()->json(['success' => true, 'data' => $result], 201);
         } else {
             return response()->json(['success' => false, 'error' => $result], 422);
@@ -281,7 +286,9 @@ class LocationController extends Controller
 
         if ($result instanceof Location) {
 
-            LocationUpdated::dispatch($result->toArray());
+            foreach (config("nnpcreusable.LOCATION_UPDATED") as $queue) {
+                LocationUpdated::dispatch($result->toArray())->onQueue($queue);
+            }
             return response()->json(['success' => true, 'data' => $result], 201);
         } else {
             return response()->json(['success' => false, 'error' => $result], 422);

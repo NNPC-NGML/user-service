@@ -74,8 +74,9 @@ class DepartmentController extends Controller
         $result = $this->departmentService->create($request);
 
         if ($result instanceof department) {
-
-            DepartmentCreated::dispatch($result->toArray());
+            foreach (config("nnpcreusable.DEPARTMENT_CREATED") as $queue) {
+                DepartmentCreated::dispatch($result->toArray())->onQueue($queue);
+            }
             return response()->json(['success' => true, 'data' => new DepartmentResource($result)], 201);
         } else {
             return response()->json(['success' => false, 'error' => $result], 422);
@@ -141,7 +142,10 @@ class DepartmentController extends Controller
 
         if ($result instanceof department) {
 
-            DepartmentUpdated::dispatch($result->toArray());
+
+            foreach (config("nnpcreusable.DEPARTMENT_UPDATED") as $queue) {
+                DepartmentUpdated::dispatch($result->toArray())->onQueue($queue);
+            }
             return response()->json(['success' => true, 'data' => new DepartmentResource($result)], 201);
         } else {
             return response()->json(['success' => false, 'error' => $result], 422);
@@ -169,7 +173,10 @@ class DepartmentController extends Controller
     {
         $result = $this->departmentService->deleteDepartment($id);
         if ($result) {
-            DepartmentDeleted::dispatch($id);
+
+            foreach (config("nnpcreusable.DEPARTMENT_DELETED") as $queue) {
+                DepartmentDeleted::dispatch($id)->onQueue($queue);
+            }
             return response()->json(['success' => true], 204);
         } else {
             return response()->json(['success' => false], 422);
