@@ -8,6 +8,7 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\HeadOfUnitController;
 use App\Http\Controllers\DesignationController;
+use Laravel\Socialite\Facades\Socialite;
 
 
 /*
@@ -126,3 +127,5 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
+Route::get('auth/initialize', [AuthController::class, 'initialize']);
+Route::get('auth/callback', [AuthController::class, 'callback']);

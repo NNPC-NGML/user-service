@@ -9,10 +9,93 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use Laravel\Socialite\Facades\Socialite;
 use VladimirYuldashev\LaravelQueueRabbitMQ\Queue\Connectors\RabbitMQConnector;
 
 class AuthController extends Controller
 {
+    /**
+     * @OA\Get(
+     *     path="/api/auth/initialize",
+     *     summary="Redirect to Microsoft OAuth for authentication",
+     *     description="This endpoint redirects the user to the Microsoft OAuth login page.",
+     *     tags={"Authentication"},
+     *     @OA\Response(
+     *         response=302,
+     *         description="Redirect to the Microsoft OAuth page"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error"
+     *     )
+     * )
+     */
+    public function initialize(Request $request)
+    {
+        return Socialite::driver('microsoft')->stateless()->redirect();
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/auth/callback",
+     *     summary="Handle Microsoft OAuth callback",
+     *     description="Handles the callback from Microsoft after user authentication and registers or logs in the user.",
+     *     tags={"Authentication"},
+     *     @OA\Response(
+     *         response=201,
+     *         description="User registered successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="User registered successfully"),
+     *             @OA\Property(property="user", type="object",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="name", type="string", example="John Doe"),
+     *                 @OA\Property(property="email", type="string", format="email", example="john@example.com"),
+     *                 @OA\Property(property="azure_id", type="string", example="abc1234"),
+     *                 @OA\Property(property="status", type="integer", example=1)
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="An error occurred")
+     *         )
+     *     )
+     * )
+     */
+    public function callback(Request $request)
+    {
+        $user = Socialite::driver('microsoft')->stateless()->user();
+
+        $user = User::firstOrCreate([
+            'email' => $user->getEmail(),
+        ], [
+            'name' => $user->getName(),
+            'email' => $user->getEmail(),
+            'azure_id' => $user->getId(),
+            'password' => Hash::make($user->getId()),
+            'status' => 1,
+        ]);
+
+        if ($user) {
+            $userCreatedQueues = config("nnpcreusable.USER_CREATED");
+            if (is_array($userCreatedQueues) && !empty($userCreatedQueues)) {
+                foreach ($userCreatedQueues as $queue) {
+                    $queue = trim($queue);
+                    if (!empty($queue)) {
+                        Log::info("Dispatching UserCreated event to queue: " . $queue);
+                        UserCreated::dispatch($user->toArray())->onQueue($queue);
+                    }
+                }
+            }
+        }
+        return response()->json([
+            'message' => 'User registered successfully',
+            'user' => $user,
+        ], 201);
+    }
+
     /**
      * @OA\Post(
      *     path="/api/register",
