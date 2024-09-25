@@ -138,7 +138,7 @@ class UserService
      *
      * @return bool Returns true on success, false on failure.
      */
-    public function assignUserToDepartment(int $userId, int $departmentId): bool
+    public function assignUserToDepartmen(int $userId, int $departmentId): bool
     {
         // Validate user and department IDs
         $validator = Validator::make([
@@ -185,10 +185,10 @@ class UserService
             return false;
         }
 
-        // Check if the unit belongs to the same department as the user
-        if ($user->department_id !== $unit->department_id) {
-            return false;
-        }
+        // // Check if the unit belongs to the same department as the user
+        // if ($user->department_id !== $unit->department_id) {
+        //     return false;
+        // }
 
         $user->units()->attach($unit);
 

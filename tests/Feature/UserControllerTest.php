@@ -268,7 +268,7 @@ class UserControllerTest extends TestCase
             'data' => [
                 'current_page',
                 'data' => [
-                    '*' => ['id', 'name', 'email', 'email_verified_at', 'created_at', 'updated_at', 'department_id'],
+                    '*' => ['id', 'name', 'email', 'email_verified_at', 'created_at', 'updated_at'],
                 ],
                 'first_page_url',
                 'from',
@@ -348,7 +348,7 @@ class UserControllerTest extends TestCase
             'data' => [
                 'current_page',
                 'data' => [
-                    '*' => ['id', 'name', 'email', 'email_verified_at', 'created_at', 'updated_at', 'department_id'],
+                    '*' => ['id', 'name', 'email', 'email_verified_at', 'created_at', 'updated_at'],
                 ],
                 'first_page_url',
                 'from',

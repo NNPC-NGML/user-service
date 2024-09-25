@@ -3,11 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -46,7 +47,7 @@ class User extends Authenticatable
 
     public function department()
     {
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(DepartmentUser::class);
     }
 
     /**
@@ -54,18 +55,18 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function units(): BelongsToMany
+    public function units(): BelongsTo
     {
-        return $this->belongsToMany(Unit::class);
+        return $this->belongsTo(UnitUser::class);
     }
 
-    public function locations(): BelongsToMany
+    public function location(): BelongsTo
     {
-        return $this->belongsToMany(Location::class);
+        return $this->belongsTo(LocationUser::class);
     }
 
-    public function designations(): BelongsToMany
+    public function designation(): BelongsTo
     {
-        return $this->belongsToMany(Designation::class);
+        return $this->belongsTo(DesignationUser::class);
     }
 }
