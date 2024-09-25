@@ -5,8 +5,11 @@ namespace App\Service;
 use App\Models\Unit;
 use App\Models\User;
 use App\Models\Location;
+use App\Models\UnitUser;
 use App\Models\Designation;
+use App\Models\LocationUser;
 use Illuminate\Http\Request;
+use App\Models\DesignationUser;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -181,16 +184,14 @@ class UserService
 
 
         // Check if the user already belongs to the unit
-        if ($user->units->contains($unit)) {
+        if ($user->unit && $user->unit->id == $unit->id) {
             return false;
         }
 
-        // // Check if the unit belongs to the same department as the user
-        // if ($user->department_id !== $unit->department_id) {
-        //     return false;
-        // }
-
-        $user->units()->attach($unit);
+        $unitUser = new UnitUser();
+        $unitUser->unit_id = $unit->id;
+        $unitUser->user_id = $user->id;
+        $unitUser->save();
 
         return true;
     }
@@ -216,16 +217,17 @@ class UserService
     {
         $user = User::find($userId);
         $location = Location::find($locationId);
-
         if (!$user || !$location) {
             return false;
         }
-
-        // Check if the user already belongs to the location
-        if ($user->locations->contains($location)) {
+        if ($user->location && $user->location->id == $location->id) {
             return false;
         }
-        $user->locations()->attach($location);
+
+        $locationUser = new LocationUser();
+        $locationUser->location_id = $location->id;
+        $locationUser->user_id = $user->id;
+        $locationUser->save();
 
         return true;
     }
@@ -252,16 +254,17 @@ class UserService
     {
         $user = User::find($userId);
         $designation = Designation::find($designationId);
-
         if (!$user || !$designation) {
             return false;
         }
-
-        // Check if the user already belongs to the designation
-        if ($user->designations->contains($designation)) {
+        if ($user->$designation && $user->designation->id == $designation->id) {
             return false;
         }
-        $user->designations()->attach($designation);
+
+        $designationUser = new DesignationUser();
+        $designationUser->designation_id = $designation->id;
+        $designationUser->user_id = $user->id;
+        $designationUser->save();
 
         return true;
     }

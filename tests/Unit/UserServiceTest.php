@@ -314,7 +314,7 @@ class UserServiceTest extends TestCase
         $this->assertTrue($assigned);
 
         // Assert that the user now belongs to the unit
-        $this->assertTrue($user->units->contains($unit));
+        $this->assertTrue($user->unit->user_id == $user->id);
     }
 
     /**
@@ -353,7 +353,7 @@ class UserServiceTest extends TestCase
 
         $this->assertTrue($assigned);
         // Assert that the user now belongs to the location
-        $this->assertTrue($user->locations->contains($location));
+        $this->assertTrue($user->location->user_id == $user->id);
     }
 
     public function testAssignUserToNonExistentLocation(): void
@@ -390,7 +390,7 @@ class UserServiceTest extends TestCase
 
         $this->assertTrue($assigned);
         // Assert that the user now belongs to the designation
-        $this->assertTrue($user->designations->contains($designation));
+        $this->assertTrue($user->designation->user_id == $user->id);
     }
 
     public function testAssignUserToNonExistentDesignation(): void

@@ -8,7 +8,7 @@ class CreateUnitUserTable extends Migration
 {
     public function up()
     {
-        Schema::create('unit_user', function (Blueprint $table) {
+        Schema::create('unit_users', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('unit_id');
             $table->unsignedBigInteger('user_id');
@@ -21,6 +21,6 @@ class CreateUnitUserTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('unit_user');
+        Schema::dropIfExists('unit_users');
     }
 }
