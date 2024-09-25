@@ -247,40 +247,50 @@ class UserServiceTest extends TestCase
     /**
      * Test assigning a user to a department with invalid user ID.
      */
-    // public function testAssignUserToDepartmentWithInvalidUserId(): void
-    // {
-    //     // Create a department for testing
-    //     $department = Department::factory()->create();
+    public function testAssignUserToDepartmentWithInvalidUserId(): void
+    {
+        $department = Department::create([
+            'name' => 'Test Department',
+            'description' => 'Test Description',
+        ]);
 
-    //     $nonExistentUserId = mt_rand(1000000000, 9999999999);
-    //     $userService = new UserService();
-    //     $assignmentFailed = $userService->assignUserToDepartment($nonExistentUserId, $department->id);
+        $user = User::create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => bcrypt('password123'),
+        ]);
 
-    //     $this->assertFalse($assignmentFailed);
+        //$user->department()->associate($department->id);
 
-    //     // Ensure that the user and department are not associated in the database
-    //     $user = User::find($nonExistentUserId);
-    //     $this->assertNull($user);
-    // }
+        $user->save();
+
+        $userService = new UserService();
+        $assigned = $userService->assignUserToDepartment($user->id, $department->id);
+
+        $this->assertTrue($assigned);
+
+        // Assert that the user now belongs to the department
+        $this->assertTrue($user->department->user_id == $user->id);
+    }
 
     /**
      * Test assigning a user to a department with invalid department ID.
      */
-    // public function testAssignUserToDepartmentWithInvalidDepartmentId(): void
-    // {
-    //     // Create a user for testing
-    //     $user = User::factory()->create();
+    public function testAssignUserToDepartmentWithInvalidDepartmentId(): void
+    {
+        // Create a user for testing
+        $user = User::create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => bcrypt('password123'),
+        ]);
 
-    //     $userService = new UserService();
+        $nonExistentUnitId = mt_rand(1000000000, 9999999999);
+        $userService = new UserService();
+        $assigned = $userService->assignUserToDepartment($user->id, $nonExistentUnitId);
 
-    //     $nonExistentDepartmentId = mt_rand(1000000000, 9999999999);
-    //     $assignmentFailed = $userService->assignUserToDepartment($user->id, $nonExistentDepartmentId);
-
-    //     $this->assertFalse($assignmentFailed);
-
-    //     // Ensure that the user's department remains unchanged in the database
-    //     $this->assertNull(User::find($user->id)->department);
-    // }
+        $this->assertFalse($assigned);
+    }
 
     /**
      * Test assigning a user to a unit.

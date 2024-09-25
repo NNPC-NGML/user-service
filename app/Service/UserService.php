@@ -6,9 +6,11 @@ use App\Models\Unit;
 use App\Models\User;
 use App\Models\Location;
 use App\Models\UnitUser;
+use App\Models\Department;
 use App\Models\Designation;
 use App\Models\LocationUser;
 use Illuminate\Http\Request;
+use App\Models\DepartmentUser;
 use App\Models\DesignationUser;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -141,26 +143,25 @@ class UserService
      *
      * @return bool Returns true on success, false on failure.
      */
-    public function assignUserToDepartmen(int $userId, int $departmentId): bool
+    public function assignUserToDepartment(int $userId, int $departmentId): bool
     {
-        // Validate user and department IDs
-        $validator = Validator::make([
-            'user_id' => $userId,
-            'department_id' => $departmentId,
-        ], [
-            'user_id' => 'required|exists:users,id',
-            'department_id' => 'required|exists:departments,id',
-        ]);
+        $user = User::find($userId);
+        $department = Department::find($departmentId);
 
-        if ($validator->fails()) {
+        if (!$user || !$department) {
             return false;
         }
 
-        $user = User::find($userId);
 
-        $user->department()->associate($departmentId);
+        // Check if the user already belongs to the unit
+        if ($user->department && $user->department->id == $department->id) {
+            return false;
+        }
 
-        $user->save();
+        $departmentUser = new DepartmentUser();
+        $departmentUser->department_id = $department->id;
+        $departmentUser->user_id = $user->id;
+        $departmentUser->save();
 
         return true;
     }
