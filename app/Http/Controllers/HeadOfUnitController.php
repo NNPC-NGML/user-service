@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\HeadOfUnit;
+
 use Illuminate\Http\Request;
 use App\Service\HeadOfUnitService;
 use Illuminate\Support\Facades\DB;
@@ -176,7 +176,6 @@ class HeadOfUnitController extends Controller
             400
         );
     }
-
 
 
     /**

@@ -3,11 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -44,9 +46,9 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function department()
+    public function department(): HasOne
     {
-        return $this->belongsTo(Department::class);
+        return $this->hasOne(DepartmentUser::class);
     }
 
     /**
@@ -54,18 +56,18 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function units(): BelongsToMany
+    public function unit(): HasOne
     {
-        return $this->belongsToMany(Unit::class);
+        return $this->hasOne(UnitUser::class);
     }
 
-    public function locations(): BelongsToMany
+    public function location(): HasOne
     {
-        return $this->belongsToMany(Location::class);
+        return $this->hasOne(LocationUser::class);
     }
 
-    public function designations(): BelongsToMany
+    public function designation(): HasOne
     {
-        return $this->belongsToMany(Designation::class);
+        return $this->hasOne(DesignationUser::class);
     }
 }
