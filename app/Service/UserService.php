@@ -5,8 +5,13 @@ namespace App\Service;
 use App\Models\Unit;
 use App\Models\User;
 use App\Models\Location;
+use App\Models\UnitUser;
+use App\Models\Department;
 use App\Models\Designation;
+use App\Models\LocationUser;
 use Illuminate\Http\Request;
+use App\Models\DepartmentUser;
+use App\Models\DesignationUser;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -140,24 +145,23 @@ class UserService
      */
     public function assignUserToDepartment(int $userId, int $departmentId): bool
     {
-        // Validate user and department IDs
-        $validator = Validator::make([
-            'user_id' => $userId,
-            'department_id' => $departmentId,
-        ], [
-            'user_id' => 'required|exists:users,id',
-            'department_id' => 'required|exists:departments,id',
-        ]);
+        $user = User::find($userId);
+        $department = Department::find($departmentId);
 
-        if ($validator->fails()) {
+        if (!$user || !$department) {
             return false;
         }
 
-        $user = User::find($userId);
 
-        $user->department()->associate($departmentId);
+        // Check if the user already belongs to the unit
+        if ($user->department && $user->department->id == $department->id) {
+            return false;
+        }
 
-        $user->save();
+        $departmentUser = new DepartmentUser();
+        $departmentUser->department_id = $department->id;
+        $departmentUser->user_id = $user->id;
+        $departmentUser->save();
 
         return true;
     }
@@ -181,16 +185,14 @@ class UserService
 
 
         // Check if the user already belongs to the unit
-        if ($user->units->contains($unit)) {
+        if ($user->unit && $user->unit->id == $unit->id) {
             return false;
         }
 
-        // Check if the unit belongs to the same department as the user
-        if ($user->department_id !== $unit->department_id) {
-            return false;
-        }
-
-        $user->units()->attach($unit);
+        $unitUser = new UnitUser();
+        $unitUser->unit_id = $unit->id;
+        $unitUser->user_id = $user->id;
+        $unitUser->save();
 
         return true;
     }
@@ -216,16 +218,17 @@ class UserService
     {
         $user = User::find($userId);
         $location = Location::find($locationId);
-
         if (!$user || !$location) {
             return false;
         }
-
-        // Check if the user already belongs to the location
-        if ($user->locations->contains($location)) {
+        if ($user->location && $user->location->id == $location->id) {
             return false;
         }
-        $user->locations()->attach($location);
+
+        $locationUser = new LocationUser();
+        $locationUser->location_id = $location->id;
+        $locationUser->user_id = $user->id;
+        $locationUser->save();
 
         return true;
     }
@@ -252,16 +255,17 @@ class UserService
     {
         $user = User::find($userId);
         $designation = Designation::find($designationId);
-
         if (!$user || !$designation) {
             return false;
         }
-
-        // Check if the user already belongs to the designation
-        if ($user->designations->contains($designation)) {
+        if ($user->$designation && $user->designation->id == $designation->id) {
             return false;
         }
-        $user->designations()->attach($designation);
+
+        $designationUser = new DesignationUser();
+        $designationUser->designation_id = $designation->id;
+        $designationUser->user_id = $user->id;
+        $designationUser->save();
 
         return true;
     }
