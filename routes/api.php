@@ -128,4 +128,4 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 Route::get('auth/initialize', [AuthController::class, 'initialize']);
-Route::get('auth/callback', [AuthController::class, 'callback']);
+Route::post('auth/callback', [AuthController::class, 'callback']);

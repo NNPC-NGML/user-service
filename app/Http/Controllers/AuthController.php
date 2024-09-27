@@ -66,34 +66,44 @@ class AuthController extends Controller
      */
     public function callback(Request $request)
     {
-        $user = Socialite::driver('microsoft')->stateless()->user();
+        try {
+            $code = $request->input('code');
 
-        $user = User::firstOrCreate([
-            'email' => $user->getEmail(),
-        ], [
-            'name' => $user->getName(),
-            'email' => $user->getEmail(),
-            'azure_id' => $user->getId(),
-            'password' => Hash::make($user->getId()),
-            'status' => 1,
-        ]);
+            $tokenResponse = Socialite::driver('microsoft')->stateless()->getAccessTokenResponse($code);
+            $user = Socialite::driver('microsoft')->stateless()->userFromToken($tokenResponse['access_token']);
 
-        if ($user) {
-            $userCreatedQueues = config("nnpcreusable.USER_CREATED");
-            if (is_array($userCreatedQueues) && !empty($userCreatedQueues)) {
-                foreach ($userCreatedQueues as $queue) {
-                    $queue = trim($queue);
-                    if (!empty($queue)) {
-                        Log::info("Dispatching UserCreated event to queue: " . $queue);
-                        UserCreated::dispatch($user->toArray())->onQueue($queue);
+            $user = User::firstOrCreate([
+                'email' => $user->getEmail(),
+            ], [
+                'name' => $user->getName(),
+                'email' => $user->getEmail(),
+                'azure_id' => $user->getId(),
+                'password' => Hash::make($user->getId()),
+                'status' => 1,
+            ]);
+
+            if ($user) {
+                $userCreatedQueues = config("nnpcreusable.USER_CREATED");
+                if (is_array($userCreatedQueues) && !empty($userCreatedQueues)) {
+                    foreach ($userCreatedQueues as $queue) {
+                        $queue = trim($queue);
+                        if (!empty($queue)) {
+                            Log::info("Dispatching UserCreated event to queue: " . $queue);
+                            UserCreated::dispatch($user->toArray())->onQueue($queue);
+                        }
                     }
                 }
             }
+            return response()->json([
+                'message' => 'User registered successfully',
+                'user' => $user,
+            ], 201);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], 500);
         }
-        return response()->json([
-            'message' => 'User registered successfully',
-            'user' => $user,
-        ], 201);
     }
 
     /**
