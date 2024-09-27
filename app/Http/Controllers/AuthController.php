@@ -39,19 +39,25 @@ class AuthController extends Controller
      * @OA\Post(
      *     path="/api/auth/callback",
      *     summary="Handle Microsoft OAuth callback",
-     *     description="Handles the callback from Microsoft after user authentication and registers or logs in the user.",
+     *     description="Handles the callback from Microsoft after user authentication. Registers a new user or logs in an existing user based on their Microsoft account information.",
      *     tags={"Authentication"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code", type="string", description="Authorization code from Microsoft", example="ABC123")
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=201,
-     *         description="User registered successfully",
+     *         description="User registered or logged in successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="message", type="string", example="User registered successfully"),
      *             @OA\Property(property="user", type="object",
-     *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="John Doe"),
-     *                 @OA\Property(property="email", type="string", format="email", example="john@example.com"),
-     *                 @OA\Property(property="azure_id", type="string", example="abc1234"),
-     *                 @OA\Property(property="status", type="integer", example=1)
+     *                 @OA\Property(property="id", type="integer", example=1, description="Unique identifier for the user"),
+     *                 @OA\Property(property="name", type="string", example="John Doe", description="User's full name"),
+     *                 @OA\Property(property="email", type="string", format="email", example="john@example.com", description="User's email address"),
+     *                 @OA\Property(property="azure_id", type="string", example="abc1234", description="User's unique Microsoft Azure ID"),
+     *                 @OA\Property(property="status", type="integer", example=1, description="Status of the user (1 for active)")
      *             )
      *         )
      *     ),
@@ -59,6 +65,7 @@ class AuthController extends Controller
      *         response=500,
      *         description="Internal server error",
      *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
      *             @OA\Property(property="message", type="string", example="An error occurred")
      *         )
      *     )
