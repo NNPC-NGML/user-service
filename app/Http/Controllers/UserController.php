@@ -9,6 +9,8 @@ use App\Jobs\User\UserCreated;
 use App\Jobs\User\UserDeleted;
 use App\Jobs\User\UserUpdated;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -337,5 +339,34 @@ class UserController extends Controller
         $users = $this->userService->getUsersForPage($page, $perPage);
 
         return response()->json(['success' => true, 'data' => $users], 200);
+    }
+
+    public function initialize_user_basic_info(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $validated = $request->validate([
+                'user_id' => 'required|exists:users,id',
+                'department_id' => 'required|exists:departments,id',
+                'location_id' => 'required|exists:locations,id',
+                'unit_id' => 'required|exists:units,id',
+                'designation_id' => 'required|exists:designations,id',
+            ]);
+
+            $assignDeptStatus = $this->userService->assignUserToDepartment($validated['user_id'], $validated['department_id']);
+            $assignLocationstatus = $this->userService->assignUserToLocation($validated['user_id'], $validated['location_id']);
+            $assignUnitstatus = $this->userService->assignUserToUnit($validated['user_id'], $validated['unit_id']);
+            $assignDesignationstatus = $this->userService->assignUserToDesignation($validated['user_id'], $validated['designation_id']);
+            if ($assignDeptStatus && $assignLocationstatus && $assignUnitstatus && $assignDesignationstatus) {
+                DB::commit();
+                return response()->json(['success' => true, 'data' => []], 200);
+            }
+
+            DB::rollBack();
+            return response()->json(['error' => 'invalid request sent'], 401);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json(['error' => $th->getMessage()], 401);
+        }
     }
 }

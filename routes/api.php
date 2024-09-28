@@ -119,6 +119,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/headofunit', [HeadOfUnitController::class, 'index'])->name('headofunit.ind');
         Route::get('/headofunit/view/{id}', [HeadOfUnitController::class, 'show'])->name('headofunit.view');
         Route::post('/headofunit/create', [HeadOfUnitController::class, 'store'])->name('headofunit.create');
+        // New user setup(designation,department,location,unit)
+        Route::post('/initialize_user_basic_info', [UserController::class, 'initialize_user_basic_info'])->name('initialize_user_basic_info');
     });
     Route::get('scope/{scope}', [AuthController::class, 'scopeCan']);
 });
