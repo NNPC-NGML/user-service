@@ -358,6 +358,12 @@ class UserController extends Controller
             $assignUnitstatus = $this->userService->assignUserToUnit($validated['user_id'], $validated['unit_id']);
             $assignDesignationstatus = $this->userService->assignUserToDesignation($validated['user_id'], $validated['designation_id']);
             if ($assignDeptStatus && $assignLocationstatus && $assignUnitstatus && $assignDesignationstatus) {
+                $user = $this->userService->getUser($validated['user_id']);
+                if($user->status != 1) {
+                    $user->status = 1;
+                    $user->save();
+                }
+
                 DB::commit();
                 return response()->json(['success' => true, 'data' => []], 200);
             }
