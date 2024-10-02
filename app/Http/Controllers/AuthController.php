@@ -17,12 +17,25 @@ class AuthController extends Controller
     /**
      * @OA\Get(
      *     path="/api/auth/initialize",
-     *     summary="Redirect to Microsoft OAuth for authentication",
-     *     description="This endpoint redirects the user to the Microsoft OAuth login page.",
+     *     summary="Get Microsoft OAuth redirect URL",
+     *     description="This endpoint returns the Microsoft OAuth login page URL for authentication.",
      *     tags={"Authentication"},
      *     @OA\Response(
-     *         response=302,
-     *         description="Redirect to the Microsoft OAuth page"
+     *         response=200,
+     *         description="Successful response with redirect URL",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="status",
+     *                 type="string",
+     *                 example="success"
+     *             ),
+     *             @OA\Property(
+     *                 property="url",
+     *                 type="string",
+     *                 example="https://login.microsoftonline.com/..."
+     *             )
+     *         )
      *     ),
      *     @OA\Response(
      *         response=500,
@@ -32,7 +45,20 @@ class AuthController extends Controller
      */
     public function initialize(Request $request)
     {
-        return Socialite::driver('microsoft')->stateless()->redirect();
+        try {
+            $redirect = Socialite::driver('azure')->stateless()->redirect();
+            $url = $redirect->getTargetUrl();
+
+            return response()->json([
+                'status' => 'success',
+                'url' => $url,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unable to generate the Microsoft OAuth URL.',
+            ], 500);
+        }
     }
 
     /**
@@ -76,16 +102,16 @@ class AuthController extends Controller
         try {
             $code = $request->input('code');
 
-            $tokenResponse = Socialite::driver('microsoft')->stateless()->getAccessTokenResponse($code);
-            $user = Socialite::driver('microsoft')->stateless()->userFromToken($tokenResponse['access_token']);
+            $tokenResponse = Socialite::driver('azure')->stateless()->getAccessTokenResponse($code);
+            $user = Socialite::driver('azure')->stateless()->userFromToken($tokenResponse['access_token']);
 
             $user = User::firstOrCreate([
                 'email' => $user->getEmail(),
             ], [
-                'name' => $user->getName(),
-                'email' => $user->getEmail(),
-                'azure_id' => $user->getId(),
-                'password' => Hash::make($user->getId()),
+                'name' => $user->name,
+                'email' => $user->email,
+                'azure_id' => $user->id,
+                'password' => Hash::make($user->id),
                 'status' => 2,
             ]);
 
@@ -101,9 +127,11 @@ class AuthController extends Controller
                     }
                 }
             }
+            $access_token = $user->createToken('auth_token')->plainTextToken;
             return response()->json([
                 'message' => 'User registered successfully',
                 'user' => $user,
+                'access_token' => $access_token,
             ], 201);
         } catch (\Throwable $e) {
             return response()->json([

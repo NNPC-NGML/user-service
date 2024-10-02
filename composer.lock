@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "75d1aff8831e69485fd62e4b848e77dd",
+    "content-hash": "881c3b28b099baadb48cd8513bfd0753",
     "packages": [
         {
             "name": "brick/math",
@@ -4021,17 +4021,17 @@
             "time": "2024-05-04T07:57:39+00:00"
         },
         {
-            "name": "socialiteproviders/microsoft",
-            "version": "4.5.1",
+            "name": "socialiteproviders/microsoft-azure",
+            "version": "5.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/SocialiteProviders/Microsoft.git",
-                "reference": "9f55e544f183c36096a14b2e61b5d6c9dc23961e"
+                "url": "https://github.com/SocialiteProviders/Microsoft-Azure.git",
+                "reference": "453d62c9d7e3b3b76e94c913fb46e68a33347b16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SocialiteProviders/Microsoft/zipball/9f55e544f183c36096a14b2e61b5d6c9dc23961e",
-                "reference": "9f55e544f183c36096a14b2e61b5d6c9dc23961e",
+                "url": "https://api.github.com/repos/SocialiteProviders/Microsoft-Azure/zipball/453d62c9d7e3b3b76e94c913fb46e68a33347b16",
+                "reference": "453d62c9d7e3b3b76e94c913fb46e68a33347b16",
                 "shasum": ""
             },
             "require": {
@@ -4042,7 +4042,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "SocialiteProviders\\Microsoft\\": ""
+                    "SocialiteProviders\\Azure\\": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -4051,12 +4051,13 @@
             ],
             "authors": [
                 {
-                    "name": "Brian Faust",
-                    "email": "hello@brianfaust.de"
+                    "name": "Chris Hemmings",
+                    "email": "chris@hemmin.gs"
                 }
             ],
-            "description": "Microsoft OAuth2 Provider for Laravel Socialite",
+            "description": "Microsoft Azure OAuth2 Provider for Laravel Socialite",
             "keywords": [
+                "azure",
                 "laravel",
                 "microsoft",
                 "oauth",
@@ -4064,11 +4065,11 @@
                 "socialite"
             ],
             "support": {
-                "docs": "https://socialiteproviders.com/microsoft",
+                "docs": "https://socialiteproviders.com/microsoft-azure",
                 "issues": "https://github.com/socialiteproviders/providers/issues",
                 "source": "https://github.com/socialiteproviders/providers"
             },
-            "time": "2024-07-12T02:43:55+00:00"
+            "time": "2024-03-15T03:02:10+00:00"
         },
         {
             "name": "swagger-api/swagger-ui",
