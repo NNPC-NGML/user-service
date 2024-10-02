@@ -114,8 +114,6 @@ class AuthController extends Controller
                 'password' => Hash::make($user->id),
                 'status' => 2,
             ]);
-            $access_token = $user->createToken('auth_token')->plainTextToken;
-            $user->access_token = $access_token;
 
             if ($user) {
                 $userCreatedQueues = config("nnpcreusable.USER_CREATED");
@@ -129,9 +127,11 @@ class AuthController extends Controller
                     }
                 }
             }
+            $access_token = $user->createToken('auth_token')->plainTextToken;
             return response()->json([
                 'message' => 'User registered successfully',
                 'user' => $user,
+                'access_token' => $access_token,
             ], 201);
         } catch (\Throwable $e) {
             return response()->json([
