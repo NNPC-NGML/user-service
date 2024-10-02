@@ -86,7 +86,7 @@ class AuthController extends Controller
                 'email' => $user->getEmail(),
                 'azure_id' => $user->getId(),
                 'password' => Hash::make($user->getId()),
-                'status' => 1,
+                'status' => 2,
             ]);
 
             if ($user) {
