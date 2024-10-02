@@ -88,20 +88,20 @@ class DesignationControllerTest extends TestCase
 
         $response = $this->actingAsTestUser()->getJson(route('designations.index'));
 
-        $response->assertStatus(200);
-        // $response->assertJsonStructure([
-        //     'data' => [
-        //         '*' => [
-        //             'id',
-        //             'role',
-        //             'description',
-        //             'level',
-        //             'statu',
-        //             'created_at',
-        //             'updated_at'
-        //         ],
-        //     ],
-        // ]);
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => [
+                        'id',
+                        'role',
+                        'description',
+                        'level',
+                        'status',
+                        'created_at',
+                        'updated_at'
+                    ],
+                ],
+            ]);
     }
 
     /** @test */
@@ -160,7 +160,6 @@ class DesignationControllerTest extends TestCase
                 // 'status' => $designation->status,
             ]
         ]);
-
     }
 
     /** @test */

@@ -63,9 +63,9 @@ class DesignationController extends Controller
     public function index()
     {
         $result = $this->designationService->viewAllDesignations();
-        if ($result instanceof Collection) {
-            return response()->json(['success' => true, 'data' => new DesignationResource($result)], 200);
-        }
+        //if ($result instanceof Collection) {
+        return response()->json(['success' => true, 'data' => new DesignationResource($result)], 200);
+        // }
     }
 
     /**
