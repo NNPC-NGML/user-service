@@ -9,6 +9,9 @@ use App\Jobs\User\UserCreated;
 use App\Jobs\User\UserDeleted;
 use App\Jobs\User\UserUpdated;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -337,5 +340,82 @@ class UserController extends Controller
         $users = $this->userService->getUsersForPage($page, $perPage);
 
         return response()->json(['success' => true, 'data' => $users], 200);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/initialize_user_basic_info",
+     *     summary="Initialize user basic information",
+     *     tags={"Users"},
+     *     security={{ "apiAuth": {} }},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"department_id", "location_id", "unit_id", "designation_id"},
+     *             @OA\Property(property="department_id", type="integer", example=2),
+     *             @OA\Property(property="location_id", type="integer", example=3),
+     *             @OA\Property(property="unit_id", type="integer", example=4),
+     *             @OA\Property(property="designation_id", type="integer", example=5)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User basic information initialized successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="User basic information initialized.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User or related entity not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="User or related entity not found.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="errors", type="object")
+     *         )
+     *     )
+     * )
+     */
+    public function initialize_user_basic_info(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $validated = $request->validate([
+                'department_id' => 'required|exists:departments,id',
+                'location_id' => 'required|exists:locations,id',
+                'unit_id' => 'required|exists:units,id',
+                'designation_id' => 'required|exists:designations,id',
+            ]);
+
+            $userId = Auth::user()->id;
+            $assignDeptStatus = $this->userService->assignUserToDepartment($userId, $validated['department_id']);
+            $assignLocationstatus = $this->userService->assignUserToLocation($userId, $validated['location_id']);
+            $assignUnitstatus = $this->userService->assignUserToUnit($userId, $validated['unit_id']);
+            $assignDesignationstatus = $this->userService->assignUserToDesignation($userId, $validated['designation_id']);
+            if ($assignDeptStatus && $assignLocationstatus && $assignUnitstatus && $assignDesignationstatus) {
+                $user = $this->userService->getUser($userId);
+                if($user->status != 1) {
+                    $user->status = 1;
+                    $user->save();
+                }
+
+                DB::commit();
+                return response()->json(['success' => true, 'data' => []], 200);
+            }
+
+            DB::rollBack();
+            return response()->json(['error' => 'invalid request sent'], 422);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json(['error' => $th->getMessage()], 422);
+        }
     }
 }
