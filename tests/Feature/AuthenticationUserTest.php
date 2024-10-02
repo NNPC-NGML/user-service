@@ -4,6 +4,9 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;
+use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Contracts\User as SocialiteUser;
+use Mockery;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -11,6 +14,75 @@ class AuthenticationUserTest extends TestCase
 {
 
     use RefreshDatabase;
+
+    // /**
+    //  * Test that the /api/auth/initialize route returns a 302 redirect to Microsoft OAuth page.
+    //  *
+    //  * @return void
+    //  */
+    // public function test_initialize_redirects_to_microsoft_oauth()
+    // {
+    //     // Simulate a request to the initialize route
+    //     $response = $this->getJson('/api/auth/initialize');
+
+    //     // Assert that the response is a redirect
+    //     $response->assertStatus(302);
+
+    //     // Assert that the redirect URL contains "login.microsoftonline.com"
+    //     $this->assertStringContainsString(
+    //         'login.microsoftonline.com',
+    //         $response->headers->get('Location') // Check the "Location" header for the redirect
+    //     );
+    // }
+
+    /**
+     * Test that the /api/auth/callback route handles Microsoft OAuth callback and returns user data.
+     *
+     * @return void
+     */
+    // public function test_callback_creates_or_fetches_user()
+    // {
+    //     // Mock the Socialite User
+    //     $socialiteUser = Mockery::mock(SocialiteUser::class);
+    //     $socialiteUser->shouldReceive('getEmail')->andReturn('testuser@example.com');
+    //     $socialiteUser->shouldReceive('getName')->andReturn('Test User');
+    //     $socialiteUser->shouldReceive('getId')->andReturn('azure-1234');
+
+    //     // Mock the Socialite driver to return the mocked user
+    //     Socialite::shouldReceive('driver')
+    //         ->with('microsoft')
+    //         ->andReturn(Mockery::mock([
+    //             'stateless' => Mockery::self(),
+    //             'user' => $socialiteUser,
+    //         ]));
+
+    //     // Call the callback route
+    //     $response = $this->postJson('/api/auth/callback');
+
+    //     // Assert that the user was created in the database
+    //     $this->assertDatabaseHas('users', [
+    //         'email' => 'testuser@example.com',
+    //         'name' => 'Test User',
+    //         'azure_id' => 'azure-1234',
+    //     ]);
+
+    //     // Fetch the created user
+    //     $user = User::where('email', 'testuser@example.com')->first();
+
+    //     // Assert that the response contains the user information
+    //     $response->assertStatus(201);
+    //     $response->assertJson([
+    //         'message' => 'User registered successfully',
+    //         'user' => [
+    //             'id' => $user->id,
+    //             'name' => 'Test User',
+    //             'email' => 'testuser@example.com',
+    //             'azure_id' => 'azure-1234',
+    //             'status' => 1,
+    //         ],
+    //     ]);
+    // }
+
     public function test_it_can_register_a_new_user()
     {
         $userData = [

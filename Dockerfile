@@ -1,4 +1,4 @@
-FROM php:8.1.0
+FROM php:8.2.0
 
 # Update package lists and install required dependencies
 RUN apt-get update && \
