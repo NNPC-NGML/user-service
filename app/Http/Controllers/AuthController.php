@@ -108,10 +108,10 @@ class AuthController extends Controller
             $user = User::firstOrCreate([
                 'email' => $user->getEmail(),
             ], [
-                'name' => $user->getName(),
-                'email' => $user->getEmail(),
-                'azure_id' => $user->getId(),
-                'password' => Hash::make($user->getId()),
+                'name' => $user->name,
+                'email' => $user->email,
+                'azure_id' => $user->id,
+                'password' => Hash::make($user->id),
                 'status' => 2,
             ]);
 
