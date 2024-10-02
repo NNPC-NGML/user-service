@@ -97,7 +97,7 @@ jobs:
           # sed -i -e 's:USER_CREATED=forge:USER_CREATED=notification_queue,sample2:g' .env &&
           # sed -i -e 's:USER_UPDATED=forge:USER_UPDATED=sample1,sample2:g' .env &&
           # sed -i -e 's:USER_DELETED=forge:USER_DELETED=sample1,sample2:g' .env &&
-          # sed -i -e 's:TAG_CREATED=forge:TAG_CREATED=sample1,sample2:g' .env 
+          # sed -i -e 's:TAG_CREATED=forge:TAG_CREATED=sample1,sample2:g' .env
 
       - name: Find and replace in document
         run: |
@@ -112,6 +112,10 @@ jobs:
           sed -i -e "s:RABBITMQ_PORT=forge:RABBITMQ_PORT=${{ secrets.RABBITMQ_PORT }}:g" .env &&
           sed -i -e "s:RABBITMQ_USER=forge:RABBITMQ_USER=${{ secrets.RABBITMQ_USER }}:g" .env &&
           sed -i -e "s:RABBITMQ_PASSWORD=forge:RABBITMQ_PASSWORD=${{ secrets.RABBITMQ_PASSWORD }}:g" .env &&
+          sed -i -e "s:AZURE_CLIENT_ID=forge:AZURE_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}:g" .env &&
+          sed -i -e "s:AZURE_CLIENT_SECRET=forge:AZURE_CLIENT_SECRET=${{ secrets.AZURE_CLIENT_SECRET }}:g" .env &&
+          sed -i -e "s:AZURE_REDIRECT_URI=forge:AZURE_REDIRECT_URI=${{ secrets.AZURE_REDIRECT_URI }}:g" .env &&
+          sed -i -e "s:AZURE_TENANT_ID=forge:AZURE_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}:g" .env &&
           sed -i -e "s:RABBITMQ_VHOST=forge:RABBITMQ_VHOST=${{ secrets.RABBITMQ_VHOST }}:g" .env
 
       - name: SSH login
