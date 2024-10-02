@@ -114,7 +114,7 @@ jobs:
           sed -i -e "s:RABBITMQ_PASSWORD=forge:RABBITMQ_PASSWORD=${{ secrets.RABBITMQ_PASSWORD }}:g" .env &&
           sed -i -e "s:AZURE_CLIENT_ID=forge:AZURE_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}:g" .env &&
           sed -i -e "s:AZURE_CLIENT_SECRET=forge:AZURE_CLIENT_SECRET=${{ secrets.AZURE_CLIENT_SECRET }}:g" .env &&
-          sed -i -e "s:AZURE_REDIRECT_URI=forge:AZURE_REDIRECT_URI=${{ secrets.AZURE_REDIRECT_URI }}:g" .env &&
+          sed -i -e "s|AZURE_REDIRECT_URI=forge|AZURE_REDIRECT_URI=${{ secrets.AZURE_REDIRECT_URI }}|g" .env &&
           sed -i -e "s:AZURE_TENANT_ID=forge:AZURE_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}:g" .env &&
           sed -i -e "s:RABBITMQ_VHOST=forge:RABBITMQ_VHOST=${{ secrets.RABBITMQ_VHOST }}:g" .env
 
