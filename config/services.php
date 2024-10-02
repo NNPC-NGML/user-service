@@ -31,10 +31,18 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-    'microsoft' => [
-        'client_id' => env('AZURE_AD_CLIENT_ID'),
-        'client_secret' => env('AZURE_AD_CLIENT_SECRET'),
-        'redirect' => env('AZURE_AD_REDIRECT_URI'),
-        'tenant_id' => env('AZURE_AD_TENANT_ID'),
+    // 'microsoft' => [
+    //     'client_id' => env('AZURE_AD_CLIENT_ID'),
+    //     'client_secret' => env('AZURE_AD_CLIENT_SECRET'),
+    //     'redirect' => env('AZURE_AD_REDIRECT_URI'),
+    //     'tenant_id' => env('AZURE_AD_TENANT_ID'),
+    // ],
+
+    'azure' => [
+        'client_id' => env('AZURE_CLIENT_ID'),
+        'client_secret' => env('AZURE_CLIENT_SECRET'),
+        'redirect' => env('AZURE_REDIRECT_URI'),
+        'tenant' => env('AZURE_TENANT_ID'),
+        'proxy' => env('PROXY')
     ],
 ];
