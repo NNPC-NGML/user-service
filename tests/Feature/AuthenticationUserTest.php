@@ -25,13 +25,18 @@ class AuthenticationUserTest extends TestCase
         // Simulate a request to the initialize route
         $response = $this->getJson('/api/auth/initialize');
 
-        // Assert that the response is a redirect
-        $response->assertStatus(302);
+        // Assert that the response status is 200 (OK)
+        $response->assertStatus(200);
 
-        // Assert that the redirect URL contains "login.microsoftonline.com"
+        // Assert that the response contains a 'status' of 'success'
+        $response->assertJson([
+            'status' => 'success',
+        ]);
+
+        // Assert that the 'url' in the response contains "login.microsoftonline.com"
         $this->assertStringContainsString(
             'login.microsoftonline.com',
-            $response->headers->get('Location') // Check the "Location" header for the redirect
+            $response->json('url') // Check the 'url' field in the JSON response
         );
     }
 
