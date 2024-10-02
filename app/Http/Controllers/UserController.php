@@ -9,6 +9,7 @@ use App\Jobs\User\UserCreated;
 use App\Jobs\User\UserDeleted;
 use App\Jobs\User\UserUpdated;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -350,8 +351,7 @@ class UserController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"user_id", "department_id", "location_id", "unit_id", "designation_id"},
-     *             @OA\Property(property="user_id", type="integer", example=1),
+     *             required={"department_id", "location_id", "unit_id", "designation_id"},
      *             @OA\Property(property="department_id", type="integer", example=2),
      *             @OA\Property(property="location_id", type="integer", example=3),
      *             @OA\Property(property="unit_id", type="integer", example=4),
@@ -389,19 +389,19 @@ class UserController extends Controller
         DB::beginTransaction();
         try {
             $validated = $request->validate([
-                'user_id' => 'required|exists:users,id',
                 'department_id' => 'required|exists:departments,id',
                 'location_id' => 'required|exists:locations,id',
                 'unit_id' => 'required|exists:units,id',
                 'designation_id' => 'required|exists:designations,id',
             ]);
 
-            $assignDeptStatus = $this->userService->assignUserToDepartment($validated['user_id'], $validated['department_id']);
-            $assignLocationstatus = $this->userService->assignUserToLocation($validated['user_id'], $validated['location_id']);
-            $assignUnitstatus = $this->userService->assignUserToUnit($validated['user_id'], $validated['unit_id']);
-            $assignDesignationstatus = $this->userService->assignUserToDesignation($validated['user_id'], $validated['designation_id']);
+            $userId = Auth::user()->id;
+            $assignDeptStatus = $this->userService->assignUserToDepartment($userId, $validated['department_id']);
+            $assignLocationstatus = $this->userService->assignUserToLocation($userId, $validated['location_id']);
+            $assignUnitstatus = $this->userService->assignUserToUnit($userId, $validated['unit_id']);
+            $assignDesignationstatus = $this->userService->assignUserToDesignation($userId, $validated['designation_id']);
             if ($assignDeptStatus && $assignLocationstatus && $assignUnitstatus && $assignDesignationstatus) {
-                $user = $this->userService->getUser($validated['user_id']);
+                $user = $this->userService->getUser($userId);
                 if($user->status != 1) {
                     $user->status = 1;
                     $user->save();
@@ -412,10 +412,10 @@ class UserController extends Controller
             }
 
             DB::rollBack();
-            return response()->json(['error' => 'invalid request sent'], 401);
+            return response()->json(['error' => 'invalid request sent'], 422);
         } catch (\Throwable $th) {
             DB::rollBack();
-            return response()->json(['error' => $th->getMessage()], 401);
+            return response()->json(['error' => $th->getMessage()], 422);
         }
     }
 }

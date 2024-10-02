@@ -376,7 +376,6 @@ class UserControllerTest extends TestCase
         $response->assertJsonPath('data.from', $perPage * ($page - 1) + 1);
         $response->assertJsonPath('data.total', $totalLength);
     }
-
     /**
      * Test successful initialization of user basic info.
      */
@@ -389,9 +388,11 @@ class UserControllerTest extends TestCase
         $unit = Unit::factory()->create();
         $designation = Designation::factory()->create();
 
-        // Prepare the request data
+        // Act as the authenticated user
+        $this->actingAs($user);
+
+        // Prepare the request data (no need for 'user_id', Auth::user() is used)
         $data = [
-            'user_id' => $user->id,
             'department_id' => $department->id,
             'location_id' => $location->id,
             'unit_id' => $unit->id,
@@ -399,11 +400,11 @@ class UserControllerTest extends TestCase
         ];
 
         // Make a POST request to the controller
-        $response = $this->postJson('/initialize_user_basic_info', $data);
+        $response = $this->postJson('/api/v1/initialize_user_basic_info', $data);
 
         // Check if the response status is 200 OK
         $response->assertStatus(200)
-                 ->assertJson(['success' => true, 'data' => []]);
+            ->assertJson(['success' => true, 'data' => []]);
 
         // Refresh the user model to check if the status has been updated
         $user->refresh();
@@ -432,7 +433,7 @@ class UserControllerTest extends TestCase
     }
 
     /**
-     * Test failure when one of the assignments fails.
+     * Test failure when one of the assignments fails (missing field).
      */
     public function test_initialize_user_basic_info_failure()
     {
@@ -443,9 +444,11 @@ class UserControllerTest extends TestCase
         $unit = Unit::factory()->create();
         $designation = Designation::factory()->create();
 
+        // Act as the authenticated user
+        $this->actingAs($user);
+
         // Simulate missing one of the required fields in the request
         $data = [
-            'user_id' => $user->id,
             'department_id' => $department->id,
             'location_id' => $location->id,
             // 'unit_id' => $unit->id, // Omitting this field to simulate failure
@@ -453,7 +456,7 @@ class UserControllerTest extends TestCase
         ];
 
         // Make a POST request to the controller
-        $response = $this->postJson('/initialize_user_basic_info', $data);
+        $response = $this->postJson('/api/v1/initialize_user_basic_info', $data);
 
         // Check if the response status is 422 Unprocessable Entity
         $response->assertStatus(422);
@@ -471,9 +474,11 @@ class UserControllerTest extends TestCase
         $unit = Unit::factory()->create();
         $designation = Designation::factory()->create();
 
+        // Act as the authenticated user
+        $this->actingAs($user);
+
         // Simulate causing an exception (e.g., invalid department ID)
         $data = [
-            'user_id' => $user->id,
             'department_id' => 9999, // Non-existent department ID to cause failure
             'location_id' => $location->id,
             'unit_id' => $unit->id,
@@ -481,10 +486,10 @@ class UserControllerTest extends TestCase
         ];
 
         // Make a POST request to the controller
-        $response = $this->postJson('/initialize_user_basic_info', $data);
+        $response = $this->postJson('/api/v1/initialize_user_basic_info', $data);
 
-        // Check if the response status is 401 Unauthorized
-        $response->assertStatus(401);
+        // Check if the response status is 422 Unauthorized (or adjust based on exception)
+        $response->assertStatus(422);
 
         // Ensure the user status was not updated due to the rollback
         $user->refresh();
