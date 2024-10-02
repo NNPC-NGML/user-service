@@ -32,7 +32,7 @@ class AuthController extends Controller
      */
     public function initialize(Request $request)
     {
-        return Socialite::driver('microsoft')->stateless()->redirect();
+        return Socialite::driver('azure')->stateless()->redirect();
     }
 
     /**
@@ -76,8 +76,8 @@ class AuthController extends Controller
         try {
             $code = $request->input('code');
 
-            $tokenResponse = Socialite::driver('microsoft')->stateless()->getAccessTokenResponse($code);
-            $user = Socialite::driver('microsoft')->stateless()->userFromToken($tokenResponse['access_token']);
+            $tokenResponse = Socialite::driver('azure')->stateless()->getAccessTokenResponse($code);
+            $user = Socialite::driver('azure')->stateless()->userFromToken($tokenResponse['access_token']);
 
             $user = User::firstOrCreate([
                 'email' => $user->getEmail(),

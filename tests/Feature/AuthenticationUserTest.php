@@ -15,31 +15,31 @@ class AuthenticationUserTest extends TestCase
 
     use RefreshDatabase;
 
-    // /**
-    //  * Test that the /api/auth/initialize route returns a 302 redirect to Microsoft OAuth page.
-    //  *
-    //  * @return void
-    //  */
-    // public function test_initialize_redirects_to_microsoft_oauth()
-    // {
-    //     // Simulate a request to the initialize route
-    //     $response = $this->getJson('/api/auth/initialize');
-
-    //     // Assert that the response is a redirect
-    //     $response->assertStatus(302);
-
-    //     // Assert that the redirect URL contains "login.microsoftonline.com"
-    //     $this->assertStringContainsString(
-    //         'login.microsoftonline.com',
-    //         $response->headers->get('Location') // Check the "Location" header for the redirect
-    //     );
-    // }
-
     /**
-     * Test that the /api/auth/callback route handles Microsoft OAuth callback and returns user data.
+     * Test that the /api/auth/initialize route returns a 302 redirect to Microsoft OAuth page.
      *
      * @return void
      */
+    public function test_initialize_redirects_to_microsoft_oauth()
+    {
+        // Simulate a request to the initialize route
+        $response = $this->getJson('/api/auth/initialize');
+
+        // Assert that the response is a redirect
+        $response->assertStatus(302);
+
+        // Assert that the redirect URL contains "login.microsoftonline.com"
+        $this->assertStringContainsString(
+            'login.microsoftonline.com',
+            $response->headers->get('Location') // Check the "Location" header for the redirect
+        );
+    }
+
+    // /**
+    //  * Test that the /api/auth/callback route handles Microsoft OAuth callback and returns user data.
+    //  *
+    //  * @return void
+    //  */
     // public function test_callback_creates_or_fetches_user()
     // {
     //     // Mock the Socialite User
