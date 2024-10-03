@@ -18,9 +18,17 @@ return [
     'DEPARTMENT_UPDATED' => explode(",", env('DEPARTMENT_UPDATED', '')),
     'DEPARTMENT_DELETED' => explode(",", env('DEPARTMENT_DELETED', '')),
 
+    'DEPARTMENT_Assignment_CREATED' => explode(",", env('DEPARTMENT_Assignment_CREATED', '')),
+    'DEPARTMENT_Assignment_UPDATED' => explode(",", env('DEPARTMENT_Assignment_UPDATED', '')),
+    'DEPARTMENT_Assignment_DELETED' => explode(",", env('DEPARTMENT_Assignment_DELETED', '')),
+
     'DESIGNATION_CREATED' => explode(",", env('DESIGNATION_CREATED', '')),
     'DESIGNATION_UPDATED' => explode(",", env('DESIGNATION_UPDATED', '')),
     'DESIGNATION_DELETED' => explode(",", env('DESIGNATION_DELETED', '')),
+
+    'DESIGNATION_Assignment_CREATED' => explode(",", env('DESIGNATION_Assignment_CREATED', '')),
+    'DESIGNATION_Assignment_UPDATED' => explode(",", env('DESIGNATION_Assignment_UPDATED', '')),
+    'DESIGNATION_Assignment_DELETED' => explode(",", env('DESIGNATION_Assignment_DELETED', '')),
 
     'FORM_BUILDER_CREATED' => explode(",", env('FORM_BUILDER_CREATED', '')),
     'FORM_BUILDER_UPDATED' => explode(",", env('FORM_BUILDER_UPDATED', '')),
@@ -55,6 +63,10 @@ return [
     'UNIT_UPDATED' => explode(",", env('UNIT_UPDATED', '')),
     'UNIT_DELETED' => explode(",", env('UNIT_DELETED', '')),
 
+    'UNIT_Assignment_CREATED' => explode(",", env('UNIT_Assignment_CREATED', '')),
+    'UNIT_Assignment_UPDATED' => explode(",", env('UNIT_Assignment_UPDATED', '')),
+    'UNIT_Assignment_DELETED' => explode(",", env('UNIT_Assignment_DELETED', '')),
+
     'USER_CREATED' => explode(",", env('USER_CREATED', '')),
     'USER_UPDATED' => explode(",", env('USER_UPDATED', '')),
     'USER_DELETED' => explode(",", env('USER_DELETED', '')),
@@ -68,5 +80,9 @@ return [
     'LOCATION_CREATED' => explode(",", env('LOCATION_CREATED', '')),
     'LOCATION_UPDATED' => explode(",", env('LOCATION_UPDATED', '')),
     'LOCATION_DELETED' => explode(",", env('LOCATION_DELETED', '')),
+
+    'LOCATION_Assignment_CREATED' => explode(",", env('LOCATION_Assignment_CREATED', '')),
+    'LOCATION_Assignment_UPDATED' => explode(",", env('LOCATION_Assignment_UPDATED', '')),
+    'LOCATION_Assignment_DELETED' => explode(",", env('LOCATION_Assignment_DELETED', '')),
 
 ];

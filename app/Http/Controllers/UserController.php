@@ -9,8 +9,17 @@ use App\Jobs\User\UserCreated;
 use App\Jobs\User\UserDeleted;
 use App\Jobs\User\UserUpdated;
 use App\Http\Resources\UserResource;
+use App\Jobs\DepartmentAssignment\DepartmentAssignmentCreated;
+use App\Jobs\DesignationAssignment\DesignationAssignmentCreated;
+use App\Jobs\LocationAssignment\LocationAssignmentCreated;
+use App\Jobs\UnitAssignment\UnitAssignmentCreated;
+use App\Models\DepartmentUser;
+use App\Models\DesignationUser;
+use App\Models\LocationUser;
+use App\Models\UnitUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -400,6 +409,7 @@ class UserController extends Controller
             $assignLocationstatus = $this->userService->assignUserToLocation($userId, $validated['location_id']);
             $assignUnitstatus = $this->userService->assignUserToUnit($userId, $validated['unit_id']);
             $assignDesignationstatus = $this->userService->assignUserToDesignation($userId, $validated['designation_id']);
+
             if ($assignDeptStatus && $assignLocationstatus && $assignUnitstatus && $assignDesignationstatus) {
                 $user = $this->userService->getUser($userId);
                 if($user->status != 1) {
@@ -408,6 +418,56 @@ class UserController extends Controller
                 }
 
                 DB::commit();
+
+                $locationUser = LocationUser::where('user_id', $userId)->first();
+                $unitUser = UnitUser::where('user_id', $userId)->first();
+                $departmentUser = DepartmentUser::where('user_id', $userId)->first();
+                $designationUser = DesignationUser::where('user_id', $userId)->first();
+
+                $locationQueues = config("nnpcreusable.LOCATION_Assignment_CREATED");
+                if (is_array($locationQueues) && !empty($locationQueues)) {
+                    foreach ($locationQueues as $queue) {
+                        $queue = trim($queue);
+                        if (!empty($queue)) {
+                            Log::info("Dispatching location assignment created event to queue: " . $queue);
+                            LocationAssignmentCreated::dispatch($locationUser->toArray())->onQueue($queue);
+                        }
+                    }
+                }
+
+                $unitQueues = config("nnpcreusable.UNIT_Assignment_CREATED");
+                if (is_array($unitQueues) && !empty($unitQueues)) {
+                    foreach ($unitQueues as $queue) {
+                        $queue = trim($queue);
+                        if (!empty($queue)) {
+                            Log::info("Dispatching unit assignment created event to queue: " . $queue);
+                            UnitAssignmentCreated::dispatch($unitUser->toArray())->onQueue($queue);
+                        }
+                    }
+                }
+
+                $departmentQueues = config("nnpcreusable.DEPARTMENT_Assignment_CREATED");
+                if (is_array($departmentQueues) && !empty($departmentQueues)) {
+                    foreach ($departmentQueues as $queue) {
+                        $queue = trim($queue);
+                        if (!empty($queue)) {
+                            Log::info("Dispatching department assignment created event to queue: " . $queue);
+                            DepartmentAssignmentCreated::dispatch($departmentUser->toArray())->onQueue($queue);
+                        }
+                    }
+                }
+
+                $designationQueues = config("nnpcreusable.DESIGNATION_Assignment_CREATED");
+                if (is_array($designationQueues) && !empty($designationQueues)) {
+                    foreach ($designationQueues as $queue) {
+                        $queue = trim($queue);
+                        if (!empty($queue)) {
+                            Log::info("Dispatching designation assignment created event to queue: " . $queue);
+                            DesignationAssignmentCreated::dispatch($designationUser->toArray())->onQueue($queue);
+                        }
+                    }
+                }
+
                 return response()->json(['success' => true, 'data' => []], 200);
             }
 
