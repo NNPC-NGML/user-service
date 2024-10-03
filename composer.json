@@ -13,7 +13,7 @@
         "laravel/socialite": "^5.16",
         "laravel/tinker": "^2.8",
         "php-amqplib/php-amqplib": "^3.6",
-        "skillz/nnpcreusable": "^1.5",
+        "skillz/nnpcreusable": "^1.5.4",
         "socialiteproviders/microsoft-azure": "^5.2",
         "vladimir-yuldashev/laravel-queue-rabbitmq": "^14.0",
         "zircote/swagger-php": "^4.8"
