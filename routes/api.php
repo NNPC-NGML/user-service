@@ -122,6 +122,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/headofunit/create', [HeadOfUnitController::class, 'store'])->name('headofunit.create');
         // New user setup(designation,department,location,unit)
         Route::post('/initialize_user_basic_info', [UserController::class, 'initialize_user_basic_info'])->name('initialize_user_basic_info');
+        Route::post('/get_user_basic_info', [UserController::class, 'get_user_basic_info'])->name('get_user_basic_info');
+
     });
     Route::get('scope/{scope}', [AuthController::class, 'scopeCan']);
 });

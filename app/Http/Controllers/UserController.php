@@ -412,7 +412,7 @@ class UserController extends Controller
 
             if ($assignDeptStatus && $assignLocationstatus && $assignUnitstatus && $assignDesignationstatus) {
                 $user = $this->userService->getUser($userId);
-                if($user->status != 1) {
+                if ($user->status != 1) {
                     $user->status = 1;
                     $user->save();
                 }
@@ -473,6 +473,27 @@ class UserController extends Controller
 
             DB::rollBack();
             return response()->json(['error' => 'invalid request sent'], 422);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json(['error' => $th->getMessage()], 422);
+        }
+    }
+    public function get_user_basic_info(Request $request)
+    {
+        try {
+            $userId = Auth::user()->id;
+
+            $locationUser = LocationUser::where('user_id', $userId)->first();
+            $unitUser = UnitUser::where('user_id', $userId)->first();
+            $departmentUser = DepartmentUser::where('user_id', $userId)->first();
+            $designationUser = DesignationUser::where('user_id', $userId)->first();
+
+            return response()->json(['success' => true, 'data' => [
+                'location' => $locationUser?->toArray(),
+                'unit' => $unitUser?->toArray(),
+                'department' => $departmentUser?->toArray(),
+                'designation' => $designationUser?->toArray()
+            ]], 200);
         } catch (\Throwable $th) {
             DB::rollBack();
             return response()->json(['error' => $th->getMessage()], 422);
