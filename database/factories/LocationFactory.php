@@ -20,6 +20,7 @@ class LocationFactory extends Factory
             'location' => fake()->streetAddress(),
             'zone' => fake()->city(),
             'state' => fake()->city(),
+            'status' => fake()->numberBetween(0, 1),
         ];
     }
 }

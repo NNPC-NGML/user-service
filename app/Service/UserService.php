@@ -167,6 +167,39 @@ class UserService
     }
 
     /**
+     * Update the assignment of a user to a department.
+     *
+     * @param int $userId
+     * @param int $departmentId
+     * @return bool
+     */
+    public function updateAssignUserToDepartment(int $userId, int $departmentId): bool
+    {
+        $user = User::find($userId);
+        $department = Department::find($departmentId);
+
+        if (!$user || !$department) {
+            return false;
+        }
+
+
+        // Check if the user already belongs to the unit
+        if (!$user->department || $user->department?->id === $department->id) {
+            return false;
+        }
+
+        $departmentUser = DepartmentUser::where('user_id', $user->id)->first();
+        if (!$departmentUser) {
+            return false;
+        }
+
+        $departmentUser->department_id = $department->id;
+        $departmentUser->save();
+
+        return true;
+    }
+
+    /**
      * Assign a user to a unit.
      *
      * @param int $userId The ID of the user.
@@ -192,6 +225,39 @@ class UserService
         $unitUser = new UnitUser();
         $unitUser->unit_id = $unit->id;
         $unitUser->user_id = $user->id;
+        $unitUser->save();
+
+        return true;
+    }
+
+    /**
+     * Update the assignment of a user to a unit.
+     *
+     * @param int $userId
+     * @param int $unitId
+     * @return bool
+     */
+    public function updateAssignUserToUnit(int $userId, int $unitId): bool
+    {
+        $user = User::find($userId);
+        $unit = Unit::find($unitId);
+
+        if (!$user || !$unit) {
+            return false;
+        }
+
+
+        // Check if the user already belongs to the unit
+        if (!$user->unit || $user->unit?->id === $unit->id) {
+            return false;
+        }
+
+        $unitUser = UnitUser::where('user_id', $user->id)->first();
+        if (!$unitUser) {
+            return false;
+        }
+
+        $unitUser->unit_id = $unit->id;
         $unitUser->save();
 
         return true;
@@ -233,6 +299,35 @@ class UserService
         return true;
     }
 
+    /**
+     * Update the assignment of a user to a location.
+     *
+     * @param int $userId
+     * @param int $locationId
+     * @return bool
+     */
+    public function updateAssignUserToLocation(int $userId, int $locationId): bool
+    {
+        $user = User::find($userId);
+        $location = Location::find($locationId);
+        if (!$user || !$location) {
+            return false;
+        }
+        if (!$user->location || $user->location?->id === $location->id) {
+            return false;
+        }
+
+        $locationUser = LocationUser::where('user_id', $user->id)->first();
+        if (!$locationUser) {
+            return false;
+        }
+
+        $locationUser->location_id = $location->id;
+        $locationUser->save();
+
+        return true;
+    }
+
 
     /**
      * The function assigns a user to a designation if they are not already assigned.
@@ -258,13 +353,48 @@ class UserService
         if (!$user || !$designation) {
             return false;
         }
-        if ($user->$designation && $user->designation->id == $designation->id) {
+        if ($user->designation && $user->designation->id == $designation->id) {
             return false;
         }
 
         $designationUser = new DesignationUser();
         $designationUser->designation_id = $designation->id;
         $designationUser->user_id = $user->id;
+        $designationUser->save();
+
+        return true;
+    }
+
+    /*************  ✨ Codeium Command ⭐  *************/
+    /**
+     * Update the designation of a user if they are not already assigned to the given designation.
+     *
+     * @param int $userId The ID of the user to update.
+     * @param int $designationId The ID of the designation to assign to the user.
+     *
+     * @return bool Returns true if the user is successfully assigned to the designation.
+     *              Returns false if the user or designation is not found, or if the user is already
+     *              assigned to the designation.
+     */
+    /******  0b0b4bde-02e3-4363-b692-3f3c0f7111d8  *******/
+    public function updateAssignUserToDesignation(int $userId, int $designationId): bool
+    {
+        $user = User::find($userId);
+        $designation = Designation::find($designationId);
+        if (!$user || !$designation) {
+            return false;
+        }
+        if (!$user->designation || $user->designation?->id === $designation->id) {
+            return false;
+        }
+
+        $designationUser = DesignationUser::where('user_id', $user->id)->first();
+        if (!$designationUser) {
+            return false;
+        }
+
+        // dd($designationUser);
+        $designationUser->designation_id = $designation->id;
         $designationUser->save();
 
         return true;

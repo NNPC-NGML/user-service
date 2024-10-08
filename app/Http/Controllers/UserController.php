@@ -10,11 +10,16 @@ use App\Jobs\User\UserDeleted;
 use App\Jobs\User\UserUpdated;
 use App\Http\Resources\UserResource;
 use App\Jobs\DepartmentAssignment\DepartmentAssignmentCreated;
+use App\Jobs\DepartmentAssignment\DepartmentAssignmentUpdated;
 use App\Jobs\DesignationAssignment\DesignationAssignmentCreated;
+use App\Jobs\DesignationAssignment\DesignationAssignmentUpdated;
 use App\Jobs\LocationAssignment\LocationAssignmentCreated;
+use App\Jobs\LocationAssignment\LocationAssignmentUpdated;
 use App\Jobs\UnitAssignment\UnitAssignmentCreated;
+use App\Jobs\UnitAssignment\UnitAssignmentUpdated;
 use App\Models\DepartmentUser;
 use App\Models\DesignationUser;
+use App\Models\Location;
 use App\Models\LocationUser;
 use App\Models\UnitUser;
 use Illuminate\Support\Facades\Auth;
@@ -478,6 +483,44 @@ class UserController extends Controller
             return response()->json(['error' => $th->getMessage()], 422);
         }
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/v1/get_user_basic_info",
+     *     summary="Get the basic information of the authenticated user",
+     *     tags={"Users"},
+     *     security={{ "apiAuth": {} }},
+     *     @OA\Response(
+     *         response=200,
+     *         description="User basic information retrieved successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="id", type="integer", example=123),
+     *                 @OA\Property(property="name", type="string", example="John Doe"),
+     *                 @OA\Property(property="email", type="string", format="email", example="john@example.com"),
+     *                 @OA\Property(property="role", type="string", example="Administrator")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Unauthenticated")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="An error occurred while retrieving user information")
+     *         )
+     *     )
+     * )
+     */
     public function get_user_basic_info(Request $request)
     {
         try {
@@ -489,10 +532,153 @@ class UserController extends Controller
             $designationUser = DesignationUser::where('user_id', $userId)->first();
 
             return response()->json(['success' => true, 'data' => [
-                'location' => $locationUser?->toArray(),
-                'unit' => $unitUser?->toArray(),
-                'department' => $departmentUser?->toArray(),
-                'designation' => $designationUser?->toArray()
+                'location' => $locationUser?->location?->toArray(),
+                'unit' => $unitUser?->unit?->toArray(),
+                'department' => $departmentUser?->department?->toArray(),
+                'designation' => $designationUser?->designation?->toArray(),
+            ]], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 422);
+        }
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/initialize_user_basic_info",
+     *     summary="Initialize user basic information",
+     *     tags={"Users"},
+     *     security={{ "apiAuth": {} }},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"department_id", "location_id", "unit_id", "designation_id"},
+     *             @OA\Property(property="department_id", type="integer", example=2),
+     *             @OA\Property(property="location_id", type="integer", example=3),
+     *             @OA\Property(property="unit_id", type="integer", example=4),
+     *             @OA\Property(property="designation_id", type="integer", example=5)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User basic information initialized successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="User basic information initialized.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User or related entity not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="User or related entity not found.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="errors", type="object")
+     *         )
+     *     )
+     * )
+     */
+    public function update_user_basic_info(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $validated = $request->validate([
+                'department_id' => 'sometimes|exists:departments,id',
+                'location_id' => 'sometimes|exists:locations,id',
+                'unit_id' => 'sometimes|exists:units,id',
+                'designation_id' => 'sometimes|exists:designations,id',
+            ]);
+
+            $userId = Auth::user()->id;
+
+            $locationUser = LocationUser::where('user_id', $userId)->first();
+            $unitUser = UnitUser::where('user_id', $userId)->first();
+            $departmentUser = DepartmentUser::where('user_id', $userId)->first();
+            $designationUser = DesignationUser::where('user_id', $userId)->first();
+
+            if(isset($validated['location_id']) && $locationUser) {
+                $location = Location::find($validated['location_id']);
+                if($location) {
+
+                }
+            }
+
+            $assignDeptStatus = $this->userService->updateAssignUserToDepartment($userId, $validated['department_id']);
+            $assignLocationstatus = $this->userService->updateAssignUserToLocation($userId, $validated['location_id']);
+            $assignUnitstatus = $this->userService->updateAssignUserToUnit($userId, $validated['unit_id']);
+            $assignDesignationstatus = $this->userService->updateAssignUserToDesignation($userId, $validated['designation_id']);
+
+            if($assignLocationstatus) {
+                $locationUser = LocationUser::where('user_id', $userId)->first();
+
+                $locationQueues = config("nnpcreusable.LOCATION_Assignment_UPDATED");
+                if (is_array($locationQueues) && !empty($locationQueues)) {
+                    foreach ($locationQueues as $queue) {
+                        $queue = trim($queue);
+                        if (!empty($queue)) {
+                            Log::info("Dispatching location assignment updated event to queue: " . $queue);
+                            LocationAssignmentUpdated::dispatch($locationUser->toArray())->onQueue($queue);
+                        }
+                    }
+                }
+            }
+
+            if($assignUnitstatus) {
+                $unitUser = UnitUser::where('user_id', $userId)->first();
+
+                $unitQueues = config("nnpcreusable.UNIT_Assignment_UPDATED");
+                if (is_array($unitQueues) && !empty($unitQueues)) {
+                    foreach ($unitQueues as $queue) {
+                        $queue = trim($queue);
+                        if (!empty($queue)) {
+                            Log::info("Dispatching unit assignment updated event to queue: " . $queue);
+                            UnitAssignmentUpdated::dispatch($unitUser->toArray())->onQueue($queue);
+                        }
+                    }
+                }
+            }
+
+            if($assignDesignationstatus) {
+                $designationUser = DesignationUser::where('user_id', $userId)->first();
+
+                $designationQueues = config("nnpcreusable.DESIGNATION_Assignment_UPDATED");
+                if (is_array($designationQueues) && !empty($designationQueues)) {
+                    foreach ($designationQueues as $queue) {
+                        $queue = trim($queue);
+                        if (!empty($queue)) {
+                            Log::info("Dispatching designation assignment updated event to queue: " . $queue);
+                            DesignationAssignmentUpdated::dispatch($designationUser->toArray())->onQueue($queue);
+                        }
+                    }
+                }
+            }
+
+            if($assignDeptStatus) {
+                $departmentUser = DepartmentUser::where('user_id', $userId)->first();
+
+                $departmentQueues = config("nnpcreusable.DEPARTMENT_Assignment_UPDATED");
+                if (is_array($departmentQueues) && !empty($departmentQueues)) {
+                    foreach ($departmentQueues as $queue) {
+                        $queue = trim($queue);
+                        if (!empty($queue)) {
+                            Log::info("Dispatching department assignment updated event to queue: " . $queue);
+                            DepartmentAssignmentUpdated::dispatch($departmentUser->toArray())->onQueue($queue);
+                        }
+                    }
+                }
+            }
+
+            return response()->json(['success' => true, 'data' => [
+                'location' => $locationUser->location?->toArray(),
+                'unit' => $unitUser->unit?->toArray(),
+                'department' => $departmentUser->department?->toArray(),
+                'designation' => $designationUser->designation?->toArray(),
             ]], 200);
         } catch (\Throwable $th) {
             DB::rollBack();

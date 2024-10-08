@@ -12,4 +12,9 @@ class LocationUser extends Model
         "user_id",
         "location_id",
     ];
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
+    }
 }

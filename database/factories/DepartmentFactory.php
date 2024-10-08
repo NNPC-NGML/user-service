@@ -19,6 +19,7 @@ class DepartmentFactory extends Factory
         return [
             'name' => fake()->name(),
             'description' => fake()->sentence(),
+            'status' => fake()->numberBetween(0, 1),
         ];
     }
 }
