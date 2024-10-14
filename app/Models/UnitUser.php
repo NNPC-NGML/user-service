@@ -12,4 +12,9 @@ class UnitUser extends Model
         "user_id",
         "unit_id",
     ];
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
 }

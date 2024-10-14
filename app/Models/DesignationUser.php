@@ -12,4 +12,9 @@ class DesignationUser extends Model
         "user_id",
         "designation_id",
     ];
+
+    public function designation()
+    {
+        return $this->belongsTo(Designation::class);
+    }
 }

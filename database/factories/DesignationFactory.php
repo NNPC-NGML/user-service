@@ -20,6 +20,7 @@ class DesignationFactory extends Factory
             'role' => fake()->jobTitle(),
             'description' => fake()->sentence(),
             'level'=>'level '.fake()->numberBetween(1,10),
+            'status' => fake()->numberBetween(0, 1),
         ];
     }
 }

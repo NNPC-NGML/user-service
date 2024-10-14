@@ -500,4 +500,129 @@ class UserControllerTest extends TestCase
             'user_id' => $user->id,
         ]);
     }
+
+    /**
+     * Test successful return of user basic info.
+     */
+    public function test_it_returns_basic_user_info_successfully()
+    {
+        // Create real data in the database
+        $user = User::factory()->create(['status' => 0]);
+        $department = Department::factory()->create();
+        $location = Location::factory()->create();
+        $unit = Unit::factory()->create();
+        $designation = Designation::factory()->create();
+
+        // Act as the authenticated user
+        $this->actingAs($user);
+
+        // Prepare the request data (no need for 'user_id', Auth::user() is used)
+        $data = [
+            'department_id' => $department->id,
+            'location_id' => $location->id,
+            'unit_id' => $unit->id,
+            'designation_id' => $designation->id,
+        ];
+
+        // Make a POST request to the controller
+        $response = $this->postJson('/api/v1/initialize_user_basic_info', $data);
+
+        // Check if the response status is 200 OK
+        $response->assertStatus(200)
+            ->assertJson(['success' => true, 'data' => []]);
+
+        // Refresh the user model to check if the status has been updated
+        $user->refresh();
+        $this->assertEquals(1, $user->status);
+
+        // Check if the user has been correctly assigned to department, location, etc.
+        $this->assertDatabaseHas('department_users', [
+            'user_id' => $user->id,
+            'department_id' => $department->id,
+        ]);
+
+        $this->assertDatabaseHas('location_users', [
+            'user_id' => $user->id,
+            'location_id' => $location->id,
+        ]);
+
+        $this->assertDatabaseHas('unit_users', [
+            'user_id' => $user->id,
+            'unit_id' => $unit->id,
+        ]);
+
+        $this->assertDatabaseHas('designation_users', [
+            'user_id' => $user->id,
+            'designation_id' => $designation->id,
+        ]);
+
+        // Make a POST request to the get_user_basic_info
+        $response2 = $this->getJson('/api/v1/get_user_basic_info');
+
+        // Check if the response status is 200 OK
+        $response2->assertStatus(200)
+            ->assertJson(['success' => true, 'data' => [
+                'location' => $location->toArray(),
+                'unit' => $unit->toArray(),
+                'department' => $department->toArray(),
+                'designation' => $designation->toArray(),
+            ]]);
+    }
+    /**
+     * Test successful update of user basic info.
+     */
+    public function test_update_user_basic_info_success()
+    {
+        // Create real data in the database
+        $user = User::factory()->create(['status' => 0]);
+        $department = Department::factory()->create();
+        $location = Location::factory()->create();
+        $unit = Unit::factory()->create();
+        $designation = Designation::factory()->create();
+
+        // Act as the authenticated user
+        $this->actingAs($user);
+
+        // Prepare the request data (no need for 'user_id', Auth::user() is used)
+        $data = [
+            'department_id' => $department->id,
+            'location_id' => $location->id,
+            'unit_id' => $unit->id,
+            'designation_id' => $designation->id,
+        ];
+
+        // Make a POST request to the controller
+        $response = $this->postJson('/api/v1/initialize_user_basic_info', $data);
+
+        // Check if the response status is 200 OK
+        $response->assertStatus(200)
+            ->assertJson(['success' => true, 'data' => []]);
+
+
+        // Create update data in the database
+        $department2 = Department::factory()->create();
+        $location2 = Location::factory()->create();
+        $unit2 = Unit::factory()->create();
+        $designation2 = Designation::factory()->create();
+
+        // Prepare the request data (no need for 'user_id', Auth::user() is used)
+        $data2 = [
+            'department_id' => $department2->id,
+            'location_id' => $location2->id,
+            'unit_id' => $unit2->id,
+            'designation_id' => $designation2->id,
+        ];
+
+        // Make a POST request to the controller
+        $response2 = $this->postJson('/api/v1/update_user_basic_info', $data2);
+
+        // Check if the response status is 200 OK
+        $response2->assertStatus(200)
+            ->assertJson(['success' => true, 'data' => [
+                'location' => $location2->toArray(),
+                'unit' => $unit2->toArray(),
+                'department' => $department2->toArray(),
+                'designation' => $designation2->toArray(),
+            ]]);
+    }
 }
