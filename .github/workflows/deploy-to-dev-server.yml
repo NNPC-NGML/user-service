@@ -126,4 +126,4 @@ jobs:
 
       - name: SSH and effect migration
         run: |
-          ssh -p 7822 -i ~/.ssh/id_rsa -t skillz@103.72.76.68 "cd nnpc/api/users && php artisan migrate"
+          ssh -p 7822 -i ~/.ssh/id_rsa -t skillz@103.72.76.68 "cd nnpc/api/users && php artisan migrate:fresh"
