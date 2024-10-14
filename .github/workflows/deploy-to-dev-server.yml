@@ -3,7 +3,7 @@ name: nnpc_user-service_deploy
 on:
   # push:
   #   # branches:
-  #   #   - main
+  
   pull_request:
     branches:
       - dev
